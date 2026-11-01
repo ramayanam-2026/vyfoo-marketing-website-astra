@@ -1,0 +1,25 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Page Not Found"
+  description="The page you're looking for doesn't exist."
+  path="/404"
+  noindex={true}
+>
+  <section class="page-hero not-found">
+    <div class="container prose">
+      <h1>Page not found</h1>
+      <p>The page you're looking for doesn't exist or may have moved.</p>
+      <div class="hero__ctas">
+        <a class="btn btn--primary" href="/">Go to homepage</a>
+        <a class="btn btn--ghost" href={urls.contact}>Contact us</a>
+      </div>
+    </div>
+  </section>
+</MarketingLayout>
+<style>
+  .not-found { padding-block: var(--space-32) var(--space-24); text-align: center; }
+  .hero__ctas { display: flex; justify-content: center; gap: var(--space-4); margin-top: var(--space-6); }
+</style>

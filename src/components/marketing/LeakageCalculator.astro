@@ -1,0 +1,100 @@
+<div class="calculator" data-calculator>
+  <form class="calculator__form" aria-describedby="calc-disclaimer">
+    <div class="calculator__field">
+      <label for="calc-orders">Daily order count</label>
+      <input id="calc-orders" type="number" inputmode="numeric" min="0" step="1" value="150" />
+    </div>
+    <div class="calculator__field">
+      <label for="calc-aov">Average order value (₹)</label>
+      <input id="calc-aov" type="number" inputmode="numeric" min="0" step="1" value="350" />
+    </div>
+    <div class="calculator__field">
+      <label for="calc-rate">Estimated unrecorded loss rate (%)</label>
+      <input id="calc-rate" type="number" inputmode="decimal" min="0" max="100" step="0.1" value="2" />
+      <p class="calculator__hint">An editable illustrative assumption, not an industry benchmark.</p>
+    </div>
+    <div class="calculator__field">
+      <label for="calc-days">Operating days per month</label>
+      <input id="calc-days" type="number" inputmode="numeric" min="0" max="31" step="1" value="28" />
+    </div>
+  </form>
+
+  <div class="calculator__result" aria-live="polite">
+    <div>
+      <p class="calculator__result-label">Estimated monthly exposure</p>
+      <p class="calculator__result-value" data-result-monthly>₹0</p>
+    </div>
+    <div>
+      <p class="calculator__result-label">Estimated annual exposure</p>
+      <p class="calculator__result-value" data-result-annual>₹0</p>
+    </div>
+  </div>
+
+  <p id="calc-disclaimer" class="calculator__disclaimer">
+    This is an illustrative scenario based on the numbers you enter, not a measured loss and not a guaranteed
+    recoverable amount. It's intended to show how a small unrecorded-loss rate can accumulate across a month of
+    operations.
+  </p>
+</div>
+
+<style>
+  .calculator { background: var(--color-paper); border: 1px solid var(--color-line); border-radius: var(--radius-lg); padding: var(--space-8); box-shadow: var(--shadow-md); }
+  .calculator__form { display: grid; gap: var(--space-4); grid-template-columns: 1fr; margin-bottom: var(--space-6); }
+  .calculator__field label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: var(--space-2); color: var(--color-ink); }
+  .calculator__field input {
+    width: 100%; padding: var(--space-3); border: 1px solid var(--color-line-strong); border-radius: var(--radius-sm);
+    font: inherit; font-size: 1rem;
+  }
+  .calculator__hint { font-size: 0.78rem; color: var(--color-text-muted); margin: var(--space-1) 0 0; }
+  .calculator__result { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); background: var(--color-cream); border-radius: var(--radius-md); padding: var(--space-6); margin-bottom: var(--space-4); }
+  .calculator__result-label { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); margin-bottom: var(--space-1); }
+  .calculator__result-value { font-family: var(--font-display); font-size: 1.7rem; color: var(--color-ink); margin: 0; }
+  .calculator__disclaimer { font-size: 0.82rem; color: var(--color-text-muted); margin: 0; }
+
+  @media (min-width: 640px) {
+    .calculator__form { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-calculator]");
+  if (root) {
+    const orders = root.querySelector<HTMLInputElement>("#calc-orders")!;
+    const aov = root.querySelector<HTMLInputElement>("#calc-aov")!;
+    const rate = root.querySelector<HTMLInputElement>("#calc-rate")!;
+    const days = root.querySelector<HTMLInputElement>("#calc-days")!;
+    const monthlyOut = root.querySelector<HTMLElement>("[data-result-monthly]")!;
+    const annualOut = root.querySelector<HTMLElement>("[data-result-annual]")!;
+
+    const formatter = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
+
+    function clampNonNegative(input: HTMLInputElement): number {
+      const value = parseFloat(input.value);
+      if (Number.isNaN(value) || value < 0) return 0;
+      return value;
+    }
+
+    function recalc() {
+      const dailyOrders = clampNonNegative(orders);
+      const avgOrderValue = clampNonNegative(aov);
+      const lossRate = clampNonNegative(rate) / 100;
+      const operatingDays = clampNonNegative(days);
+
+      const monthly = dailyOrders * avgOrderValue * lossRate * operatingDays;
+      const annual = monthly * 12;
+
+      monthlyOut.textContent = formatter.format(monthly);
+      annualOut.textContent = formatter.format(annual);
+    }
+
+    [orders, aov, rate, days].forEach((input) => {
+      input.addEventListener("input", recalc);
+      input.addEventListener("blur", () => {
+        if (parseFloat(input.value) < 0 || Number.isNaN(parseFloat(input.value))) input.value = "0";
+        recalc();
+      });
+    });
+
+    recalc();
+  }
+</script>

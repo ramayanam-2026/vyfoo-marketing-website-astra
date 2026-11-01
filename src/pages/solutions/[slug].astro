@@ -1,0 +1,89 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { solutions } from "../../data/solutions";
+import { urls } from "../../lib/urls";
+import { breadcrumbJsonLd } from "../../lib/seo";
+
+export function getStaticPaths() {
+  return solutions.map((s) => ({ params: { slug: s.slug }, props: { solution: s } }));
+}
+
+const { solution } = Astro.props;
+---
+<MarketingLayout
+  title={`Restaurant OS for ${solution.name} — Vyfoo`}
+  description={`${solution.headline} Built for ${solution.buyer}.`}
+  path={`/solutions/${solution.slug}`}
+  structuredData={[breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Solutions", path: "/solutions" },
+    { name: solution.name, path: `/solutions/${solution.slug}` },
+  ])]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumbs"><a href="/">Home</a> / <a href="/solutions">Solutions</a> / {solution.name}</p>
+      <span class="tag">{solution.category === "enterprise" ? "Enterprise" : "Specialized"}</span>
+      <h1>{solution.headline}</h1>
+      <p>Built for {solution.buyer}.</p>
+      <div class="hero__ctas">
+        {solution.category === "enterprise" ? (
+          <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
+        ) : (
+          <a class="btn btn--primary" href={urls.startTrial}>Start Free Trial</a>
+        )}
+        <a class="btn btn--ghost" href={urls.contact}>Talk to us</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container prose">
+      <h2>The operational problem</h2>
+      <p>{solution.problem}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>What matters most for {solution.name.toLowerCase()}</h2>
+      <div class="grid-auto grid-auto--2">
+        <div class="card">
+          <h3>Focus areas</h3>
+          <ul>{solution.focusAreas.map((f: string) => <li>{f}</li>)}</ul>
+        </div>
+        <div class="card">
+          <h3>Mapped capabilities</h3>
+          <ul>
+            {solution.mappedCapabilities.map((m: { module: string; href: string; note: string }) => (
+              <li><a href={m.href}>{m.module}</a> — {m.note}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      {solution.integrationCaveat && (
+        <p class="caveat-note">{solution.integrationCaveat}</p>
+      )}
+    </div>
+  </section>
+
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div>
+        <h2>See it on your menu, your way.</h2>
+        <p>Talk through how Vyfoo maps to your specific operating model.</p>
+      </div>
+      {solution.category === "enterprise" ? (
+        <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+      ) : (
+        <a class="btn btn--on-ink btn--lg" href={urls.startTrial}>Start Free Trial</a>
+      )}
+    </div>
+  </section>
+</MarketingLayout>
+
+<style>
+  .hero__ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-top: var(--space-6); }
+  .cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); }
+  .cta-split h2, .cta-split p { margin: 0; }
+</style>

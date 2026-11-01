@@ -1,0 +1,56 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Security & Architecture"
+  description="How Vyfoo's architecture, infrastructure, and authentication boundaries work, and what to ask our team before an enterprise deployment."
+  path="/security"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Security</p>
+      <h1>Security and architecture</h1>
+      <p>
+        This page describes what's currently verifiable about Vyfoo's architecture. We'd rather tell you clearly
+        what we can confirm than make a blanket compliance claim we can't back up.
+      </p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container prose">
+      <h2>Infrastructure</h2>
+      <p>
+        Vyfoo's backend runs on Node.js with a Supabase/PostgreSQL data layer. Supabase's own infrastructure
+        certifications do not automatically extend to Vyfoo as an application — we don't claim SOC 2, PCI DSS, or
+        GDPR certification for Vyfoo as a whole unless that has been independently verified and documented.
+      </p>
+      <h2>Authentication boundaries</h2>
+      <p>
+        Access to the product application and sandbox is handled by the product's own authentication system,
+        separate from this marketing site. See <a href="/deployment">Deployment</a> for how account provisioning
+        fits into a rollout.
+      </p>
+      <h2>Data handling</h2>
+      <p>
+        Specific data residency, retention, and processing details are confirmed during enterprise scoping, since
+        they can vary by deployment and region.
+      </p>
+      <h2>Questions enterprise IT teams should ask</h2>
+      <ul>
+        <li>What certifications apply to the specific infrastructure used for our deployment?</li>
+        <li>How is data encrypted in transit and at rest?</li>
+        <li>What does the authentication and access-control model look like for our organization?</li>
+        <li>What's the data retention and deletion policy?</li>
+      </ul>
+      <p>Request additional security detail through <a href="/contact/enterprise">Enterprise Sales</a>.</p>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Need a security review for procurement?</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.talkToSales}>Talk to Enterprise Sales</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

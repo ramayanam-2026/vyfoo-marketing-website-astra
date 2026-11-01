@@ -1,0 +1,44 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Deployment & Rollout Process"
+  description="How a Vyfoo rollout typically works, from discovery through pilot and multi-outlet rollout. Timeline depends on complexity, outlet count, and readiness."
+  path="/deployment"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Deployment</p>
+      <h1>How a deployment typically works</h1>
+      <p>
+        Implementation timeline depends on migration scope, hardware readiness, data quality, integrations, and
+        training requirements — we don't promise every deployment completes on a fixed schedule.
+      </p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container">
+      <ol class="deploy-steps">
+        <li><strong>Discovery & requirements</strong><span>Understand your outlets, hardware, menu structure, and integration needs.</span></li>
+        <li><strong>Data & menu preparation</strong><span>Prepare menu data, recipes, pricing, and tax configuration.</span></li>
+        <li><strong>Configuration & hardware validation</strong><span>Configure the system and confirm it runs correctly on your chosen hardware.</span></li>
+        <li><strong>Staff training & pilot</strong><span>Train staff and run a pilot at one outlet before wider rollout.</span></li>
+        <li><strong>Rollout & operational review</strong><span>Roll out to remaining outlets and review performance against your goals.</span></li>
+      </ol>
+      <p class="caveat-note">A proposed scoped rollout (for example, a fast multi-store switchover) is an example implementation pathway, not an unconditional service guarantee — actual timing depends on the factors above.</p>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Scope your rollout with us</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>
+  .deploy-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-4); max-width: var(--container-narrow); }
+  .deploy-steps li { background: var(--color-paper); border: 1px solid var(--color-line); border-radius: var(--radius-md); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-1); }
+  .cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); }
+  .cta-split h2 { margin: 0; }
+</style>

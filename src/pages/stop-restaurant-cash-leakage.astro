@@ -1,0 +1,45 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import LeakageCalculator from "../components/marketing/LeakageCalculator.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Stop Restaurant Cash Leakage"
+  description="See how small unrecorded loss rates accumulate across a restaurant's operations, and which Vyfoo controls improve visibility into discounts, refunds, and cash reconciliation."
+  path="/stop-restaurant-cash-leakage"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumbs"><a href="/">Home</a> / Cash Leakage</p>
+      <h1>Small gaps add up. See how much, and where to look.</h1>
+      <p>Unrecorded discounts, voids, and comps rarely show up as one big number — they accumulate quietly across a month of service.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Illustrative cash-leakage calculator</h2>
+      <LeakageCalculator />
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container">
+      <h2>What actually helps close the gap</h2>
+      <div class="grid-auto grid-auto--3">
+        <div class="card"><h3>Role-based permissions</h3><p>Limit who can apply discounts or void a transaction, and by how much.</p></div>
+        <div class="card"><h3>Transaction audit trails</h3><p>See who processed a refund or discount, and when, across every outlet.</p></div>
+        <div class="card"><h3>Cash reconciliation</h3><p>Compare expected vs. actual cash at shift close, outlet by outlet.</p></div>
+      </div>
+      <p class="caveat-note">Software like this makes exceptions easier to see and investigate. It doesn't eliminate theft or guarantee a specific financial outcome — the calculator above is illustrative, not a measured result.</p>
+    </div>
+  </section>
+
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Want a closer look at your numbers?</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

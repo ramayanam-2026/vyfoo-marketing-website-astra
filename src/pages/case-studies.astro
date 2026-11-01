@@ -1,0 +1,27 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Case Studies"
+  description="Vyfoo customer case studies — published as verified customer stories become available."
+  path="/case-studies"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Case Studies</p>
+      <h1>Case studies</h1>
+      <p>
+        We publish case studies only once they reflect genuine, verified customer outcomes. This section doesn't
+        have published case studies yet — check back, or talk to our team directly for reference conversations.
+      </p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container cta-split">
+      <div><h2>Want to speak with a reference customer?</h2></div>
+      <a class="btn btn--primary btn--lg" href={urls.talkToSales}>Talk to Enterprise Sales</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

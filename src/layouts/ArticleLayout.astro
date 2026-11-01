@@ -1,0 +1,56 @@
+---
+import MarketingLayout from "./MarketingLayout.astro";
+import { breadcrumbJsonLd } from "../lib/seo";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  category: string;
+  author: string;
+  publishDate: Date;
+  updatedDate?: Date;
+}
+
+const { title, description, path, category, author, publishDate, updatedDate } = Astro.props;
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: title,
+  description,
+  author: { "@type": "Organization", name: author },
+  datePublished: publishDate.toISOString(),
+  ...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
+};
+---
+<MarketingLayout
+  title={title}
+  description={description}
+  path={path}
+  structuredData={[
+    articleJsonLd,
+    breadcrumbJsonLd([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: "/blog" },
+      { name: title, path },
+    ]),
+  ]}
+>
+  <article class="section">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / <a href="/blog">Blog</a> / {title}</p>
+      <span class="tag">{category}</span>
+      <h1>{title}</h1>
+      <p class="article-meta">
+        By {author} · {publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        {updatedDate && ` · Updated ${updatedDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`}
+      </p>
+      <slot />
+    </div>
+  </article>
+</MarketingLayout>
+
+<style>
+  .article-meta { font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: var(--space-8); }
+</style>

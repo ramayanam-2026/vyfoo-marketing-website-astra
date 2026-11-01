@@ -1,0 +1,26 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { CONTACT_EMAIL, COMPANY_NAME } from "../lib/urls";
+---
+<MarketingLayout
+  title="Privacy Policy"
+  description="Vyfoo's privacy policy covering how VYQDA Technologies collects, uses, and protects information submitted through this website."
+  path="/privacy"
+  noindex={false}
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Privacy Policy</p>
+      <h1>Privacy Policy</h1>
+      <p>This page describes how {COMPANY_NAME} handles information submitted through this website. This is a placeholder structure — replace with counsel-reviewed legal copy before relying on it as a binding policy.</p>
+      <h2>Information we collect</h2>
+      <p>Information you submit through forms on this site (such as the enterprise demo request form), including name, work email, company, and operational details you choose to share.</p>
+      <h2>How we use it</h2>
+      <p>To respond to your inquiry, follow up about a demo or trial, and, where you've agreed, to send relevant product updates.</p>
+      <h2>What we don't do</h2>
+      <p>We don't sell your personal information to third parties.</p>
+      <h2>Contact</h2>
+      <p>Questions about this policy can be sent to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    </div>
+  </section>
+</MarketingLayout>

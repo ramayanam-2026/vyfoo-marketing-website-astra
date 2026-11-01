@@ -1,0 +1,84 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { pricingTiers, starterOfferTerms } from "../../data/pricing";
+import { urls } from "../../lib/urls";
+---
+<MarketingLayout
+  title="Pricing"
+  description="Vyfoo pricing: $99/month for independent restaurants (Vyfoo Complete), custom per-location pricing for growing chains, and enterprise plans for franchises and large groups."
+  path="/pricing"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumbs"><a href="/">Home</a> / Pricing</p>
+      <h1>Pricing for independent restaurants and growing chains.</h1>
+      <p>Start with a single outlet, or talk to our team about a multi-outlet or enterprise rollout.</p>
+    </div>
+  </section>
+
+  <section class="section" id="start-trial">
+    <div class="container grid-auto grid-auto--3">
+      {pricingTiers.map((tier) => (
+        <div class={`card pricing-card ${tier.featured ? "pricing-card--featured" : ""}`}>
+          <h2>{tier.name}</h2>
+          <p class="pricing-card__price">{tier.price}{tier.priceNote && <span> {tier.priceNote}</span>}</p>
+          <p class="pricing-card__buyer">{tier.buyer}</p>
+          <p>{tier.positioning}</p>
+          <ul>{tier.included.map((i) => <li>{i}</li>)}</ul>
+          <a class="btn btn--primary btn--block" href={tier.ctaHref}>{tier.ctaLabel}</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container">
+      <h2>Starter plan terms</h2>
+      <ul class="check-list">
+        {starterOfferTerms.map((t) => <li>{t}</li>)}
+      </ul>
+      <p class="caveat-note">A free trial and a money-back guarantee are different things — see above for what applies to each.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Compare plans</h2>
+      <div class="table-wrap">
+        <table class="compare-table">
+          <thead><tr><th>Capability</th><th>Starter</th><th>Growth</th><th>Enterprise</th></tr></thead>
+          <tbody>
+            <tr><td>POS, KDS, QR ordering, OSDS</td><td>✓</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Inventory, CRM, Reporting</td><td>✓</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Outlets</td><td>1</td><td>Multiple</td><td>Multiple / franchise</td></tr>
+            <tr><td>Cross-outlet reporting</td><td>—</td><td>✓</td><td>✓</td></tr>
+            <tr><td>Rollout & migration planning</td><td>—</td><td>Available</td><td>✓</td></tr>
+            <tr><td>Integration scoping</td><td>—</td><td>Available</td><td>✓</td></tr>
+            <tr><td>Commercial terms</td><td>Published</td><td>Custom</td><td>Custom</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caveat-note">Enterprise capabilities, SLAs, and commercial terms are confirmed during scoping — they aren't automatically included.</p>
+    </div>
+  </section>
+
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Not sure which plan fits?</h2><p>Talk to our team about your outlet count and operating model.</p></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.contact}>Talk to us</a>
+    </div>
+  </section>
+</MarketingLayout>
+
+<style>
+  .pricing-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .pricing-card__price { font-family: var(--font-display); font-size: 1.8rem; color: var(--color-ink); }
+  .pricing-card__price span { font-size: 0.85rem; color: var(--color-text-muted); font-family: var(--font-body); }
+  .pricing-card__buyer { font-size: 0.85rem; font-weight: 600; color: var(--color-accent-hover); }
+  .pricing-card--featured { border-color: var(--color-accent); box-shadow: var(--shadow-md); }
+  .check-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); max-width: var(--container-narrow); }
+  .check-list li { padding-left: 1.4em; position: relative; }
+  .check-list li::before { content: "✓"; position: absolute; left: 0; color: var(--color-accent); font-weight: 700; }
+  .cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); }
+  .cta-split h2, .cta-split p { margin: 0; }
+</style>

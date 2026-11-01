@@ -1,0 +1,40 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { urls } from "../../lib/urls";
+---
+<MarketingLayout
+  title="Restaurant POS for the UAE"
+  description="Vyfoo for restaurants in the UAE: configurable VAT workflows, currency setup, and hardware options for cafés, QSRs, and multi-outlet groups."
+  path="/solutions/uae"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / <a href="/solutions">Solutions</a> / UAE</p>
+      <h1>Restaurant operations for the UAE market.</h1>
+      <p>Vyfoo supports configurable VAT workflows and AED currency setup for restaurants and restaurant groups operating in the UAE.</p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container prose">
+      <h2>What's configurable today</h2>
+      <ul>
+        <li>VAT-related billing workflows, configured per your registration</li>
+        <li>AED currency display and calculation</li>
+        <li>Standard restaurant hardware (tablets, Android POS, thermal printers)</li>
+      </ul>
+      <h2>What requires confirmation</h2>
+      <p>
+        We don't currently claim a verified Arabic-language interface or bilingual Arabic/English receipt layout —
+        confirm this requirement with our team before assuming it's included. Local payment gateway and aggregator
+        integrations should be scoped individually rather than assumed.
+      </p>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Discuss your UAE rollout</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

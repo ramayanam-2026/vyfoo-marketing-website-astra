@@ -1,0 +1,36 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { urls } from "../../lib/urls";
+---
+<MarketingLayout
+  title="Restaurant POS for India"
+  description="Vyfoo for restaurants in India: GST-ready billing configuration, KOT generation, and hardware options for QSRs, cafés, and multi-outlet groups."
+  path="/solutions/india-restaurant-pos"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / <a href="/solutions">Solutions</a> / India</p>
+      <h1>Restaurant POS built for Indian restaurant operations.</h1>
+      <p>Configurable GST billing, KOT generation, and standard restaurant hardware support for independent restaurants and growing chains across India.</p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container prose">
+      <h2>What's included</h2>
+      <ul>
+        <li>Configurable GST workflows</li>
+        <li>KOT (kitchen order ticket) generation</li>
+        <li>INR billing and standard restaurant hardware</li>
+      </ul>
+      <p class="caveat-note">Confirm GST filing specifics with your accountant — using Vyfoo configures billing, it doesn't itself guarantee tax compliance.</p>
+      <p>See <a href="/pricing/india">India pricing</a> for commercial terms.</p>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Talk to our India team</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

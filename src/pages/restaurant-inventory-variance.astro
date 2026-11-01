@@ -1,0 +1,41 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Restaurant Inventory Variance Explained"
+  description="What inventory variance is, why it happens in restaurants, and how recipe-based stock deduction in Vyfoo helps connect what's sold to what's actually in stock."
+  path="/restaurant-inventory-variance"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumbs"><a href="/">Home</a> / Inventory Variance</p>
+      <h1>The gap between what you bought and what you sold.</h1>
+      <p>Inventory variance is the difference between theoretical stock usage (based on recipes and sales) and actual stock on hand. A widening gap usually points to waste, portioning drift, or unrecorded loss.</p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container prose">
+      <h2>Why variance is hard to see without recipe-based tracking</h2>
+      <p>
+        A till that only records revenue has no way to know how much of an ingredient a sold dish should have used.
+        Recipe-based inventory links each menu item to its ingredients, so a sale automatically deducts expected
+        stock — giving you a theoretical baseline to compare against physical counts.
+      </p>
+      <h2>What Vyfoo provides</h2>
+      <ul>
+        <li>Recipe-linked stock deduction, where recipes are configured</li>
+        <li>Stock monitoring across ingredients</li>
+        <li>Waste and variance workflows, where enabled</li>
+      </ul>
+      <p class="caveat-note">The accuracy of variance reporting depends on how completely recipes and portion sizes are configured — it isn't automatic without that setup work.</p>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Talk through your recipe setup</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

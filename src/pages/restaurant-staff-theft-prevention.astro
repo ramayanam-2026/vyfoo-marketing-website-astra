@@ -1,0 +1,33 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Restaurant Staff Theft Prevention"
+  description="How role-based permissions, audit trails, and transaction visibility in Vyfoo help restaurants identify and investigate suspicious activity — without guaranteeing elimination of theft."
+  path="/restaurant-staff-theft-prevention"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumbs"><a href="/">Home</a> / Staff Theft Prevention</p>
+      <h1>Visibility is the first defense.</h1>
+      <p>Most restaurant loss isn't a single dramatic event — it's small, repeated exceptions that go unnoticed because no one is watching the same data staff can see in real time.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid-auto grid-auto--2">
+      <div class="card"><h3>Role-based permissions</h3><p>Set exactly who can discount, comp, or void — and who can't.</p></div>
+      <div class="card"><h3>Transaction audit trails</h3><p>Every discount, refund, and void is tied to the staff member who processed it.</p></div>
+      <div class="card"><h3>Refund & void visibility</h3><p>Management sees exceptions as they happen, not at month-end.</p></div>
+      <div class="card"><h3>Cash reconciliation</h3><p>Expected vs. actual cash, compared at shift close.</p></div>
+    </div>
+    <p class="caveat-note">These controls improve accountability and make investigation easier. They don't guarantee elimination of theft, and Vyfoo doesn't claim a measured reduction in loss without customer-specific data to support it.</p>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>See these controls on your menu</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

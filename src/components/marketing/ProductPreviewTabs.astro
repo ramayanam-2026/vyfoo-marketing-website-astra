@@ -1,0 +1,148 @@
+---
+interface PreviewRow { name: string; meta: string; status?: string; }
+interface PreviewTab { id: string; label: string; title: string; rows: PreviewRow[]; footer: string; }
+
+const tabs: PreviewTab[] = [
+  {
+    id: "pos",
+    label: "POS",
+    title: "Counter order entry",
+    rows: [
+      { name: "Table 4 — Margherita Pizza x2", meta: "Dine-in" },
+      { name: "Table 4 — Iced Tea x2", meta: "Dine-in" },
+      { name: "Takeaway #118 — Chicken Wrap", meta: "Pickup" },
+    ],
+    footer: "Subtotal ₹1,240 · Tax configured · Send to kitchen",
+  },
+  {
+    id: "kds",
+    label: "Kitchen Display",
+    title: "Live kitchen queue",
+    rows: [
+      { name: "Order #118 — Chicken Wrap", meta: "New", status: "new" },
+      { name: "Table 4 — Margherita Pizza x2", meta: "Preparing", status: "preparing" },
+      { name: "Table 2 — Pasta Alfredo", meta: "Ready", status: "ready" },
+    ],
+    footer: "3 active tickets · Updated in real time",
+  },
+  {
+    id: "status",
+    label: "Customer Order Status",
+    title: "Pickup counter display",
+    rows: [
+      { name: "#116", meta: "Ready", status: "ready" },
+      { name: "#117", meta: "Preparing", status: "preparing" },
+      { name: "#118", meta: "New", status: "new" },
+    ],
+    footer: "Browser-based display · No app required",
+  },
+  {
+    id: "hq",
+    label: "Headquarters Reporting",
+    title: "Multi-outlet overview",
+    rows: [
+      { name: "Outlet — Indiranagar", meta: "Sales trend, order volume" },
+      { name: "Outlet — Koramangala", meta: "Sales trend, order volume" },
+      { name: "Outlet — Whitefield", meta: "Sales trend, order volume" },
+    ],
+    footer: "Illustrative preview · Figures are not live customer data",
+  },
+];
+---
+<div class="preview-tabs" data-preview-tabs>
+  <div role="tablist" aria-label="Product preview" class="preview-tabs__list">
+    {tabs.map((tab, i) => (
+      <button
+        role="tab"
+        id={`tab-${tab.id}`}
+        aria-controls={`panel-${tab.id}`}
+        aria-selected={i === 0 ? "true" : "false"}
+        tabindex={i === 0 ? 0 : -1}
+        class="preview-tabs__tab"
+        data-tab={tab.id}
+      >
+        {tab.label}
+      </button>
+    ))}
+  </div>
+
+  {tabs.map((tab, i) => (
+    <div
+      role="tabpanel"
+      id={`panel-${tab.id}`}
+      aria-labelledby={`tab-${tab.id}`}
+      class="preview-tabs__panel"
+      hidden={i !== 0}
+      data-panel={tab.id}
+    >
+      <div class="preview-frame">
+        <p class="preview-frame__title">{tab.title}</p>
+        <ul class="preview-frame__rows">
+          {tab.rows.map((row) => (
+            <li class="preview-frame__row">
+              <span>{row.name}</span>
+              {row.status ? (
+                <span class={`status-pill status-pill--${row.status}`}>{row.meta}</span>
+              ) : (
+                <span class="preview-frame__meta">{row.meta}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+        <p class="preview-frame__footer">{tab.footer}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .preview-tabs__list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-4); }
+  .preview-tabs__tab {
+    background: rgba(255,255,255,0.06); color: var(--color-text-on-ink-muted); border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 999px; padding: var(--space-2) var(--space-4); font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+  }
+  .preview-tabs__tab[aria-selected="true"] { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
+  .preview-frame {
+    background: var(--color-paper); color: var(--color-text); border-radius: var(--radius-lg);
+    padding: var(--space-6); box-shadow: var(--shadow-lg);
+  }
+  .preview-frame__title { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-muted); margin-bottom: var(--space-4); }
+  .preview-frame__rows { list-style: none; margin: 0 0 var(--space-4); padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .preview-frame__row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); padding: var(--space-3); background: var(--color-cream); border-radius: var(--radius-sm); font-size: 0.9rem; }
+  .preview-frame__meta { color: var(--color-text-muted); font-size: 0.8rem; }
+  .preview-frame__footer { font-size: 0.8rem; color: var(--color-text-muted); margin: 0; }
+  .status-pill { font-size: 0.72rem; font-weight: 700; padding: var(--space-1) var(--space-2); border-radius: 999px; }
+  .status-pill--new { background: #e3edf8; color: var(--color-status-new); }
+  .status-pill--preparing { background: #faeed7; color: var(--color-status-preparing); }
+  .status-pill--ready { background: #e1f3e8; color: var(--color-status-ready); }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-preview-tabs]");
+  if (root) {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+    function activate(tab: HTMLButtonElement) {
+      tabs.forEach((t) => {
+        const selected = t === tab;
+        t.setAttribute("aria-selected", String(selected));
+        t.tabIndex = selected ? 0 : -1;
+      });
+      panels.forEach((p) => {
+        p.hidden = p.dataset.panel !== tab.dataset.tab;
+      });
+      tab.focus();
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => activate(tab));
+      tab.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") activate(tabs[(i + 1) % tabs.length]);
+        if (e.key === "ArrowLeft") activate(tabs[(i - 1 + tabs.length) % tabs.length]);
+        if (e.key === "Home") activate(tabs[0]);
+        if (e.key === "End") activate(tabs[tabs.length - 1]);
+      });
+    });
+  }
+</script>

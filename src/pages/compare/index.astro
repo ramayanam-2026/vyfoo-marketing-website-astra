@@ -1,0 +1,28 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { comparisons } from "../../data/comparisons";
+---
+<MarketingLayout
+  title="Compare Vyfoo to Other Restaurant POS Systems"
+  description="Neutral, evidence-oriented comparisons of Vyfoo against Toast, Square, Lightspeed, Posist, Petpooja, Foodics, Sapaad, TouchBistro, and Revel."
+  path="/compare"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Compare</p>
+      <h1>Compare Vyfoo to other restaurant POS systems</h1>
+      <p>We keep these comparisons neutral: we don't fabricate competitor pricing, invent missing features, or claim unverified superiority.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid-auto grid-auto--3">
+      {comparisons.map((c) => (
+        <a class="card card--link" href={`/compare/${c.slug}`}>
+          <h3>Vyfoo vs {c.competitor}</h3>
+          <p>{c.competitorSummary}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</MarketingLayout>
+<style>.card--link { text-decoration: none; display: block; } .card--link:hover { border-color: var(--color-accent); }</style>

@@ -1,0 +1,45 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { solutions } from "../../data/solutions";
+
+const enterpriseSolutions = solutions.filter((s) => s.category === "enterprise");
+const specializedSolutions = solutions.filter((s) => s.category === "specialized");
+---
+<MarketingLayout
+  title="Restaurant Solutions by Operating Model"
+  description="Vyfoo maps to how your restaurant actually operates — from multi-outlet chains and franchises to QSRs, cafés, cloud kitchens, and food trucks."
+  path="/solutions"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumbs"><a href="/">Home</a> / Solutions</p>
+      <h1>Solutions by operating model</h1>
+      <p>Every restaurant operates differently. Explore the operational narrative closest to yours.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <h2>Enterprise & multi-location operations</h2>
+      <div class="grid-auto grid-auto--3">
+        {enterpriseSolutions.map((s) => (
+          <a class="card card--link" href={`/solutions/${s.slug}`}><h3>{s.name}</h3><p>{s.headline}</p></a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container">
+      <h2>High-velocity & specialized restaurants</h2>
+      <div class="grid-auto grid-auto--3">
+        {specializedSolutions.map((s) => (
+          <a class="card card--link" href={`/solutions/${s.slug}`}><h3>{s.name}</h3><p>{s.headline}</p></a>
+        ))}
+      </div>
+    </div>
+  </section>
+</MarketingLayout>
+
+<style>
+  .card--link { text-decoration: none; display: block; }
+  .card--link:hover { border-color: var(--color-accent); }
+</style>

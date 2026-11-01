@@ -1,0 +1,35 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls, COMPANY_NAME } from "../lib/urls";
+---
+<MarketingLayout
+  title="About Vyfoo"
+  description={`Vyfoo is a restaurant operating system by ${COMPANY_NAME}, connecting POS billing, kitchen operations, QR ordering, inventory, and reporting in one platform.`}
+  path="/about"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / About</p>
+      <h1>About Vyfoo</h1>
+      <p>
+        Vyfoo is a hybrid cloud-and-offline restaurant operating system built by {COMPANY_NAME}. Our goal is simple:
+        the same order should flow through the entire restaurant operation — from the counter or a QR code, through
+        the kitchen, to the customer, into billing and inventory, and up to management reporting — instead of
+        living in disconnected tools.
+      </p>
+      <h2>Who we build for</h2>
+      <p>
+        Independent restaurants, cafés, and food trucks that want an integrated system without an enterprise
+        procurement process, and multi-outlet groups, franchises, and enterprise F&B operators that need
+        centralized visibility and governance across locations.
+      </p>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Want to talk to the team?</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.contact}>Contact us</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

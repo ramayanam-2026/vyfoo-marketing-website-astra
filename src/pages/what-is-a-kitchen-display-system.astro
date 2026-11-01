@@ -1,0 +1,42 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="What Is a Kitchen Display System (KDS)?"
+  description="A kitchen display system replaces printed kitchen tickets with a live digital queue. Here's how a KDS works and how it connects to POS and order status displays."
+  path="/what-is-a-kitchen-display-system"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / What Is a Kitchen Display System?</p>
+      <h1>What is a kitchen display system?</h1>
+      <p>
+        A kitchen display system (KDS) replaces printed order tickets with a live digital queue on a kitchen
+        screen. When an order is placed — at the counter, through QR ordering, or takeaway — it appears on the
+        relevant kitchen screen immediately, with status updates (new, preparing, ready) that flow back to the
+        front of house.
+      </p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container prose">
+      <h2>Why it matters</h2>
+      <p>
+        Paper tickets can be lost, miscommunicated, or hard to prioritize during a rush. A KDS gives kitchen staff
+        a single live view of everything in progress, and gives front-of-house staff visibility into how far along
+        an order is — feeding directly into tools like an <a href="/features/order-status-display">order status
+        display</a> for customers.
+      </p>
+      <h2>See it on Vyfoo</h2>
+      <p>Read the full <a href="/features/kitchen-display-system">Kitchen Display System</a> product page for capabilities.</p>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>See a kitchen display in action</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

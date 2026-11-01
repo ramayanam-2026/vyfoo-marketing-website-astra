@@ -1,0 +1,85 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { comparisons } from "../../data/comparisons";
+import { urls } from "../../lib/urls";
+import { breadcrumbJsonLd } from "../../lib/seo";
+
+export function getStaticPaths() {
+  return comparisons.map((c) => ({ params: { slug: c.slug }, props: { comparison: c } }));
+}
+
+const { comparison } = Astro.props;
+
+const dimensions = [
+  { label: "Intended customer fit", vyfoo: "Independent restaurants through multi-outlet groups and franchises.", competitor: "See vendor's current positioning — confirm for your market." },
+  { label: "Restaurant operating model", vyfoo: "Dine-in, takeaway, QR ordering, and delivery-adjacent workflows on one connected order flow.", competitor: "Varies by vendor — confirm current scope." },
+  { label: "POS and billing", vyfoo: "Table and counter order entry, split bills, configurable tax.", competitor: "Confirm current feature set directly." },
+  { label: "Kitchen workflows", vyfoo: "Digital kitchen display replacing paper tickets.", competitor: "Confirm whether a KDS is native or a separate add-on." },
+  { label: "Inventory", vyfoo: "Recipe-linked stock deduction, where configured.", competitor: "Confirm depth of recipe-level tracking." },
+  { label: "Multi-location management", vyfoo: "Centralized menu governance and cross-outlet reporting.", competitor: "Confirm whether multi-location tools are core or a higher-tier add-on." },
+  { label: "Offline capabilities", vyfoo: "Architecture designed to keep core order-taking available during connectivity interruptions — see the architecture page for exact scope.", competitor: "Offline behavior varies significantly by vendor — verify directly rather than assuming." },
+  { label: "Hardware requirements", vyfoo: "Tablets, Android POS terminals, Windows touchscreens, browser-based displays, thermal printers.", competitor: "Some vendors require proprietary hardware — confirm current requirements." },
+  { label: "Pricing model", vyfoo: "$99/month published Starter plan; custom pricing for Growth and Enterprise.", competitor: comparison.verifiedNote },
+  { label: "Integration considerations", vyfoo: "See our Integrations page for what's native vs. scoped.", competitor: "Confirm current native integrations directly with the vendor." },
+  { label: "Migration considerations", vyfoo: "Menu, recipe, and hardware data prepared during onboarding — see Deployment.", competitor: "Ask about data export/import support for switching away, not just switching to." },
+  { label: "Questions to ask during a demo", vyfoo: "What's included at each tier? What's the offline behavior, specifically? Which hardware is validated?", competitor: "Ask the same questions of any vendor you're evaluating." },
+];
+---
+<MarketingLayout
+  title={`Vyfoo vs ${comparison.competitor}`}
+  description={`A neutral comparison of Vyfoo and ${comparison.competitor} across operating model, POS, kitchen workflows, inventory, multi-location management, offline capability, hardware, pricing, and integrations.`}
+  path={`/compare/${comparison.slug}`}
+  structuredData={[breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Compare", path: "/compare" },
+    { name: `Vyfoo vs ${comparison.competitor}`, path: `/compare/${comparison.slug}` },
+  ])]}
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / <a href="/compare">Compare</a> / {comparison.competitor}</p>
+      <h1>Vyfoo vs {comparison.competitor}</h1>
+      <p>{comparison.competitorSummary}</p>
+      <p class="caveat-note">
+        We don't publish competitor pricing or feature claims we haven't verified, and we don't fabricate missing
+        capabilities. Where something needs confirming directly with the vendor, we say so rather than guessing.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container">
+      <div class="table-wrap">
+        <table class="compare-table">
+          <thead><tr><th>Dimension</th><th>Vyfoo</th><th>{comparison.competitor}</th></tr></thead>
+          <tbody>
+            {dimensions.map((d) => (
+              <tr><td>{d.label}</td><td>{d.vyfoo}</td><td>{d.competitor}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid-auto grid-auto--2">
+      <div class="card">
+        <h3>Vyfoo may be a better fit if…</h3>
+        <p>{comparison.bestFitVyfoo}</p>
+      </div>
+      <div class="card">
+        <h3>{comparison.competitor} may be a better fit if…</h3>
+        <p>{comparison.bestFitCompetitor}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Still deciding?</h2><p>Bring your current setup to a demo and we'll map it directly.</p></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2, .cta-split p { margin: 0; }</style>

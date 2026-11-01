@@ -1,0 +1,32 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Multi-Outlet Restaurant Reporting"
+  description="How cross-outlet reporting in Vyfoo gives restaurant groups headquarters-level visibility into sales, order volume, and performance across locations."
+  path="/multi-outlet-reporting"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumbs"><a href="/">Home</a> / Multi-Outlet Reporting</p>
+      <h1>See every outlet without waiting on a spreadsheet.</h1>
+      <p>Past a handful of locations, manual rollups become the bottleneck. Cross-outlet reporting pulls from the same transaction data that runs each outlet's floor.</p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container grid-auto grid-auto--2">
+      <div class="card"><h3>Sales & order volume</h3><p>Compare outlets on the same metrics, in one view.</p></div>
+      <div class="card"><h3>Product performance</h3><p>See which items perform differently by location.</p></div>
+      <div class="card"><h3>Store-level visibility</h3><p>Drill into a single outlet without leaving the headquarters view.</p></div>
+      <div class="card"><h3>Exports, where implemented</h3><p>Pull data out for finance or board reporting.</p></div>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>See it across your outlets</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

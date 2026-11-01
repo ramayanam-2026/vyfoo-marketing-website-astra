@@ -1,0 +1,33 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { productModules } from "../../data/products";
+---
+<MarketingLayout
+  title="Restaurant Operations Platform — Product Overview"
+  description="Explore Vyfoo's restaurant operations platform: POS, kitchen display, QR ordering, inventory, multi-outlet management, reporting, and hybrid offline architecture."
+  path="/features"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumbs"><a href="/">Home</a> / Product</p>
+      <h1>One platform, every part of the operation.</h1>
+      <p>Each module below works on its own, and works better connected to the rest.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid-auto grid-auto--3">
+      {productModules.map((p) => (
+        <a class="card card--link" href={`/features/${p.slug}`}>
+          <span class="tag">{p.shortName}</span>
+          <h3>{p.name}</h3>
+          <p>{p.tagline}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</MarketingLayout>
+
+<style>
+  .card--link { text-decoration: none; display: block; }
+  .card--link:hover { border-color: var(--color-accent); }
+</style>

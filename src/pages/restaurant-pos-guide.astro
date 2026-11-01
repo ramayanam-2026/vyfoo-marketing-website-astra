@@ -1,0 +1,39 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Restaurant POS Guide: What to Evaluate"
+  description="A practical guide to evaluating restaurant POS software: order entry, kitchen connectivity, offline behavior, hardware, inventory, and multi-outlet reporting."
+  path="/restaurant-pos-guide"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Restaurant POS Guide</p>
+      <h1>What to evaluate in restaurant POS software</h1>
+      <p>A practical checklist for narrowing down restaurant POS options — whether or not Vyfoo ends up being the right fit.</p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container prose">
+      <h2>Core questions to ask any vendor</h2>
+      <ul>
+        <li>Does order entry connect directly to the kitchen, or rely on a manual handoff?</li>
+        <li>What happens to order-taking when the internet connection drops?</li>
+        <li>Is inventory linked to recipes, or only to raw sales data?</li>
+        <li>Can you see cross-outlet reporting without exporting and merging files manually?</li>
+        <li>Which specific hardware has been validated, not just "should work"?</li>
+        <li>What's actually included at each pricing tier, and what requires custom scoping?</li>
+        <li>Which integrations are live today versus available on request?</li>
+      </ul>
+      <p>See how Vyfoo answers these on the <a href="/features">product</a>, <a href="/pricing">pricing</a>, and <a href="/security">security</a> pages — and compare directly on our <a href="/compare">comparison pages</a>.</p>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Walk through this checklist with us</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

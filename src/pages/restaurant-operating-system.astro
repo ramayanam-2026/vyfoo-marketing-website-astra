@@ -1,0 +1,47 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="What Is a Restaurant Operating System?"
+  description="A restaurant operating system connects POS billing, kitchen display, QR ordering, fulfillment, inventory, and reporting into one order flow — unlike a standalone POS. Here's what that means in practice."
+  path="/restaurant-operating-system"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Restaurant Operating System</p>
+      <h1>What is a restaurant operating system?</h1>
+      <p>
+        A restaurant operating system is software that connects the stages of a restaurant's operation — order
+        entry, kitchen preparation, customer fulfillment, billing, inventory, and management reporting — around a
+        single order, rather than running each stage as a separate disconnected tool.
+      </p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container prose">
+      <h2>How this differs from a standalone POS</h2>
+      <p>
+        A standalone POS typically handles order entry and payment well, but stops there. What happens to the order
+        after it's placed — how the kitchen finds out, how the customer knows it's ready, whether stock gets
+        updated, whether headquarters can see it — is often left to separate systems or manual processes.
+      </p>
+      <h2>The five-stage order flow</h2>
+      <ol>
+        <li><strong>Order</strong> — counter POS, QR ordering, and takeaway</li>
+        <li><strong>Kitchen</strong> — digital kitchen tickets and preparation status</li>
+        <li><strong>Fulfillment</strong> — customer pickup and order-ready status</li>
+        <li><strong>Billing & inventory</strong> — payment, tax, and recipe-based stock deduction</li>
+        <li><strong>Management</strong> — reporting, oversight, and outlet comparison</li>
+      </ol>
+      <p>See how Vyfoo implements each stage on the <a href="/features">product overview</a>.</p>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>See the connected flow in action</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

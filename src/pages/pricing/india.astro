@@ -1,0 +1,60 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { pricingTiers, starterOfferTerms } from "../../data/pricing";
+import { urls } from "../../lib/urls";
+---
+<MarketingLayout
+  title="India Pricing"
+  description="Vyfoo pricing for restaurants in India: Vyfoo Complete at $99/month for a single outlet, with GST-ready billing configuration, plus Growth and Enterprise plans for multi-outlet groups."
+  path="/pricing/india"
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumbs"><a href="/">Home</a> / <a href="/pricing">Pricing</a> / India</p>
+      <h1>Pricing for restaurants in India.</h1>
+      <p>Billing supports configurable GST workflows. Commercial terms below are the same global structure, shown for Indian operators.</p>
+    </div>
+  </section>
+
+  <section class="section" id="start-trial">
+    <div class="container grid-auto grid-auto--3">
+      {pricingTiers.map((tier) => (
+        <div class={`card pricing-card ${tier.featured ? "pricing-card--featured" : ""}`}>
+          <h2>{tier.name}</h2>
+          <p class="pricing-card__price">{tier.price}{tier.priceNote && <span> {tier.priceNote}</span>}</p>
+          <p>{tier.positioning}</p>
+          <ul>{tier.included.map((i) => <li>{i}</li>)}</ul>
+          <a class="btn btn--primary btn--block" href={tier.ctaHref}>{tier.ctaLabel}</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container prose">
+      <h2>GST and local operations</h2>
+      <p>
+        Vyfoo supports configurable GST workflows, KOT generation, and standard restaurant billing requirements
+        common to Indian restaurant operations. Final tax configuration should be confirmed against your specific
+        filing requirements with your accountant — using Vyfoo does not by itself guarantee GST compliance.
+      </p>
+      <ul>{starterOfferTerms.map((t) => <li>{t}</li>)}</ul>
+    </div>
+  </section>
+
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Questions about GST setup or multi-outlet rollout in India?</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.contact}>Talk to us</a>
+    </div>
+  </section>
+</MarketingLayout>
+
+<style>
+  .pricing-card { display: flex; flex-direction: column; gap: var(--space-3); }
+  .pricing-card__price { font-family: var(--font-display); font-size: 1.8rem; color: var(--color-ink); }
+  .pricing-card__price span { font-size: 0.85rem; color: var(--color-text-muted); font-family: var(--font-body); }
+  .pricing-card--featured { border-color: var(--color-accent); box-shadow: var(--shadow-md); }
+  .cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); }
+  .cta-split h2 { margin: 0; }
+</style>

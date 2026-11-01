@@ -1,0 +1,48 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Integrations"
+  description="What's currently a verified native integration with Vyfoo, what's available through export or API, and what requires custom scoping — including for SAP, QuickBooks, Xero, and delivery aggregators."
+  path="/integrations"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Integrations</p>
+      <h1>Integrations</h1>
+      <p>We distinguish clearly between what's built today and what would need to be scoped for your deployment.</p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container grid-auto grid-auto--2">
+      <div class="card">
+        <h3>Available today</h3>
+        <ul>
+          <li>CSV / Excel export for reporting and reconciliation</li>
+          <li>Standard receipt and KOT printing via supported thermal printers</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Requires scoping</h3>
+        <ul>
+          <li>ERP and accounting systems (e.g. SAP, QuickBooks, Xero, Tally)</li>
+          <li>Delivery aggregator connections</li>
+          <li>Hotel PMS folio posting</li>
+          <li>Payment gateway integrations specific to your region</li>
+        </ul>
+      </div>
+    </div>
+    <p class="caveat-note">
+      We don't represent a proposed integration as already built. If an integration you need isn't listed as
+      available today, treat it as something to scope with our team — not an assumed capability.
+    </p>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Discuss your integration needs</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.talkToSales}>Talk to Enterprise Sales</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

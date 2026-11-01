@@ -1,0 +1,85 @@
+---
+import { footerNav } from "../../data/navigation";
+import { urls, CONTACT_EMAIL, CONTACT_PHONE, COMPANY_NAME } from "../../lib/urls";
+
+const year = new Date().getFullYear();
+---
+<section class="dual-convert">
+  <div class="container dual-convert__grid">
+    <div class="dual-convert__card">
+      <h2>Ready to run your restaurant on one system?</h2>
+      <p>Explore Vyfoo Complete and get started without an enterprise sales process.</p>
+      <p class="dual-convert__price">$99/month</p>
+      <a class="btn btn--primary" href={urls.startTrial}>Start Free Trial</a>
+    </div>
+    <div class="dual-convert__card dual-convert__card--ink">
+      <h2>Scaling across locations?</h2>
+      <p>Discuss your operating model, rollout requirements, reporting needs, and deployment architecture with our team.</p>
+      <a class="btn btn--on-ink" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-col footer-col--brand">
+      <p class="wordmark-footer">Vyfoo</p>
+      <p>A hybrid cloud-and-offline restaurant operating system by {COMPANY_NAME}.</p>
+      <p><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p>
+      <p><a href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}>{CONTACT_PHONE}</a></p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col__heading">Product</p>
+      <ul>{footerNav.product.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col__heading">Solutions</p>
+      <ul>{footerNav.solutions.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col__heading">Resources</p>
+      <ul>{footerNav.resources.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col__heading">Company</p>
+      <ul>{footerNav.company.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+    </div>
+  </div>
+  <div class="container footer-legal">
+    <p>&copy; {year} {COMPANY_NAME}. All rights reserved.</p>
+    <ul>{footerNav.legal.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+  </div>
+</footer>
+
+<style>
+  .dual-convert { padding-block: var(--space-16); background: var(--color-cream); }
+  .dual-convert__grid { display: grid; gap: var(--space-6); grid-template-columns: 1fr; }
+  .dual-convert__card {
+    background: var(--color-paper); border: 1px solid var(--color-line); border-radius: var(--radius-lg);
+    padding: var(--space-8); box-shadow: var(--shadow-sm);
+  }
+  .dual-convert__card--ink { background: var(--color-ink); color: var(--color-text-on-ink); border-color: var(--color-ink); }
+  .dual-convert__card--ink h2 { color: var(--color-text-on-ink); }
+  .dual-convert__card--ink p { color: var(--color-text-on-ink-muted); }
+  .dual-convert__price { font-family: var(--font-display); font-size: 1.6rem; color: var(--color-ink); margin-bottom: var(--space-4); }
+  @media (min-width: 860px) { .dual-convert__grid { grid-template-columns: 1fr 1fr; } }
+
+  .site-footer { background: var(--color-ink); color: var(--color-text-on-ink-muted); padding-top: var(--space-16); }
+  .footer-grid { display: grid; gap: var(--space-8); grid-template-columns: 1fr; padding-bottom: var(--space-12); }
+  .footer-col__heading { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-on-ink); margin-bottom: var(--space-3); }
+  .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .footer-col a { color: var(--color-text-on-ink-muted); text-decoration: none; font-size: 0.9rem; }
+  .footer-col a:hover { color: var(--color-text-on-ink); }
+  .wordmark-footer { font-family: var(--font-display); font-size: 1.3rem; color: var(--color-text-on-ink); margin-bottom: var(--space-3); }
+  .footer-col--brand p { font-size: 0.88rem; }
+  .footer-legal {
+    border-top: 1px solid rgba(255,255,255,0.12); padding-block: var(--space-6);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4); font-size: 0.82rem;
+  }
+  .footer-legal ul { list-style: none; display: flex; gap: var(--space-4); margin: 0; padding: 0; }
+  .footer-legal a { color: var(--color-text-on-ink-muted); text-decoration: none; }
+
+  @media (min-width: 860px) {
+    .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; }
+  }
+</style>

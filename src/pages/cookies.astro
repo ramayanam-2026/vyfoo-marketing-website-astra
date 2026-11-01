@@ -1,0 +1,21 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { CONTACT_EMAIL } from "../lib/urls";
+---
+<MarketingLayout
+  title="Cookie Policy"
+  description="How this website uses cookies and similar technologies, and how analytics are configured."
+  path="/cookies"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Cookie Policy</p>
+      <h1>Cookie Policy</h1>
+      <p>This site does not load third-party analytics or marketing cookies by default. If an analytics provider is configured for this site, it will only load with appropriate consent where required by your local regulation.</p>
+      <h2>Essential cookies</h2>
+      <p>No essential/strictly-necessary cookies beyond what's required for basic site function are set by this marketing site at this time.</p>
+      <h2>Contact</h2>
+      <p>Questions can be sent to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    </div>
+  </section>
+</MarketingLayout>

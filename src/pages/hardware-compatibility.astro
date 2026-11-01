@@ -1,0 +1,38 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { urls } from "../lib/urls";
+---
+<MarketingLayout
+  title="Hardware Compatibility"
+  description="Device categories Vyfoo is built to run on: tablets, Android POS terminals, Windows touchscreens, browser-based displays, and thermal printers."
+  path="/hardware-compatibility"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Hardware Compatibility</p>
+      <h1>Hardware compatibility</h1>
+      <p>Vyfoo is built around common restaurant hardware categories rather than a single proprietary terminal.</p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container grid-auto grid-auto--2">
+      <div class="card"><h3>Tablets (iPadOS)</h3><p>For counter POS, QR ordering management, and order status displays.</p></div>
+      <div class="card"><h3>Android POS terminals</h3><p>For counter and staff-facing order entry.</p></div>
+      <div class="card"><h3>Windows touchscreens</h3><p>For counter POS on existing Windows hardware.</p></div>
+      <div class="card"><h3>Browser-enabled smart TVs / displays</h3><p>For kitchen display and customer order-status screens.</p></div>
+      <div class="card"><h3>Thermal printers</h3><p>For kitchen tickets and customer receipts.</p></div>
+    </div>
+    <p class="caveat-note">
+      We present compatibility at the device-category level. We don't claim validated compatibility with every
+      manufacturer or specific model — confirm your exact hardware with our team before purchasing new equipment
+      for a rollout.
+    </p>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Validate your existing hardware</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

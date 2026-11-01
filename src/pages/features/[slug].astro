@@ -1,0 +1,75 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { productModules } from "../../data/products";
+import { solutions } from "../../data/solutions";
+import { urls } from "../../lib/urls";
+import { breadcrumbJsonLd } from "../../lib/seo";
+
+export function getStaticPaths() {
+  return productModules.map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+
+const { product } = Astro.props;
+const relatedSolutions = solutions.slice(0, 3);
+---
+<MarketingLayout
+  title={`${product.name} — Vyfoo`}
+  description={`${product.tagline} ${product.description}`}
+  path={`/features/${product.slug}`}
+  structuredData={[breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Product", path: "/features" },
+    { name: product.name, path: `/features/${product.slug}` },
+  ])]}
+>
+  <section class="page-hero">
+    <div class="container">
+      <p class="breadcrumbs"><a href="/">Home</a> / <a href="/features">Product</a> / {product.name}</p>
+      <span class="tag">{product.shortName}</span>
+      <h1>{product.name}</h1>
+      <p>{product.description}</p>
+      <div class="hero__ctas">
+        <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
+        <a class="btn btn--ghost" href={urls.startTrial}>Start Free Trial</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="container">
+      <h2>What's included</h2>
+      <div class="grid-auto grid-auto--2">
+        <div class="card">
+          <h3>Core capabilities</h3>
+          <ul>{product.capabilities.map((c: string) => <li>{c}</li>)}</ul>
+        </div>
+        {product.conditionalCapabilities && (
+          <div class="card">
+            <h3>Configuration-dependent</h3>
+            <ul>{product.conditionalCapabilities.map((c: string) => <li>{c}</li>)}</ul>
+            <p class="caveat-note">These depend on your plan and setup — confirm scope during a demo rather than assuming universal availability.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container prose">
+      <h2>How {product.shortName} fits the connected order flow</h2>
+      <p>
+        {product.name} doesn't operate as a standalone tool. It's one stage in the same order flow that runs through
+        POS, kitchen, fulfillment, billing, and reporting — see the <a href="/restaurant-operating-system">Restaurant Operating System</a> overview for the full picture.
+      </p>
+      <h2>Who uses this</h2>
+      <p>Relevant across restaurant types — see how it maps to a few specific operating models:</p>
+      <ul>
+        {relatedSolutions.map((s) => <li><a href={`/solutions/${s.slug}`}>{s.name}</a></li>)}
+      </ul>
+    </div>
+  </section>
+</MarketingLayout>
+
+<style>
+  .hero__ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-top: var(--space-6); }
+</style>

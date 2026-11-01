@@ -1,0 +1,39 @@
+---
+import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import { urls } from "../../lib/urls";
+---
+<MarketingLayout
+  title="Restaurant POS for Saudi Arabia"
+  description="Vyfoo for restaurants in Saudi Arabia: configurable VAT workflows, currency setup, and hardware options for QSRs, cafés, and multi-outlet groups."
+  path="/solutions/saudi-arabia"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / <a href="/solutions">Solutions</a> / Saudi Arabia</p>
+      <h1>Restaurant operations for the Saudi Arabian market.</h1>
+      <p>Vyfoo supports configurable VAT workflows and SAR currency setup for restaurants and restaurant groups operating in Saudi Arabia.</p>
+    </div>
+  </section>
+  <section class="section section--cream">
+    <div class="container prose">
+      <h2>What's configurable today</h2>
+      <ul>
+        <li>VAT-related billing workflows, configured per your registration</li>
+        <li>SAR currency display and calculation</li>
+        <li>Standard restaurant hardware (tablets, Android POS, thermal printers)</li>
+      </ul>
+      <h2>What requires confirmation</h2>
+      <p>
+        Arabic-language interface and bilingual receipt requirements, ZATCA e-invoicing specifics, and local payment
+        or aggregator integrations should be confirmed and scoped with our team rather than assumed from this page.
+      </p>
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container cta-split">
+      <div><h2>Discuss your Saudi Arabia rollout</h2></div>
+      <a class="btn btn--on-ink btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+    </div>
+  </section>
+</MarketingLayout>
+<style>.cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); } .cta-split h2 { margin: 0; }</style>

@@ -1,0 +1,23 @@
+---
+import MarketingLayout from "../layouts/MarketingLayout.astro";
+import { CONTACT_EMAIL, COMPANY_NAME } from "../lib/urls";
+---
+<MarketingLayout
+  title="Terms of Service"
+  description="Terms governing use of the Vyfoo marketing website, operated by VYQDA Technologies."
+  path="/terms"
+>
+  <section class="page-hero">
+    <div class="container prose">
+      <p class="breadcrumbs"><a href="/">Home</a> / Terms</p>
+      <h1>Terms of Service</h1>
+      <p>This page is a placeholder structure for terms governing use of this website, operated by {COMPANY_NAME}. Replace with counsel-reviewed terms, and separately confirmed product/subscription terms, before launch.</p>
+      <h2>Use of this website</h2>
+      <p>This website is provided for informational purposes about Vyfoo's product and commercial offerings.</p>
+      <h2>Product terms</h2>
+      <p>Terms governing use of the Vyfoo product itself (the application, not this marketing site) are provided separately at signup.</p>
+      <h2>Contact</h2>
+      <p>Questions can be sent to <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    </div>
+  </section>
+</MarketingLayout>
