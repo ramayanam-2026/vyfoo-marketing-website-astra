@@ -1,6 +1,8 @@
 ---
 import MarketingLayout from "../layouts/MarketingLayout.astro";
+import HeroProductVisual from "../components/marketing/HeroProductVisual.astro";
 import ProductPreviewTabs from "../components/marketing/ProductPreviewTabs.astro";
+import HQDashboardPreview from "../components/marketing/HQDashboardPreview.astro";
 import FaqAccordion from "../components/marketing/FaqAccordion.astro";
 import { urls } from "../lib/urls";
 import { productModules } from "../data/products";
@@ -19,157 +21,88 @@ const specializedSolutions = solutions.filter((s) => s.category === "specialized
   structuredData={[softwareApplicationJsonLd()]}
 >
   <!-- SECTION 1: HERO -->
-  <section class="hero section--ink">
+  <section class="hero">
     <div class="container hero__grid">
-      <div>
-        <p class="eyebrow">One connected system. From the first order to headquarters reporting.</p>
-        <h1>The Restaurant Operating System for Independent Restaurants and Growing Chains.</h1>
+      <div class="hero__copy">
+        <p class="eyebrow">One connected system. Every restaurant workflow.</p>
+        <h1>Run your restaurant.<br />Not five different systems.</h1>
         <p class="hero__lede">
-          Connect POS billing, kitchen operations, QR ordering, customer fulfillment, inventory, and restaurant
-          reporting in one operational platform. Give your team a clearer workflow at the counter, in the kitchen,
-          and across your outlets.
+          Connect counter billing, kitchen operations, QR ordering, inventory, and outlet-level reporting in one
+          restaurant operating system — built for independent restaurants, growing brands, and multi-outlet
+          operators.
         </p>
         <div class="hero__ctas">
           <a class="btn btn--primary btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
-          <a class="btn btn--on-ink btn--lg" href={urls.startTrial}>Start Free Trial</a>
+          <a class="btn btn--ghost btn--lg" href={urls.startTrial}>Start Free Trial</a>
         </div>
-        <div class="hero__microcopy">
-          <p><strong>Enterprise:</strong> for multi-outlet groups, franchises, and custom deployments.</p>
-          <p><strong>Self-serve:</strong> for independent restaurants. No credit card required.</p>
-        </div>
+        <p class="hero__microcopy">For independent restaurants, growing brands, and multi-outlet operators. No credit card required to start a trial.</p>
       </div>
-      <ProductPreviewTabs />
+      <HeroProductVisual />
     </div>
   </section>
 
-  <!-- SECTION 2: OPERATIONAL PROBLEM -->
+  <!-- SECTION 2: CORE CAPABILITIES STRIP -->
+  <section class="capability-strip">
+    <div class="container capability-strip__grid">
+      {productModules.slice(0, 5).map((p) => (
+        <a href={`/features/${p.slug}`} class="capability-strip__item">
+          <span class="capability-strip__name">{p.shortName}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- SECTION 3: ONE CONNECTED WORKFLOW -->
   <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">The cost of fragmented operations</p>
-        <h2>Disconnected tools create slow, error-prone restaurants.</h2>
-      </div>
-      <div class="grid-auto grid-auto--3">
-        <div class="card">
-          <h3>Orders lost in translation</h3>
-          <p>Orders entered at the counter are often relayed to the kitchen by shouting or paper — a step where mistakes creep in. A connected <a href="/features/kitchen-display-system">Kitchen Display System</a> removes that handoff.</p>
-        </div>
-        <div class="card">
-          <h3>Inventory disconnected from sales</h3>
-          <p>When stock isn't linked to what's actually sold, variance builds up unnoticed. <a href="/features/inventory-management">Recipe-based inventory</a> keeps the two connected.</p>
-        </div>
-        <div class="card">
-          <h3>Slow cross-location reporting</h3>
-          <p>Multi-outlet groups often wait on manual rollups from each location. <a href="/features/multi-outlet-management">Multi-outlet management</a> gives headquarters live visibility instead.</p>
-        </div>
-        <div class="card">
-          <h3>Weak controls on discounts and voids</h3>
-          <p>Without visibility, refunds and discounts are hard to audit. Role-based permissions and audit trails make exceptions easier to investigate — see <a href="/stop-restaurant-cash-leakage">cash leakage</a>.</p>
-        </div>
-        <div class="card">
-          <h3>Downtime when connectivity drops</h3>
-          <p>A system that depends entirely on the internet can stop the counter cold. See how Vyfoo's <a href="/features/hybrid-offline-pos">hybrid and offline architecture</a> is designed to handle that.</p>
-        </div>
-        <div class="card">
-          <h3>Fragmented customer experience</h3>
-          <p>QR ordering, pickup status, and CRM often live in separate tools that don't share data with the counter. Vyfoo keeps them on one order flow.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 3: UNIFIED ORDER FLOW -->
-  <section class="section section--cream">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">One connected journey</p>
         <h2>The same order flows through the entire restaurant operation.</h2>
       </div>
       <ol class="flow-diagram">
-        <li><span class="flow-diagram__step">1</span><strong>Order placed</strong><span>Counter POS, QR ordering, takeaway</span></li>
-        <li><span class="flow-diagram__step">2</span><strong>Kitchen preparation</strong><span>Digital kitchen tickets, live status</span></li>
-        <li><span class="flow-diagram__step">3</span><strong>Customer fulfillment</strong><span>Pickup display, order-ready status</span></li>
-        <li><span class="flow-diagram__step">4</span><strong>Billing & inventory</strong><span>Payment, tax, recipe-based stock deduction</span></li>
-        <li><span class="flow-diagram__step">5</span><strong>Management reporting</strong><span>Sales, outlet comparison, governance</span></li>
+        <li><span class="flow-diagram__step">1</span><strong>Order captured</strong><span>Counter POS, QR ordering, takeaway</span></li>
+        <li><span class="flow-diagram__step">2</span><strong>Kitchen receives it</strong><span>Digital kitchen tickets, live status</span></li>
+        <li><span class="flow-diagram__step">3</span><strong>Staff update status</strong><span>Preparing → ready, tracked in real time</span></li>
+        <li><span class="flow-diagram__step">4</span><strong>Customer fulfillment</strong><span>Pickup display, order-ready status where configured</span></li>
+        <li><span class="flow-diagram__step">5</span><strong>Sales & inventory sync</strong><span>Billing, tax, recipe-based stock deduction</span></li>
+        <li><span class="flow-diagram__step">6</span><strong>Management reporting</strong><span>Sales, outlet comparison, governance</span></li>
       </ol>
-      <p class="flow-diagram__note">Vyfoo connects these operational workflows rather than selling disconnected modules.</p>
     </div>
   </section>
 
-  <!-- SECTION 4: HYBRID & OFFLINE ARCHITECTURE -->
-  <section class="section section--ink">
-    <div class="container">
+  <!-- SECTION 4: PRODUCT EXPERIENCE (tabbed showcase) -->
+  <section class="section section--cream">
+    <div class="container product-experience">
       <div class="section-head">
-        <p class="eyebrow">Architecture</p>
-        <h2>Built for connectivity that isn't always reliable.</h2>
-        <p>
-          Venue terminals, local connectivity, cloud services, and headquarters visibility are designed to work
-          together so a dropped connection doesn't have to mean a stopped counter. Order entry is designed to
-          continue locally during an interruption, with data synchronizing back to the cloud once connectivity
-          returns.
-        </p>
+        <p class="eyebrow">Product experience</p>
+        <h2>See it in action.</h2>
+        <p>One system, viewed from four different seats in the restaurant.</p>
       </div>
-      <div class="caveat-note caveat-note--ink">
-        The specific scope of what stays available during an outage depends on your hardware, network setup, and
-        deployment — we don't make blanket "zero downtime" claims here. See the full breakdown on the architecture
-        page.
-      </div>
-      <div class="section-head__cta">
-        <a class="btn btn--on-ink" href="/features/hybrid-offline-pos">Explore Offline POS Architecture</a>
-      </div>
+      <ProductPreviewTabs />
     </div>
   </section>
 
-  <!-- SECTION 5: GOVERNANCE & LOSS PREVENTION -->
+  <!-- SECTION 5: OPERATIONAL CONTROL -->
   <section class="section">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Operational controls</p>
-        <h2>More accountable transactions, easier to investigate.</h2>
+        <p class="eyebrow">Operational control</p>
+        <h2>More visibility into how the business actually runs.</h2>
       </div>
       <div class="grid-auto grid-auto--3">
-        <div class="card"><h3>Role-based permissions</h3><p>Control who can apply discounts, process refunds, or void transactions.</p></div>
-        <div class="card"><h3>Transaction audit trails</h3><p>See who did what, and when, across every outlet.</p></div>
-        <div class="card"><h3>Refund & void visibility</h3><p>Make exceptions visible to management instead of buried in till tape.</p></div>
-        <div class="card"><h3>Discount controls</h3><p>Set limits on who can discount, and by how much.</p></div>
-        <div class="card"><h3>Cash reconciliation</h3><p>Compare expected and actual cash at shift close.</p></div>
-        <div class="card"><h3>Recipe-level stock tracking</h3><p>Connect sales to ingredient usage for a clearer variance picture.</p></div>
+        <div class="card"><h3>Order history</h3><p>See every order, and how it moved from counter to kitchen to close-out.</p></div>
+        <div class="card"><h3>Role-based access</h3><p>Control who can apply discounts, process refunds, or void a transaction, where configured.</p></div>
+        <div class="card"><h3>Discount & refund visibility</h3><p>Exceptions are visible to management rather than buried in till tape, where configured.</p></div>
+        <div class="card"><h3>Recipe-based inventory</h3><p>Link sales to ingredient usage for a clearer stock picture, where recipes are configured.</p></div>
+        <div class="card"><h3>Outlet reporting</h3><p>Compare sales and volume across locations, where multiple outlets are set up.</p></div>
+        <div class="card"><h3>Cash reconciliation</h3><p>Compare expected vs. actual cash at shift close.</p></div>
       </div>
-      <p class="caveat-note">Software like this makes exceptions easier to see and investigate — it doesn't eliminate theft or guarantee a financial outcome.</p>
-      <div class="section-head__cta"><a class="btn btn--ghost" href="/restaurant-staff-theft-prevention">Explore Restaurant Loss Prevention</a></div>
+      <p class="caveat-note">These controls improve visibility and make exceptions easier to investigate. We don't claim they eliminate theft or guarantee a specific financial outcome.</p>
     </div>
   </section>
 
-  <!-- SECTION 6: MULTI-OUTLET MANAGEMENT -->
+  <!-- SECTION 6: SOLUTIONS BY RESTAURANT TYPE -->
   <section class="section section--cream">
-    <div class="container multi-outlet">
-      <div>
-        <p class="eyebrow">For growing groups</p>
-        <h2>Run every outlet with a clearer operating model.</h2>
-        <ul class="check-list">
-          <li>Centralized menu governance, where configured</li>
-          <li>Cross-outlet reporting</li>
-          <li>Location-level visibility</li>
-          <li>Consistent workflows across locations</li>
-          <li>Regional configuration</li>
-          <li>Staff and role management, where supported</li>
-        </ul>
-        <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
-      </div>
-      <div class="card">
-        <p class="preview-frame__title">Illustrative headquarters view</p>
-        <ul class="preview-frame__rows">
-          <li class="preview-frame__row"><span>Outlet — Indiranagar</span><span class="preview-frame__meta">Live</span></li>
-          <li class="preview-frame__row"><span>Outlet — Koramangala</span><span class="preview-frame__meta">Live</span></li>
-          <li class="preview-frame__row"><span>Outlet — Whitefield</span><span class="preview-frame__meta">Live</span></li>
-        </ul>
-        <p class="preview-frame__footer">Illustrative preview only — not real customer data.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 7: SOLUTIONS BY OPERATING MODEL -->
-  <section class="section">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">Solutions</p>
@@ -196,7 +129,27 @@ const specializedSolutions = solutions.filter((s) => s.category === "specialized
     </div>
   </section>
 
-  <!-- SECTION 8: HARDWARE & REGIONAL TAX -->
+  <!-- SECTION 7: MULTI-OUTLET MANAGEMENT -->
+  <section class="section">
+    <div class="container multi-outlet">
+      <div>
+        <p class="eyebrow">For growing groups</p>
+        <h2>Run every outlet with a clearer operating model.</h2>
+        <ul class="check-list">
+          <li>Cross-outlet visibility</li>
+          <li>Standardized operations across locations</li>
+          <li>Centralized reporting</li>
+          <li>Menu and configuration governance, where supported</li>
+          <li>Regional configuration for tax and operations</li>
+          <li>Expansion and rollout planning</li>
+        </ul>
+        <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
+      </div>
+      <HQDashboardPreview />
+    </div>
+  </section>
+
+  <!-- SECTION 8: HARDWARE & INTEGRATIONS -->
   <section class="section section--cream">
     <div class="container grid-auto grid-auto--2">
       <div class="card">
@@ -206,35 +159,16 @@ const specializedSolutions = solutions.filter((s) => s.category === "specialized
         <a href="/hardware-compatibility">See verified compatibility →</a>
       </div>
       <div class="card">
-        <h3>Regional tax configuration</h3>
-        <p>Tax workflows are configurable by region.</p>
-        <ul><li>India GST workflows</li><li>GCC VAT workflows</li><li>UK/EU VAT workflows</li><li>US sales tax workflows</li></ul>
-        <p class="caveat-note">Configuration support doesn't guarantee legal tax compliance — consult your tax advisor for your jurisdiction.</p>
+        <h3>Integrations</h3>
+        <p>We distinguish what's native today from what requires scoping.</p>
+        <ul><li>CSV / Excel export</li><li>Standard receipt & KOT printing</li><li>ERP, aggregator & PMS connections — scoped per deployment</li></ul>
+        <a href="/integrations">See integration details →</a>
       </div>
     </div>
   </section>
 
-  <!-- SECTION 9: PRODUCT CAPABILITIES -->
+  <!-- SECTION 9: PRICING PREVIEW -->
   <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Product</p>
-        <h2>Every part of the operation, connected.</h2>
-      </div>
-      <div class="grid-auto grid-auto--3">
-        {productModules.map((p) => (
-          <a class="card card--link" href={`/features/${p.slug}`}>
-            <span class="tag">{p.shortName}</span>
-            <h3>{p.name}</h3>
-            <p>{p.tagline}</p>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 10: PRICING PREVIEW -->
-  <section class="section section--cream">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">Pricing</p>
@@ -254,8 +188,8 @@ const specializedSolutions = solutions.filter((s) => s.category === "specialized
     </div>
   </section>
 
-  <!-- SECTION 11: FAQ -->
-  <section class="section">
+  <!-- SECTION 10: FAQ -->
+  <section class="section section--cream">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">FAQ</p>
@@ -265,40 +199,63 @@ const specializedSolutions = solutions.filter((s) => s.category === "specialized
     </div>
   </section>
 
-  <!-- SECTION 12: Dual-conversion footer is rendered inside SiteFooter via MarketingLayout -->
+  <!-- SECTION 11: FINAL CONVERSION (red brand accent, used deliberately once) -->
+  <section class="section section--brand final-cta">
+    <div class="container final-cta__inner">
+      <h2>Make every restaurant workflow work together.</h2>
+      <p>Independent restaurant? Start free. Running multiple outlets? Let's talk architecture and rollout.</p>
+      <div class="final-cta__ctas">
+        <a class="btn btn--on-brand btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
+        <a class="btn btn--outline-on-ink btn--lg" href={urls.startTrial}>Start Free Trial</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 12: Footer links + dual-conversion cards rendered by SiteFooter -->
 </MarketingLayout>
 
 <style>
-  .hero { padding-block: var(--space-24) var(--space-16); }
-  .hero__grid { display: grid; gap: var(--space-12); grid-template-columns: 1fr; align-items: center; }
-  .hero__lede { font-size: 1.1rem; max-width: 560px; }
-  .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-bottom: var(--space-6); }
-  .hero__microcopy p { font-size: 0.85rem; margin-bottom: var(--space-1); }
+  .hero { padding-block: clamp(var(--space-16), 8vw, var(--space-32)) var(--space-20); background: linear-gradient(180deg, var(--color-brand-soft) 0%, var(--color-background) 62%); }
+  .hero__grid { display: grid; gap: var(--space-16); grid-template-columns: 1fr; align-items: center; }
+  .hero__copy h1 { font-size: clamp(2.6rem, 2rem + 3vw, 4.4rem); }
+  .hero__lede { font-size: 1.15rem; max-width: 540px; }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-bottom: var(--space-5); }
+  .hero__microcopy { font-size: 0.85rem; color: var(--color-text-secondary); max-width: 480px; }
   @media (min-width: 960px) { .hero__grid { grid-template-columns: 1.05fr 1fr; } }
+
+  .capability-strip { border-block: 1px solid var(--color-border); background: var(--color-surface); }
+  .capability-strip__grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+  .capability-strip__item {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    padding: var(--space-5) var(--space-3); text-decoration: none; color: var(--color-text-secondary);
+    font-weight: 600; font-size: 0.88rem; border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+  .capability-strip__item:hover { color: var(--color-brand); background: var(--color-brand-soft); }
+  @media (min-width: 640px) { .capability-strip__grid { grid-template-columns: repeat(5, 1fr); } .capability-strip__item { border-bottom: none; } }
 
   .section-head { max-width: var(--container-narrow); margin-bottom: var(--space-10); }
   .section-head__cta { margin-top: var(--space-8); }
 
   .flow-diagram { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
-  .flow-diagram li { background: var(--color-paper); border: 1px solid var(--color-line); border-radius: var(--radius-md); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-1); }
-  .flow-diagram__step { font-family: var(--font-mono); color: var(--color-accent); font-weight: 700; }
-  .flow-diagram__note { margin-top: var(--space-6); color: var(--color-text-muted); font-size: 0.9rem; }
-  @media (min-width: 960px) { .flow-diagram { grid-template-columns: repeat(5, 1fr); } }
+  .flow-diagram li { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-1); }
+  .flow-diagram__step { font-family: var(--font-mono); color: var(--color-brand); font-weight: 700; }
+  @media (min-width: 720px) { .flow-diagram { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1100px) { .flow-diagram { grid-template-columns: repeat(6, 1fr); } }
 
-  .caveat-note--ink { background: rgba(255,255,255,0.06); border-left-color: var(--color-accent); color: var(--color-text-on-ink-muted); }
+  .product-experience .section-head { margin-bottom: var(--space-8); }
 
-  .check-list { list-style: none; padding: 0; margin: 0 0 var(--space-6); display: flex; flex-direction: column; gap: var(--space-2); }
-  .check-list li { padding-left: 1.4em; position: relative; color: var(--color-text-muted); }
-  .check-list li::before { content: "✓"; position: absolute; left: 0; color: var(--color-accent); font-weight: 700; }
+  .check-list { max-width: 460px; }
   .multi-outlet { display: grid; gap: var(--space-10); grid-template-columns: 1fr; align-items: center; }
   @media (min-width: 960px) { .multi-outlet { grid-template-columns: 1fr 1fr; } }
 
   .solutions-subhead { margin-top: var(--space-10); margin-bottom: var(--space-4); }
-  .card--link { text-decoration: none; display: block; transition: border-color 0.15s ease, transform 0.15s ease; }
-  .card--link:hover { border-color: var(--color-accent); }
 
   .pricing-card { display: flex; flex-direction: column; gap: var(--space-3); }
-  .pricing-card__price { font-family: var(--font-display); font-size: 1.7rem; color: var(--color-ink); }
-  .pricing-card__price span { font-size: 0.9rem; color: var(--color-text-muted); font-family: var(--font-body); }
-  .pricing-card--featured { border-color: var(--color-accent); box-shadow: var(--shadow-md); }
+  .pricing-card__price { font-family: var(--font-display); font-size: 1.8rem; color: var(--color-text-primary); }
+  .pricing-card__price span { font-size: 0.88rem; color: var(--color-text-secondary); font-family: var(--font-body); }
+  .pricing-card--featured { border-color: var(--color-brand); box-shadow: var(--shadow-md); }
+
+  .final-cta__inner { max-width: 640px; }
+  .final-cta__ctas { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-8); }
 </style>

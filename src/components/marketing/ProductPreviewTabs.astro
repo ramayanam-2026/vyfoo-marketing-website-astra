@@ -12,7 +12,7 @@ const tabs: PreviewTab[] = [
       { name: "Table 4 — Iced Tea x2", meta: "Dine-in" },
       { name: "Takeaway #118 — Chicken Wrap", meta: "Pickup" },
     ],
-    footer: "Subtotal ₹1,240 · Tax configured · Send to kitchen",
+    footer: "Subtotal calculated · Tax configured · Send to kitchen",
   },
   {
     id: "kds",
@@ -75,51 +75,41 @@ const tabs: PreviewTab[] = [
       hidden={i !== 0}
       data-panel={tab.id}
     >
-      <div class="preview-frame">
-        <p class="preview-frame__title">{tab.title}</p>
-        <ul class="preview-frame__rows">
+      <div class="mockup-panel">
+        <p class="mockup-panel__title">{tab.title}</p>
+        <ul class="mockup-panel__rows">
           {tab.rows.map((row) => (
-            <li class="preview-frame__row">
-              <span>{row.name}</span>
+            <li class="mockup-panel__row">
+              <span class="mockup-panel__row-name">{row.name}</span>
               {row.status ? (
                 <span class={`status-pill status-pill--${row.status}`}>{row.meta}</span>
               ) : (
-                <span class="preview-frame__meta">{row.meta}</span>
+                <span class="mockup-panel__meta">{row.meta}</span>
               )}
             </li>
           ))}
         </ul>
-        <p class="preview-frame__footer">{tab.footer}</p>
+        <p class="mockup-panel__footer">{tab.footer}</p>
       </div>
     </div>
   ))}
 </div>
 
 <style>
-  .preview-tabs__list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-4); }
+  .preview-tabs__list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-5); }
   .preview-tabs__tab {
-    background: rgba(255,255,255,0.06); color: var(--color-text-on-ink-muted); border: 1px solid rgba(255,255,255,0.14);
-    border-radius: 999px; padding: var(--space-2) var(--space-4); font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    background: var(--color-surface); color: var(--color-text-secondary); border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-pill); padding: var(--space-2) var(--space-4); font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
-  .preview-tabs__tab[aria-selected="true"] { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
-  .preview-frame {
-    background: var(--color-paper); color: var(--color-text); border-radius: var(--radius-lg);
-    padding: var(--space-6); box-shadow: var(--shadow-lg);
-  }
-  .preview-frame__title { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-muted); margin-bottom: var(--space-4); }
-  .preview-frame__rows { list-style: none; margin: 0 0 var(--space-4); padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
-  .preview-frame__row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); padding: var(--space-3); background: var(--color-cream); border-radius: var(--radius-sm); font-size: 0.9rem; }
-  .preview-frame__meta { color: var(--color-text-muted); font-size: 0.8rem; }
-  .preview-frame__footer { font-size: 0.8rem; color: var(--color-text-muted); margin: 0; }
-  .status-pill { font-size: 0.72rem; font-weight: 700; padding: var(--space-1) var(--space-2); border-radius: 999px; }
-  .status-pill--new { background: #e3edf8; color: var(--color-status-new); }
-  .status-pill--preparing { background: #faeed7; color: var(--color-status-preparing); }
-  .status-pill--ready { background: #e1f3e8; color: var(--color-status-ready); }
+  .preview-tabs__tab:hover { border-color: var(--color-brand); color: var(--color-brand-hover); }
+  .preview-tabs__tab[aria-selected="true"] { background: var(--color-brand); color: #fff; border-color: var(--color-brand); }
+  .preview-tabs__panel .mockup-panel { max-width: 460px; }
 </style>
 
 <script>
-  const root = document.querySelector<HTMLElement>("[data-preview-tabs]");
-  if (root) {
+  const roots = document.querySelectorAll<HTMLElement>("[data-preview-tabs]");
+  roots.forEach((root) => {
     const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
     const panels = Array.from(root.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
 
@@ -144,5 +134,5 @@ const tabs: PreviewTab[] = [
         if (e.key === "End") activate(tabs[tabs.length - 1]);
       });
     });
-  }
+  });
 </script>

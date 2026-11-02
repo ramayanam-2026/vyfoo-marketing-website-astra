@@ -4,7 +4,10 @@ import { urls } from "../../lib/urls";
 ---
 <header class="site-header">
   <div class="container site-header__bar">
-    <a href="/" class="wordmark" aria-label="Vyfoo home">Vyfoo</a>
+    <a href="/" class="wordmark" aria-label="Vyfoo home">
+      <span class="wordmark__mark" aria-hidden="true">V</span>
+      Vyfoo
+    </a>
 
     <nav class="primary-nav" aria-label="Primary">
       <ul class="primary-nav__list">
@@ -77,60 +80,68 @@ import { urls } from "../../lib/urls";
     position: sticky;
     top: 0;
     z-index: 100;
-    background: var(--color-paper);
-    border-bottom: 1px solid var(--color-line);
+    background: rgba(252, 250, 248, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
   }
   .site-header__bar {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
-    padding-block: var(--space-3);
+    gap: var(--space-8);
+    height: var(--nav-height);
   }
   .wordmark {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.35rem;
-    color: var(--color-ink);
-    text-decoration: none;
-    margin-right: auto;
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    font-family: var(--font-display); font-weight: 600; font-size: 1.3rem;
+    color: var(--color-text-primary); text-decoration: none; margin-right: auto;
+  }
+  .wordmark__mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 9px; background: var(--color-brand);
+    color: #fff; font-size: 1rem; font-weight: 700;
   }
   .primary-nav { display: none; }
-  .primary-nav__list { display: flex; list-style: none; margin: 0; padding: 0; gap: var(--space-6); }
-  .primary-nav__item { position: relative; }
+  .primary-nav__list { display: flex; list-style: none; margin: 0; padding: 0; gap: var(--space-6); height: 100%; align-items: center; }
+  .primary-nav__item { position: relative; height: 100%; display: flex; align-items: center; }
   .primary-nav__item > a, .primary-nav__trigger {
     display: flex; align-items: center; gap: var(--space-1);
-    background: none; border: none; font: inherit; font-size: 0.95rem; font-weight: 500;
-    color: var(--color-text); text-decoration: none; cursor: pointer; padding: var(--space-2) 0;
+    background: none; border: none; font: inherit; font-size: 0.92rem; font-weight: 500;
+    color: var(--color-text-primary); text-decoration: none; cursor: pointer; padding: var(--space-2) 0;
   }
+  .primary-nav__trigger svg { transition: transform 0.15s ease; color: var(--color-text-secondary); }
+  .primary-nav__item:hover .primary-nav__trigger svg,
+  .primary-nav__trigger[aria-expanded="true"] svg { transform: rotate(180deg); }
+
   .mega-menu {
     display: none;
     position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-    background: var(--color-paper); border: 1px solid var(--color-line); border-radius: var(--radius-md);
-    box-shadow: var(--shadow-lg); padding: var(--space-6); min-width: 420px; margin-top: var(--space-2);
+    background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg); padding: var(--space-6); min-width: 440px; margin-top: var(--space-3);
   }
   .primary-nav__item:hover .mega-menu,
-  .primary-nav__item:focus-within .mega-menu { display: block; }
+  .primary-nav__item:focus-within .mega-menu,
+  .mega-menu.is-open { display: block; }
   .mega-menu__grid { display: flex; gap: var(--space-8); }
   .mega-menu__heading {
-    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--color-text-muted); margin-bottom: var(--space-2);
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--color-text-secondary); margin-bottom: var(--space-2);
   }
   .mega-menu__col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); white-space: nowrap; }
-  .mega-menu__col a { text-decoration: none; color: var(--color-text); font-size: 0.92rem; }
-  .mega-menu__col a:hover { color: var(--color-accent); }
+  .mega-menu__col a { text-decoration: none; color: var(--color-text-primary); font-size: 0.9rem; }
+  .mega-menu__col a:hover { color: var(--color-brand); }
 
   .site-header__actions { display: none; gap: var(--space-3); align-items: center; }
 
   .mobile-trigger {
-    background: none; border: 1px solid var(--color-line); border-radius: var(--radius-sm);
-    padding: var(--space-2) var(--space-3); color: var(--color-ink); cursor: pointer;
+    background: none; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-3); color: var(--color-text-primary); cursor: pointer;
   }
 
-  .mobile-nav { border-top: 1px solid var(--color-line); padding: var(--space-4) var(--space-6); background: var(--color-paper); }
+  .mobile-nav { border-top: 1px solid var(--color-border); padding: var(--space-4) var(--space-6) var(--space-8); background: var(--color-surface); max-height: calc(100dvh - var(--nav-height)); overflow-y: auto; }
   .mobile-nav__actions { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-4); }
   .mobile-nav__group summary { padding: var(--space-3) 0; font-weight: 600; cursor: pointer; }
   .mobile-nav__group ul { list-style: none; padding: 0 0 var(--space-3); margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
-  .mobile-nav__group a { text-decoration: none; color: var(--color-text-muted); }
+  .mobile-nav__group a { text-decoration: none; color: var(--color-text-secondary); display: block; padding-block: var(--space-1); }
 
   @media (min-width: 960px) {
     .primary-nav { display: block; }
@@ -141,11 +152,45 @@ import { urls } from "../../lib/urls";
 </style>
 
 <script>
-  const trigger = document.querySelector<HTMLButtonElement>(".mobile-trigger");
-  const nav = document.getElementById("mobile-nav");
-  trigger?.addEventListener("click", () => {
-    const expanded = trigger.getAttribute("aria-expanded") === "true";
-    trigger.setAttribute("aria-expanded", String(!expanded));
-    if (nav) nav.hidden = expanded;
+  const mobileTrigger = document.querySelector<HTMLButtonElement>(".mobile-trigger");
+  const mobileNav = document.getElementById("mobile-nav");
+  mobileTrigger?.addEventListener("click", () => {
+    const expanded = mobileTrigger.getAttribute("aria-expanded") === "true";
+    mobileTrigger.setAttribute("aria-expanded", String(!expanded));
+    if (mobileNav) mobileNav.hidden = expanded;
+  });
+
+  // Click-to-toggle dropdowns, so the mega menu works on touch devices too
+  // (not hover-only), while still supporting hover and keyboard via CSS.
+  const triggers = document.querySelectorAll<HTMLButtonElement>(".primary-nav__trigger");
+  triggers.forEach((trigger) => {
+    const menu = trigger.nextElementSibling as HTMLElement | null;
+    trigger.addEventListener("click", () => {
+      const isOpen = menu?.classList.contains("is-open");
+      triggers.forEach((t) => {
+        t.setAttribute("aria-expanded", "false");
+        t.nextElementSibling?.classList.remove("is-open");
+      });
+      if (!isOpen) {
+        trigger.setAttribute("aria-expanded", "true");
+        menu?.classList.add("is-open");
+      }
+    });
+  });
+  document.addEventListener("click", (e) => {
+    if (!(e.target as HTMLElement).closest(".primary-nav__item")) {
+      triggers.forEach((t) => {
+        t.setAttribute("aria-expanded", "false");
+        t.nextElementSibling?.classList.remove("is-open");
+      });
+    }
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      triggers.forEach((t) => {
+        t.setAttribute("aria-expanded", "false");
+        t.nextElementSibling?.classList.remove("is-open");
+      });
+    }
   });
 </script>

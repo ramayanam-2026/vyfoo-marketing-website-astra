@@ -8,26 +8,33 @@ import { urls } from "../../lib/urls";
   description="Vyfoo pricing: $99/month for independent restaurants (Vyfoo Complete), custom per-location pricing for growing chains, and enterprise plans for franchises and large groups."
   path="/pricing"
 >
-  <section class="page-hero">
+  <section class="page-hero pricing-intro">
     <div class="container">
       <p class="breadcrumbs"><a href="/">Home</a> / Pricing</p>
       <h1>Pricing for independent restaurants and growing chains.</h1>
-      <p>Start with a single outlet, or talk to our team about a multi-outlet or enterprise rollout.</p>
+      <p>Start with a single outlet, or speak with our team about a multi-location rollout.</p>
     </div>
   </section>
 
-  <section class="section" id="start-trial">
-    <div class="container grid-auto grid-auto--3">
-      {pricingTiers.map((tier) => (
-        <div class={`card pricing-card ${tier.featured ? "pricing-card--featured" : ""}`}>
-          <h2>{tier.name}</h2>
-          <p class="pricing-card__price">{tier.price}{tier.priceNote && <span> {tier.priceNote}</span>}</p>
-          <p class="pricing-card__buyer">{tier.buyer}</p>
-          <p>{tier.positioning}</p>
-          <ul>{tier.included.map((i) => <li>{i}</li>)}</ul>
-          <a class="btn btn--primary btn--block" href={tier.ctaHref}>{tier.ctaLabel}</a>
-        </div>
-      ))}
+  <section class="section-tight" id="start-trial">
+    <div class="container">
+      <div class="pricing-grid">
+        {pricingTiers.map((tier) => (
+          <div class={`pricing-card card ${tier.featured ? "pricing-card--featured" : ""}`}>
+            {tier.featured && <span class="pricing-card__ribbon">Most asked about</span>}
+            <h2>{tier.name}</h2>
+            <p class="pricing-card__buyer">{tier.buyer}</p>
+            <p class="pricing-card__price">
+              {tier.price}
+              {tier.priceNote && <span class="pricing-card__price-note">{" "}{tier.priceNote}</span>}
+            </p>
+            <p class="pricing-card__positioning">{tier.positioning}</p>
+            <a class={`btn btn--block ${tier.featured ? "btn--primary" : "btn--ghost"}`} href={tier.ctaHref}>{tier.ctaLabel}</a>
+            <div class="pricing-card__divider"></div>
+            <ul class="pricing-card__list">{tier.included.map((i) => <li>{i}</li>)}</ul>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -62,6 +69,18 @@ import { urls } from "../../lib/urls";
     </div>
   </section>
 
+  <section class="section section--cream">
+    <div class="container">
+      <h2>Pricing FAQ</h2>
+      <div class="pricing-faq">
+        <div class="card"><h3>Is a credit card required for the trial?</h3><p>No — the Starter plan trial does not require a credit card to begin.</p></div>
+        <div class="card"><h3>Can I switch plans later?</h3><p>Yes — as your outlet count grows, talk to our team about moving from Starter to Growth or Enterprise.</p></div>
+        <div class="card"><h3>What determines Growth/Enterprise pricing?</h3><p>Per-location and enterprise pricing depends on outlet count, rollout scope, and integration requirements, confirmed during scoping.</p></div>
+        <div class="card"><h3>Is support included?</h3><p>Setup and training are part of the Starter offer as outlined at signup — confirm current support terms with our team.</p></div>
+      </div>
+    </div>
+  </section>
+
   <section class="section section--ink">
     <div class="container cta-split">
       <div><h2>Not sure which plan fits?</h2><p>Talk to our team about your outlet count and operating model.</p></div>
@@ -71,14 +90,28 @@ import { urls } from "../../lib/urls";
 </MarketingLayout>
 
 <style>
-  .pricing-card { display: flex; flex-direction: column; gap: var(--space-3); }
-  .pricing-card__price { font-family: var(--font-display); font-size: 1.8rem; color: var(--color-ink); }
-  .pricing-card__price span { font-size: 0.85rem; color: var(--color-text-muted); font-family: var(--font-body); }
-  .pricing-card__buyer { font-size: 0.85rem; font-weight: 600; color: var(--color-accent-hover); }
-  .pricing-card--featured { border-color: var(--color-accent); box-shadow: var(--shadow-md); }
-  .check-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); max-width: var(--container-narrow); }
-  .check-list li { padding-left: 1.4em; position: relative; }
-  .check-list li::before { content: "✓"; position: absolute; left: 0; color: var(--color-accent); font-weight: 700; }
+  .pricing-intro { padding-bottom: var(--space-8); }
+  .pricing-grid { display: grid; gap: var(--space-6); grid-template-columns: 1fr; align-items: stretch; }
+  @media (min-width: 860px) { .pricing-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .pricing-card { display: flex; flex-direction: column; position: relative; padding-top: var(--space-8); }
+  .pricing-card__ribbon {
+    position: absolute; top: calc(-1 * var(--space-3)); left: var(--space-6);
+    background: var(--color-brand); color: #fff; font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase; padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill);
+  }
+  .pricing-card__buyer { font-size: 0.82rem; font-weight: 600; color: var(--color-brand-hover); margin-bottom: var(--space-2); }
+  .pricing-card__price { font-family: var(--font-display); font-size: 2.1rem; color: var(--color-text-primary); margin-bottom: var(--space-2); }
+  .pricing-card__price-note { font-size: 0.85rem; color: var(--color-text-secondary); font-family: var(--font-body); font-weight: 400; }
+  .pricing-card__positioning { font-size: 0.92rem; margin-bottom: var(--space-5); min-height: 3.5em; }
+  .pricing-card--featured { border-color: var(--color-brand); box-shadow: var(--shadow-lg); }
+  .pricing-card__divider { height: 1px; background: var(--color-border); margin-block: var(--space-6) var(--space-4); }
+  .pricing-card__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 0.88rem; color: var(--color-text-secondary); }
+  .pricing-card__list li { padding-left: 1.4em; position: relative; }
+  .pricing-card__list li::before { content: "\2713"; position: absolute; left: 0; color: var(--color-brand); font-weight: 700; }
+
+  .pricing-faq { display: grid; gap: var(--space-5); grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .pricing-faq { grid-template-columns: 1fr 1fr; } }
+
   .cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); }
-  .cta-split h2, .cta-split p { margin: 0; }
 </style>

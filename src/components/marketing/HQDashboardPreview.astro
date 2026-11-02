@@ -1,0 +1,39 @@
+---
+const outlets = [
+  { name: "Indiranagar", trend: "+12% vs last week", level: 82 },
+  { name: "Koramangala", trend: "+4% vs last week", level: 64 },
+  { name: "Whitefield", trend: "-2% vs last week", level: 48 },
+];
+---
+<div class="hq-preview mockup-panel" aria-hidden="true">
+  <p class="mockup-panel__title">
+    Headquarters — Outlet performance
+    <span class="hq-preview__badge">Illustrative</span>
+  </p>
+  <div class="hq-preview__rows">
+    {outlets.map((o) => (
+      <div class="hq-preview__row">
+        <div class="hq-preview__row-head">
+          <span class="hq-preview__row-name">{o.name}</span>
+          <span class="hq-preview__row-trend" data-direction={o.trend.startsWith("-") ? "down" : "up"}>{o.trend}</span>
+        </div>
+        <div class="hq-preview__bar">
+          <div class="hq-preview__bar-fill" style={`width: ${o.level}%`}></div>
+        </div>
+      </div>
+    ))}
+  </div>
+  <p class="mockup-panel__footer">Illustrative preview only — not real customer data.</p>
+</div>
+
+<style>
+  .hq-preview { max-width: 440px; }
+  .hq-preview__badge { font-size: 0.65rem; background: var(--color-surface-subtle); padding: var(--space-1) var(--space-2); border-radius: var(--radius-pill); text-transform: none; letter-spacing: 0; color: var(--color-text-tertiary); }
+  .hq-preview__rows { display: flex; flex-direction: column; gap: var(--space-4); margin-bottom: var(--space-4); }
+  .hq-preview__row-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-2); font-size: 0.85rem; }
+  .hq-preview__row-name { font-weight: 600; }
+  .hq-preview__row-trend { font-size: 0.76rem; color: var(--color-success); }
+  .hq-preview__row-trend[data-direction="down"] { color: var(--color-brand-hover); }
+  .hq-preview__bar { height: 8px; border-radius: var(--radius-pill); background: var(--color-surface-subtle); overflow: hidden; }
+  .hq-preview__bar-fill { height: 100%; background: var(--color-brand); border-radius: var(--radius-pill); }
+</style>
