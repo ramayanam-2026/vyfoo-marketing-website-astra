@@ -105,10 +105,22 @@ code, pre { font-family: var(--font-mono); }
 /* ---------------------------------------------------------------
    Buttons
    --------------------------------------------------------------- */
+/* Exactly one size for every button/CTA on the site. --btn-height and
+   --btn-padding-x are the single source of truth: every variant class
+   below (.btn--primary, .btn--ghost, etc.) only changes COLOR, never
+   size. .btn--lg is kept only so existing markup doesn't need editing,
+   but it no longer changes height, padding, or font-size — it is now
+   a true no-op alias of .btn, by design, so no CTA anywhere can drift
+   out of sync with the rest again. */
+:root {
+  --btn-height: 48px;
+  --btn-padding-x: var(--space-6);
+  --btn-font-size: 0.94rem;
+}
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
-  font-weight: 600; font-size: 0.92rem; text-decoration: none; cursor: pointer;
-  border-radius: var(--radius-sm); height: 46px; padding-inline: var(--space-5);
+  font-weight: 600; font-size: var(--btn-font-size); text-decoration: none; cursor: pointer;
+  border-radius: var(--radius-sm); height: var(--btn-height); padding-inline: var(--btn-padding-x);
   border: 1px solid transparent; transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
   white-space: nowrap;
 }
@@ -124,7 +136,7 @@ code, pre { font-family: var(--font-mono); }
 .btn--outline-on-ink { background: transparent; color: var(--color-text-on-dark); border-color: rgba(255,255,255,0.3); }
 .btn--outline-on-ink:hover { border-color: rgba(255,255,255,0.6); }
 .btn--block { width: 100%; }
-.btn--lg { height: 52px; padding-inline: var(--space-6); font-size: 0.98rem; }
+/* .btn--lg intentionally defines nothing — see comment above. */
 
 /* ---------------------------------------------------------------
    Shared layout utilities

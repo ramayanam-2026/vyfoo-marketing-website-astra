@@ -1,9 +1,12 @@
 :root {
   /* ---- Brand: confident, food-industry red, used deliberately not everywhere ---- */
-  --color-brand: #d92d20;
-  --color-brand-hover: #b42318;
-  --color-brand-dark: #a61b16;
-  --color-brand-soft: #fff1ed;
+  /* Matches Zomato's current published brand red (#E23744, "Cranberry
+     Red" per their own brand guide) per explicit direction — a true
+     pink-leaning crimson, not an orange-leaning vermilion. */
+  --color-brand: #e23744;
+  --color-brand-hover: #c62839;
+  --color-brand-dark: #a91f2f;
+  --color-brand-soft: #fdebec;
 
   --color-success: #16865c;
   --color-success-soft: #eaf7ef;
