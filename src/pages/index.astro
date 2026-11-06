@@ -1,11 +1,12 @@
 ---
 import MarketingLayout from "../layouts/MarketingLayout.astro";
-import HeroProductVisual from "../components/marketing/HeroProductVisual.astro";
+import Icon from "../components/ui/Icon.astro";
 import ProductPreviewTabs from "../components/marketing/ProductPreviewTabs.astro";
+import WorkflowPipeline from "../components/marketing/WorkflowPipeline.astro";
+import ArchitectureDiagram from "../components/marketing/ArchitectureDiagram.astro";
 import HQDashboardPreview from "../components/marketing/HQDashboardPreview.astro";
 import FaqAccordion from "../components/marketing/FaqAccordion.astro";
 import { urls } from "../lib/urls";
-import { productModules } from "../data/products";
 import { solutions } from "../data/solutions";
 import { pricingTiers } from "../data/pricing";
 import { homepageFaqs } from "../data/faqs";
@@ -13,135 +14,213 @@ import { softwareApplicationJsonLd } from "../lib/seo";
 
 const enterpriseSolutions = solutions.filter((s) => s.category === "enterprise");
 const specializedSolutions = solutions.filter((s) => s.category === "specialized");
+
+const capabilities = [
+  { icon: "pos", label: "POS & Billing", href: "/features/restaurant-pos" },
+  { icon: "kds", label: "Kitchen Display", href: "/features/kitchen-display-system" },
+  { icon: "qr", label: "QR Ordering", href: "/features/qr-ordering" },
+  { icon: "cube", label: "Inventory & Recipes", href: "/features/inventory-management" },
+  { icon: "chart", label: "Multi-Outlet Reporting", href: "/features/multi-outlet-management" },
+];
+
+const trust = ["$99/mo All-Inclusive Starter", "No Credit Card for Trial", "Hybrid Local-Network Offline Mode"];
+
+const governance = [
+  { icon: "lock", title: "Role-based permissions", text: "Decide who can discount, comp, refund, or void — by staff role." },
+  { icon: "receipt", title: "Transaction audit trails", text: "Every discount, refund, and void is tied to the person who processed it." },
+  { icon: "rotate", title: "Refund & void visibility", text: "Exceptions reach management as they happen, not at month-end." },
+  { icon: "percent", title: "Discount controls", text: "Set limits on who can discount and by how much." },
+  { icon: "cash", title: "Cash reconciliation", text: "Compare expected and actual cash at shift close." },
+  { icon: "cube", title: "Recipe-level stock tracking", text: "Tie sales to ingredient usage so variance is visible, not guessed." },
+];
+
+const auditLog = [
+  { time: "14:02", type: "Discount 15%", tone: "amber", detail: "Table 12", by: "Manager PIN" },
+  { time: "14:05", type: "Void", tone: "rose", detail: "Order #1042 · wrong item", by: "Supervisor" },
+  { time: "14:11", type: "Refund", tone: "sky", detail: "Order #1031", by: "Owner approval" },
+  { time: "14:18", type: "Cash count", tone: "emerald", detail: "Shift close · variance logged", by: "Cashier 02" },
+];
 ---
 <MarketingLayout
   title="Vyfoo — The Restaurant Operating System for Independent Restaurants and Growing Chains"
   description="Connect POS billing, kitchen operations, QR ordering, customer fulfillment, inventory, and reporting in one restaurant operating system. For independent restaurants and multi-outlet groups."
   path="/"
   structuredData={[softwareApplicationJsonLd()]}
+  hideFooterConvert
 >
-  <!-- SECTION 1: HERO -->
-  <section class="hero">
+  <!-- 1. HERO -->
+  <section class="hero bg-dots">
+    <div class="hero__glow" aria-hidden="true"></div>
     <div class="container hero__grid">
       <div class="hero__copy">
-        <p class="eyebrow">One connected system. Every restaurant workflow.</p>
-        <h1>Run your restaurant.<br />Not five different systems.</h1>
+        <p class="eyebrow-pill">
+          <span class="pulse-dot"></span>
+          <span>Unified Restaurant OS</span><span class="sep">•</span><span class="hide-xs">Cloud + Offline</span>
+        </p>
+        <h1>
+          <span>Run your restaurant<span class="stop">.</span></span>
+          <span class="hero__muted">Not five different systems<span class="stop">.</span></span>
+        </h1>
         <p class="hero__lede">
           Connect counter billing, kitchen operations, QR ordering, inventory, and outlet-level reporting in one
-          restaurant operating system — built for independent restaurants, growing brands, and multi-outlet
-          operators.
+          restaurant operating system — built for independent restaurants, growing brands, and multi-outlet operators.
         </p>
-        <div class="hero__ctas">
-          <a class="btn btn--primary btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
-          <a class="btn btn--ghost btn--lg" href={urls.startTrial}>Start Free Trial</a>
+        <div class="cta-group">
+          <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
+          <a class="btn btn--ghost" href={urls.startTrial}>Start Free Trial</a>
         </div>
-        <p class="hero__microcopy">For independent restaurants, growing brands, and multi-outlet operators. No credit card required to start a trial.</p>
+        <ul class="trust">
+          {trust.map((t) => (
+            <li><span class="tick"><Icon name="check" size={12} stroke={3} /></span>{t}</li>
+          ))}
+        </ul>
       </div>
-      <HeroProductVisual />
+      <div class="hero__visual"><ProductPreviewTabs /></div>
     </div>
   </section>
 
-  <!-- SECTION 2: CORE CAPABILITIES STRIP -->
-  <section class="capability-strip">
-    <div class="container capability-strip__grid">
-      {productModules.slice(0, 5).map((p) => (
-        <a href={`/features/${p.slug}`} class="capability-strip__item">
-          <span class="capability-strip__name">{p.shortName}</span>
-        </a>
-      ))}
+  <!-- 2. CAPABILITY STRIP -->
+  <section class="capability-strip" aria-label="Core capabilities">
+    <div class="container">
+      <ul class="capability-strip__list">
+        {capabilities.map((c) => (
+          <li><a href={c.href}><Icon name={c.icon} size={18} />{c.label}</a></li>
+        ))}
+      </ul>
     </div>
   </section>
 
-  <!-- SECTION 3: ONE CONNECTED WORKFLOW -->
-  <section class="section">
+  <!-- 3. CONNECTED WORKFLOW -->
+  <section class="section section--cream" id="workflow">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">One connected journey</p>
-        <h2>The same order flows through the entire restaurant operation.</h2>
+        <p class="eyebrow">One connected workflow</p>
+        <h2>The same order flows through the entire restaurant.</h2>
+        <p>From the first tap at the counter to the headquarters ledger, every step reads from and writes to one order — not six separate tools.</p>
       </div>
-      <ol class="flow-diagram">
-        <li><span class="flow-diagram__step">1</span><strong>Order captured</strong><span>Counter POS, QR ordering, takeaway</span></li>
-        <li><span class="flow-diagram__step">2</span><strong>Kitchen receives it</strong><span>Digital kitchen tickets, live status</span></li>
-        <li><span class="flow-diagram__step">3</span><strong>Staff update status</strong><span>Preparing → ready, tracked in real time</span></li>
-        <li><span class="flow-diagram__step">4</span><strong>Customer fulfillment</strong><span>Pickup display, order-ready status where configured</span></li>
-        <li><span class="flow-diagram__step">5</span><strong>Sales & inventory sync</strong><span>Billing, tax, recipe-based stock deduction</span></li>
-        <li><span class="flow-diagram__step">6</span><strong>Management reporting</strong><span>Sales, outlet comparison, governance</span></li>
-      </ol>
+      <WorkflowPipeline />
     </div>
   </section>
 
-  <!-- SECTION 4: PRODUCT EXPERIENCE (tabbed showcase) -->
-  <section class="section section--cream">
-    <div class="container product-experience">
-      <div class="section-head">
-        <p class="eyebrow">Product experience</p>
-        <h2>See it in action.</h2>
-        <p>One system, viewed from four different seats in the restaurant.</p>
-      </div>
-      <ProductPreviewTabs />
-    </div>
-  </section>
-
-  <!-- SECTION 5: OPERATIONAL CONTROL -->
-  <section class="section">
+  <!-- 4. HYBRID & OFFLINE ARCHITECTURE (dark) -->
+  <section class="section section--ink" id="architecture">
     <div class="container">
       <div class="section-head">
-        <p class="eyebrow">Operational control</p>
-        <h2>More visibility into how the business actually runs.</h2>
+        <p class="eyebrow">Hybrid & offline architecture</p>
+        <h2>Built for restaurants where the internet isn't always reliable.</h2>
+        <p>
+          Venue terminals work together over the local network while cloud services handle sync and headquarters
+          visibility. When the connection drops, order entry keeps running on-site and the cloud catches up afterwards.
+        </p>
       </div>
-      <div class="grid-auto grid-auto--3">
-        <div class="card"><h3>Order history</h3><p>See every order, and how it moved from counter to kitchen to close-out.</p></div>
-        <div class="card"><h3>Role-based access</h3><p>Control who can apply discounts, process refunds, or void a transaction, where configured.</p></div>
-        <div class="card"><h3>Discount & refund visibility</h3><p>Exceptions are visible to management rather than buried in till tape, where configured.</p></div>
-        <div class="card"><h3>Recipe-based inventory</h3><p>Link sales to ingredient usage for a clearer stock picture, where recipes are configured.</p></div>
-        <div class="card"><h3>Outlet reporting</h3><p>Compare sales and volume across locations, where multiple outlets are set up.</p></div>
-        <div class="card"><h3>Cash reconciliation</h3><p>Compare expected vs. actual cash at shift close.</p></div>
+      <ArchitectureDiagram />
+      <p class="caveat-note arch__note">
+        Which workflows stay available offline — kitchen routing, printing, payments — depends on your hardware and
+        network setup. We map this with you in a deployment review.
+      </p>
+      <div class="section__cta">
+        <a class="btn btn--primary" href="/features/hybrid-offline-pos">Explore Offline POS Architecture</a>
       </div>
-      <p class="caveat-note">These controls improve visibility and make exceptions easier to investigate. We don't claim they eliminate theft or guarantee a specific financial outcome.</p>
     </div>
   </section>
 
-  <!-- SECTION 6: SOLUTIONS BY RESTAURANT TYPE -->
-  <section class="section section--cream">
+  <!-- 5. SOLUTIONS -->
+  <section class="section">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">Solutions</p>
         <h2>Built around how your restaurant actually operates.</h2>
       </div>
-      <h3 class="solutions-subhead">Enterprise & multi-location operations</h3>
+      <h3 class="subhead">Enterprise & multi-location operations</h3>
       <div class="grid-auto grid-auto--3">
         {enterpriseSolutions.map((s) => (
-          <a class="card card--link" href={`/solutions/${s.slug}`}>
+          <a class="card card--link solution" href={`/solutions/${s.slug}`}>
+            <span class="tag">Enterprise</span>
             <h3>{s.name}</h3>
             <p>{s.headline}</p>
+            <span class="solution__more">Explore</span>
           </a>
         ))}
+        {enterpriseSolutions.length % 3 === 2 && (
+          <a class="card card--link solution solution--fit" href={urls.bookDemo}>
+            <span class="tag">Not sure?</span>
+            <h3>Find your fit</h3>
+            <p>Talk through your operating model and outlet count with our team.</p>
+            <span class="solution__more">Book a demo</span>
+          </a>
+        )}
       </div>
-      <h3 class="solutions-subhead">High-velocity & specialized restaurants</h3>
+      <h3 class="subhead">High-velocity & specialized restaurants</h3>
       <div class="grid-auto grid-auto--3">
         {specializedSolutions.map((s) => (
-          <a class="card card--link" href={`/solutions/${s.slug}`}>
+          <a class="card card--link solution" href={`/solutions/${s.slug}`}>
+            <span class="tag">Specialized</span>
             <h3>{s.name}</h3>
             <p>{s.headline}</p>
+            <span class="solution__more">Explore</span>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- SECTION 7: MULTI-OUTLET MANAGEMENT -->
+  <!-- 6. GOVERNANCE & LOSS PREVENTION (dark) -->
+  <section class="section section--ink" id="governance">
+    <div class="container">
+      <div class="gov__top">
+        <div>
+          <p class="eyebrow">Governance & loss prevention</p>
+          <h2>More accountable transactions, easier to investigate.</h2>
+          <p>
+            Operational controls that make discounts, voids, refunds, and cash variances visible to the people
+            responsible for them — across every outlet.
+          </p>
+          <a class="btn btn--primary gov__cta" href="/restaurant-staff-theft-prevention">Explore Restaurant Loss Prevention</a>
+        </div>
+        <div class="window audit" role="img" aria-label="Illustrative audit log showing a discount, a void, a refund and a cash count with who approved each">
+          <div class="window__chrome">
+            <div class="window__dots" aria-hidden="true"><i></i><i></i><i></i></div>
+            <p class="window__status"><span class="pulse-dot"></span><span>Audit trail</span><span class="sep">•</span><span>Today</span></p>
+          </div>
+          <ul class="audit__list">
+            {auditLog.map((e) => (
+              <li>
+                <span class="audit__time">{e.time}</span>
+                <span class="audit__main"><span class={`badge badge--${e.tone}`}>{e.type}</span><span class="audit__detail">{e.detail}</span></span>
+                <span class="audit__by">{e.by}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="window__note">Illustrative preview · sample data, not real customer results</p>
+        </div>
+      </div>
+
+      <ul class="gov__cards">
+        {governance.map((g) => (
+          <li class="gov__card">
+            <span class="gov__icon"><Icon name={g.icon} size={20} /></span>
+            <h3>{g.title}</h3>
+            <p>{g.text}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="caveat-note">These controls improve accountability and make exceptions easier to investigate. They don't eliminate theft or guarantee a specific financial outcome.</p>
+    </div>
+  </section>
+
+  <!-- 7. MULTI-OUTLET -->
   <section class="section">
-    <div class="container multi-outlet">
+    <div class="container multi">
       <div>
         <p class="eyebrow">For growing groups</p>
         <h2>Run every outlet with a clearer operating model.</h2>
         <ul class="check-list">
-          <li>Cross-outlet visibility</li>
+          <li>Cross-outlet visibility and comparison</li>
           <li>Standardized operations across locations</li>
-          <li>Centralized reporting</li>
-          <li>Menu and configuration governance, where supported</li>
+          <li>Centralized reporting for headquarters</li>
+          <li>Menu and configuration governance</li>
           <li>Regional configuration for tax and operations</li>
-          <li>Expansion and rollout planning</li>
+          <li>Rollout planning as you expand</li>
         </ul>
         <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
       </div>
@@ -149,113 +228,226 @@ const specializedSolutions = solutions.filter((s) => s.category === "specialized
     </div>
   </section>
 
-  <!-- SECTION 8: HARDWARE & INTEGRATIONS -->
+  <!-- 8. HARDWARE & INTEGRATIONS -->
   <section class="section section--cream">
     <div class="container grid-auto grid-auto--2">
-      <div class="card">
+      <div class="card info">
+        <span class="info__icon"><Icon name="printer" size={22} /></span>
         <h3>Hardware compatibility</h3>
         <p>Vyfoo is built around common restaurant hardware categories.</p>
-        <ul><li>Tablets</li><li>Android POS terminals</li><li>Windows touchscreens</li><li>Browser-enabled screens</li><li>Thermal printers</li></ul>
-        <a href="/hardware-compatibility">See verified compatibility →</a>
+        <ul class="check-list">
+          <li>Tablets and Android POS terminals</li>
+          <li>Windows touchscreens</li>
+          <li>Browser-enabled displays and smart TVs</li>
+          <li>Thermal printers</li>
+        </ul>
+        <a class="link-arrow" href="/hardware-compatibility">See compatibility details</a>
       </div>
-      <div class="card">
+      <div class="card info">
+        <span class="info__icon"><Icon name="cloud" size={22} /></span>
         <h3>Integrations</h3>
-        <p>We distinguish what's native today from what requires scoping.</p>
-        <ul><li>CSV / Excel export</li><li>Standard receipt & KOT printing</li><li>ERP, aggregator & PMS connections — scoped per deployment</li></ul>
-        <a href="/integrations">See integration details →</a>
+        <p>We separate what works natively today from what is scoped per deployment.</p>
+        <ul class="check-list">
+          <li>CSV / Excel export for reporting</li>
+          <li>Standard receipt and KOT printing</li>
+          <li>ERP, aggregator, and PMS connections scoped with you</li>
+        </ul>
+        <a class="link-arrow" href="/integrations">See integration details</a>
       </div>
     </div>
   </section>
 
-  <!-- SECTION 9: PRICING PREVIEW -->
+  <!-- 9. PRICING -->
   <section class="section">
     <div class="container">
       <div class="section-head">
         <p class="eyebrow">Pricing</p>
         <h2>Pricing for independent restaurants and growing chains.</h2>
       </div>
-      <div class="grid-auto grid-auto--3">
+      <div class="grid-auto grid-auto--3 plans">
         {pricingTiers.map((tier) => (
-          <div class={`card pricing-card ${tier.featured ? "pricing-card--featured" : ""}`}>
-            <h3>{tier.name}</h3>
-            <p class="pricing-card__price">{tier.price}{tier.priceNote && <span>{" "}{tier.priceNote}</span>}</p>
-            <p>{tier.positioning}</p>
-            <a class="btn btn--primary btn--block" href={tier.ctaHref}>{tier.ctaLabel}</a>
+          <div class={`card plan ${tier.featured ? "plan--featured" : ""}`}>
+            <p class="plan__name">{tier.name}</p>
+            <p class="plan__price">{tier.price}<span>{tier.priceNote ?? " "}</span></p>
+            <p class="plan__text">{tier.positioning}</p>
+            <a class={`btn btn--block ${tier.featured ? "btn--primary" : "btn--ghost"}`} href={tier.ctaHref}>{tier.ctaLabel}</a>
           </div>
         ))}
       </div>
-      <p class="section-head__cta"><a href="/pricing">See full plan comparison →</a></p>
+      <p class="section__cta"><a class="link-arrow" href="/pricing">See the full plan comparison</a></p>
     </div>
   </section>
 
-  <!-- SECTION 10: FAQ -->
+  <!-- 10. FAQ -->
   <section class="section section--cream">
-    <div class="container">
-      <div class="section-head">
+    <div class="container faq">
+      <div class="faq__head">
         <p class="eyebrow">FAQ</p>
         <h2>Common questions</h2>
+        <p>Straight answers about the platform, pricing, and rollout. Can't find yours? <a href={urls.contact}>Ask our team</a>.</p>
       </div>
       <FaqAccordion faqs={homepageFaqs} />
     </div>
   </section>
 
-  <!-- SECTION 11: FINAL CONVERSION (red brand accent, used deliberately once) -->
-  <section class="section section--brand final-cta">
-    <div class="container final-cta__inner">
-      <h2>Make every restaurant workflow work together.</h2>
-      <p>Independent restaurant? Start free. Running multiple outlets? Let's talk architecture and rollout.</p>
-      <div class="final-cta__ctas">
-        <a class="btn btn--on-brand btn--lg" href={urls.bookDemo}>Book Enterprise Demo</a>
-        <a class="btn btn--outline-on-ink btn--lg" href={urls.startTrial}>Start Free Trial</a>
+  <!-- 11. FINAL CONVERSION -->
+  <section class="section final">
+    <div class="container">
+      <div class="final__panel section--ink">
+        <div class="final__head">
+          <p class="eyebrow">Get started</p>
+          <h2>Make every restaurant workflow work together.</h2>
+          <p>Choose the path that fits your business — both run on the same platform.</p>
+        </div>
+        <div class="final__paths">
+          <div class="path">
+            <p class="mock-label">Independent restaurants</p>
+            <h3>Start free, no sales call.</h3>
+            <p>Explore the full product with a free trial. No credit card required to begin.</p>
+            <a class="btn btn--outline-on-ink" href={urls.startTrial}>Start Free Trial</a>
+          </div>
+          <div class="path">
+            <p class="mock-label">Multi-outlet & enterprise</p>
+            <h3>Map Vyfoo to your operation.</h3>
+            <p>Walk through rollout, governance, reporting, and architecture with our team.</p>
+            <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
-
-  <!-- SECTION 12: Footer links + dual-conversion cards rendered by SiteFooter -->
 </MarketingLayout>
 
 <style>
-  .hero { padding-block: clamp(var(--space-16), 8vw, var(--space-32)) var(--space-20); background: linear-gradient(180deg, var(--color-brand-soft) 0%, var(--color-background) 62%); }
-  .hero__grid { display: grid; gap: var(--space-16); grid-template-columns: 1fr; align-items: center; }
-  .hero__copy h1 { font-size: clamp(2.6rem, 2rem + 3vw, 4.4rem); }
-  .hero__lede { font-size: 1.15rem; max-width: 540px; }
-  .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-bottom: var(--space-5); }
-  .hero__microcopy { font-size: 0.85rem; color: var(--color-text-secondary); max-width: 480px; }
-  @media (min-width: 960px) { .hero__grid { grid-template-columns: 1.05fr 1fr; } }
+  /* ---- hero ---- */
+  .hero { padding-top: var(--hero-pad-top); padding-bottom: var(--hero-pad-bottom); }
+  .hero__glow {
+    position: absolute; z-index: -1; pointer-events: none; width: 520px; height: 520px; right: -180px; top: 46%;
+    background: radial-gradient(closest-side, rgba(56, 189, 248, 0.16), rgba(99, 102, 241, 0.07) 55%, transparent 75%);
+  }
+  .hero__grid { display: grid; gap: 3rem; grid-template-columns: minmax(0, 1fr); align-items: center; }
+  .hero h1 > span { display: block; }
+  .hero__muted { color: #64748b; }
+  .hero__lede { font-size: 1.125rem; max-width: 34rem; margin-bottom: 2rem; }
+  .trust { list-style: none; display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; margin: 2rem 0 0; padding: 0; font-size: 0.875rem; font-weight: 500; color: #334155; }
+  .trust li { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .trust .tick { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--color-emerald-bg); color: var(--color-emerald-text); }
+  .hero__visual { min-width: 0; display: flex; justify-content: flex-start; }
+  @media (min-width: 1080px) {
+    .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr); gap: 4rem; }
+    .hero__glow { width: 820px; height: 820px; right: -120px; top: -40px; }
+    .hero__visual { justify-content: flex-end; }
+  }
 
-  .capability-strip { border-block: 1px solid var(--color-border); background: var(--color-surface); }
-  .capability-strip__grid { display: grid; grid-template-columns: repeat(2, 1fr); }
-  .capability-strip__item {
-    display: flex; align-items: center; justify-content: center; text-align: center;
-    padding: var(--space-5) var(--space-3); text-decoration: none; color: var(--color-text-secondary);
-    font-weight: 600; font-size: 0.88rem; border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);
+  /* ---- capability strip ---- */
+  .capability-strip { background: #fff; border-bottom: 1px solid var(--color-border); }
+  .capability-strip__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); }
+  .capability-strip__list li { border-top: 1px solid var(--color-border); }
+  .capability-strip__list li:nth-child(odd) { border-right: 1px solid var(--color-border); }
+  .capability-strip__list li:last-child:nth-child(odd) { grid-column: 1 / -1; border-right: none; }
+  .capability-strip__list a {
+    display: flex; align-items: center; justify-content: center; gap: 0.6rem; min-height: 64px; padding: 0.75rem;
+    text-decoration: none; font-size: 0.9rem; font-weight: 600; color: var(--color-text-primary); text-align: center;
     transition: color 0.15s ease, background-color 0.15s ease;
   }
-  .capability-strip__item:hover { color: var(--color-brand); background: var(--color-brand-soft); }
-  @media (min-width: 640px) { .capability-strip__grid { grid-template-columns: repeat(5, 1fr); } .capability-strip__item { border-bottom: none; } }
+  .capability-strip__list a :global(svg) { color: var(--color-text-tertiary); transition: color 0.15s ease; flex-shrink: 0; }
+  .capability-strip__list a:hover { color: var(--color-brand); background: var(--color-surface-subtle); }
+  .capability-strip__list a:hover :global(svg) { color: var(--color-brand); }
+  @media (min-width: 860px) {
+    .capability-strip__list { grid-template-columns: repeat(5, 1fr); }
+    .capability-strip__list li { border-top: none; border-right: 1px solid var(--color-border); }
+    .capability-strip__list li:first-child { border-left: 1px solid var(--color-border); }
+    .capability-strip__list li:nth-child(odd) { border-right: 1px solid var(--color-border); }
+    .capability-strip__list li:last-child:nth-child(odd) { grid-column: auto; border-right: 1px solid var(--color-border); }
+  }
 
-  .section-head { max-width: var(--container-narrow); margin-bottom: var(--space-10); }
-  .section-head__cta { margin-top: var(--space-8); }
+  .section__cta { margin-top: var(--space-10); }
+  .subhead { margin: var(--space-12) 0 var(--space-5); font-size: 1.1rem; color: var(--color-text-tertiary); font-weight: 600; letter-spacing: -0.01em; }
+  .subhead:first-of-type { margin-top: 0; }
 
-  .flow-diagram { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
-  .flow-diagram li { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-1); }
-  .flow-diagram__step { font-family: var(--font-mono); color: var(--color-brand); font-weight: 700; }
-  @media (min-width: 720px) { .flow-diagram { grid-template-columns: repeat(3, 1fr); } }
-  @media (min-width: 1100px) { .flow-diagram { grid-template-columns: repeat(6, 1fr); } }
+  /* ---- architecture ---- */
+  .arch__note { margin-top: var(--space-8); }
 
-  .product-experience .section-head { margin-bottom: var(--space-8); }
+  /* ---- solutions ---- */
+  .solution { display: flex; flex-direction: column; align-items: flex-start; }
+  .solution p { flex: 1; font-size: 0.95rem; }
+  .solution__more { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: var(--space-2); font-size: 0.9rem; font-weight: 600; color: var(--color-text-primary); }
+  .solution__more::after { content: ""; width: 1em; height: 1em; background: currentColor; -webkit-mask: var(--icon-arrow) center / contain no-repeat; mask: var(--icon-arrow) center / contain no-repeat; transition: transform 0.18s ease; }
+  .solution--fit { background: var(--color-surface-subtle); border-style: dashed; border-color: var(--color-border-strong); box-shadow: none; }
+  .solution:hover .solution__more { color: var(--color-brand); }
+  .solution:hover .solution__more::after { transform: translateX(3px); }
 
-  .check-list { max-width: 460px; }
-  .multi-outlet { display: grid; gap: var(--space-10); grid-template-columns: 1fr; align-items: center; }
-  @media (min-width: 960px) { .multi-outlet { grid-template-columns: 1fr 1fr; } }
+  /* ---- governance ---- */
+  .gov__top { display: grid; gap: 3rem; grid-template-columns: minmax(0, 1fr); align-items: center; margin-bottom: var(--space-12); }
+  .gov__cta { margin-top: var(--space-4); }
+  @media (min-width: 960px) { .gov__top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4rem; } }
+  @media (max-width: 639px) { .gov__cta { width: 100%; } }
+  .audit { width: 100%; max-width: 560px; justify-self: end; }
+  .audit__list { list-style: none; margin: 0; padding: 8px 16px; }
+  .audit__list li { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--color-border-dark); }
+  .audit__list li:last-child { border-bottom: none; }
+  .audit__time { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-text-on-dark-muted); }
+  .audit__main { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .audit__detail { font-size: 0.85rem; color: #e2e8f0; }
+  .audit__by { grid-column: 2; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-on-dark-muted); }
 
-  .solutions-subhead { margin-top: var(--space-10); margin-bottom: var(--space-4); }
+  .gov__cards { list-style: none; margin: 0 0 var(--space-8); padding: 0; display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .gov__cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .gov__cards { grid-template-columns: repeat(3, 1fr); } }
+  .gov__card { padding: var(--space-6); border-radius: 18px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--color-border-dark); transition: border-color 0.2s ease, background-color 0.2s ease; }
+  .gov__card:hover { border-color: rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.05); }
+  .gov__icon { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: var(--space-4); border-radius: 14px; color: #fb7185; background: rgba(225, 29, 72, 0.12); }
+  .gov__card h3 { font-size: 1.1rem; margin-bottom: var(--space-2); color: #fff; }
+  .gov__card p { margin: 0; font-size: 0.93rem; }
 
-  .pricing-card { display: flex; flex-direction: column; gap: var(--space-3); }
-  .pricing-card__price { font-family: var(--font-display); font-size: 1.8rem; color: var(--color-text-primary); }
-  .pricing-card__price span { font-size: 0.88rem; color: var(--color-text-secondary); font-family: var(--font-body); }
-  .pricing-card--featured { border-color: var(--color-brand); box-shadow: var(--shadow-md); }
+  /* ---- multi-outlet ---- */
+  .multi { display: grid; gap: 3rem; grid-template-columns: minmax(0, 1fr); align-items: center; }
+  .multi .check-list { max-width: 30rem; }
+  @media (min-width: 960px) { .multi { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4rem; } }
+  @media (max-width: 639px) { .multi .btn { width: 100%; } }
 
-  .final-cta__inner { max-width: 640px; }
-  .final-cta__ctas { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-8); }
+  /* ---- hardware & integrations ---- */
+  .info { padding: var(--space-8); }
+  .info__icon { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: var(--space-5); border-radius: 14px; background: #f1f5f9; color: var(--color-text-primary); }
+  .info .check-list { margin-bottom: var(--space-5); }
+
+  /* ---- pricing ---- */
+  .plan { display: flex; flex-direction: column; padding: var(--space-8); }
+  .plan__name { margin: 0 0 var(--space-2); max-width: none; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; color: var(--color-text-primary); }
+  .plan__price { margin: 0 0 var(--space-3); max-width: none; font-family: var(--font-display); font-weight: 800; font-size: 2.5rem; line-height: 1.05; letter-spacing: -0.035em; color: var(--color-text-primary); }
+  .plan__price span { display: block; min-height: 2.9em; margin-top: 6px; line-height: 1.45; font-family: var(--font-body); font-weight: 500; font-size: 0.85rem; letter-spacing: 0; color: var(--color-text-tertiary); }
+  .plan__text { flex: 1; font-size: 0.95rem; margin-bottom: var(--space-6); }
+  .plan--featured { border-color: var(--color-text-primary); box-shadow: var(--shadow-lg); }
+  @supports (grid-template-rows: subgrid) {
+    @media (min-width: 860px) {
+      .plan { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; }
+    }
+  }
+
+  /* ---- FAQ ---- */
+  .faq { display: grid; gap: var(--space-8); grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .faq__head p:last-child { margin-bottom: 0; }
+  .faq__head a { color: var(--color-text-primary); text-decoration: underline; text-decoration-color: var(--color-border-strong); text-underline-offset: 3px; }
+  .faq :global(.faq-accordion) { max-width: none; margin: 0; }
+  @media (min-width: 960px) {
+    .faq { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr); gap: 4rem; }
+    .faq__head { position: sticky; top: calc(var(--nav-height) + 2rem); }
+  }
+
+  /* ---- final CTA panel ---- */
+  .final { padding-top: 0; }
+  .final__panel { position: relative; border-radius: var(--radius-xl); padding: clamp(1.75rem, 5vw, 4rem); }
+  .final__panel::after {
+    content: ""; position: absolute; z-index: -1; pointer-events: none; width: 520px; height: 520px; right: -140px; top: -200px;
+    background: radial-gradient(closest-side, rgba(225, 29, 72, 0.28), transparent 70%);
+  }
+  .final__head { max-width: 640px; margin-bottom: var(--space-10); }
+  .final__head h2 { color: #fff; }
+  .final__paths { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .final__paths { grid-template-columns: 1fr 1fr; gap: var(--space-6); } }
+  .path { display: flex; flex-direction: column; align-items: flex-start; padding: var(--space-6); border-radius: 18px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--color-border-dark); }
+  .path h3 { margin: var(--space-3) 0 var(--space-2); color: #fff; font-size: 1.3rem; }
+  .path p:not(.mock-label) { margin-bottom: var(--space-6); font-size: 0.95rem; flex: 1; }
+  .path .btn { width: 100%; }
+  @media (min-width: 640px) { .path .btn { width: auto; } }
 </style>

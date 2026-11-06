@@ -26,7 +26,7 @@ const { solution } = Astro.props;
       <span class="tag">{solution.category === "enterprise" ? "Enterprise" : "Specialized"}</span>
       <h1>{solution.headline}</h1>
       <p>Built for {solution.buyer}.</p>
-      <div class="hero__ctas">
+      <div class="cta-group">
         {solution.category === "enterprise" ? (
           <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
         ) : (
@@ -50,7 +50,7 @@ const { solution } = Astro.props;
       <div class="grid-auto grid-auto--2">
         <div class="card">
           <h3>Focus areas</h3>
-          <ul>{solution.focusAreas.map((f: string) => <li>{f}</li>)}</ul>
+          <ul class="check-list">{solution.focusAreas.map((f: string) => <li>{f}</li>)}</ul>
         </div>
         <div class="card">
           <h3>Mapped capabilities</h3>
@@ -83,7 +83,4 @@ const { solution } = Astro.props;
 </MarketingLayout>
 
 <style>
-  .hero__ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-top: var(--space-6); }
-  .cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); }
-  .cta-split h2, .cta-split p { margin: 0; }
 </style>

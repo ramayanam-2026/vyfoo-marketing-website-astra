@@ -1,154 +1,115 @@
 # Vyfoo Marketing Website
 
-The public marketing website for **Vyfoo**, a hybrid cloud-and-offline restaurant
-operating system, built by VYQDA Technologies. This repository is the marketing
-site only — it does not contain the Vyfoo product application, staff dashboard,
-or backend.
+Public marketing site for **Vyfoo**, a hybrid cloud-and-offline restaurant operating
+system by VYQDA Technologies. This repository is the marketing site only. It does not
+contain the product application, staff dashboard, or backend.
 
 ## Stack
 
-- **Astro 5** (static output) — chosen over Astro 7 to match this environment's
-  Node version; upgrade is straightforward once Node ≥22.23.4 is available.
-- TypeScript (strict)
-- Astro-native components + hand-written CSS design system (no Tailwind, no
-  large UI library) — see `src/styles/tokens.css`
-- `@astrojs/sitemap` for XML sitemap generation
-- Astro Content Collections for the blog (`src/content/blog`)
-- Minimal client-side JavaScript: a handful of small, framework-free `<script>`
-  blocks for tabs, the FAQ accordion (native `<details>`), the mobile nav
-  drawer, the leakage calculator, and the lead form. No React is installed;
-  none of the current interactive pieces needed it. Add `@astrojs/react` only
-  if a future interactive feature genuinely requires it.
+- **Astro 5** (static output), TypeScript (strict), no UI framework.
+  Astro 5 is used because Astro 7 requires Node ≥ 22.23.4; upgrade once that is available.
+- Hand-written CSS design system (`src/styles/`), no Tailwind.
+- `@astrojs/sitemap`, Astro Content Collections (blog).
+- Client JavaScript is limited to small bundled scripts (tabs, mobile menu / dropdowns,
+  lead form, calculator, kitchen-timer ticker). No JS framework ships to the browser.
+- Fonts: Plus Jakarta Sans (display), Inter (body), JetBrains Mono (technical labels),
+  loaded from Google Fonts in `BaseLayout.astro`.
 
-## Getting started
+## Commands
 
 ```bash
 npm install
-npm run dev       # local dev server
-npm run build     # production build to dist/
-npm run preview   # preview the production build
-npm run check     # Astro + TypeScript diagnostics
+npm run dev         # local dev server
+npm run build       # runs check:css first, then the production build to dist/
+npm run preview     # preview the production build
+npm run check       # Astro + TypeScript diagnostics
+npm run check:css   # fails if any var(--x) points at an undefined custom property
 ```
 
-Node: `^18.17.1 || ^20.3.0 || >=22.0.0` (see `package.json#engines`).
+## Design system
 
-## Project structure
+Everything visual flows from two files:
 
-```
-src/
-  components/
-    navigation/   SiteHeader (mega menu + mobile drawer)
-    layout/       SiteFooter (dual-conversion cards + full nav)
-    marketing/    ProductPreviewTabs, FaqAccordion, LeakageCalculator
-    conversion/   EnterpriseLeadForm
-  layouts/        BaseLayout, MarketingLayout, ArticleLayout
-  pages/          File-based routes — see "Routes" below
-  content/blog/   Markdown blog posts (Content Collections)
-  data/           navigation.ts, products.ts, solutions.ts, pricing.ts,
-                  faqs.ts, comparisons.ts — the single source of truth for
-                  copy that's reused across pages
-  lib/            urls.ts (centralized CTA destinations), seo.ts (metadata +
-                  JSON-LD helpers), forms.ts (lead-form integration contract)
-  styles/         tokens.css (design tokens), global.css (base styles)
-```
+- `src/styles/tokens.css`: colours, type, a **complete** spacing scale, radii, shadows,
+  and the single button size.
+- `src/styles/global.css`: base typography, sections, buttons, cards, forms chrome, the
+  dark product-window primitives, and shared patterns.
 
-### Routes implemented
+Rules the system enforces:
 
-- `/`, `/about`, `/contact`, `/contact/demo`, `/contact/enterprise`,
-  `/contact/sales` (redirects to `/contact/enterprise`)
-- `/features`, `/features/[9 product slugs]`
-- `/solutions`, `/solutions/[11 vertical slugs]`, plus
-  `/solutions/uae`, `/solutions/saudi-arabia`, `/solutions/india-restaurant-pos`
-- `/pricing`, `/pricing/india`
-- `/restaurant-operating-system`, `/what-is-a-kitchen-display-system`,
-  `/restaurant-pos-guide`
-- `/stop-restaurant-cash-leakage` (with the interactive calculator),
-  `/restaurant-staff-theft-prevention`, `/restaurant-inventory-variance`,
-  `/multi-outlet-reporting`
-- `/compare`, `/compare/[9 competitor slugs]`
-- `/blog`, `/blog/[slug]` (2 starter articles)
-- `/security`, `/hardware-compatibility`, `/integrations`, `/deployment`,
-  `/case-studies` (placeholder — no fabricated case studies)
-- `/privacy`, `/terms`, `/cookies`
-- `/404` (returns a real 404 route; confirm your host serves it with HTTP 404 —
-  see "Deployment notes" below)
+- **Rhythm:** white → slate-50 → obsidian (`#090D16`). Dark sections are used for hybrid
+  architecture, governance, closing CTA bars, and the footer.
+- **Brand crimson `#E11D48`** is reserved for primary CTAs, active indicators, and key
+  highlights. No large pastel/pink surfaces.
+- **One button size** everywhere: 52px tall, 28px horizontal padding, 12px radius.
+  Variants (`btn--primary`, `btn--ghost`, `btn--on-ink`, `btn--outline-on-ink`) change colour
+  only. Below 640px every `.btn` is full-width. `.btn--lg` is intentionally a no-op.
+- **Sans-serif only.** No serif faces anywhere.
+- **Spacing tokens must exist.** An undefined `var(--space-N)` silently invalidates the
+  whole CSS declaration (padding collapses to 0). `npm run check:css` runs automatically
+  before every build and fails on any undefined variable without a fallback.
 
-## Centralized CTA configuration (`src/lib/urls.ts`)
+Reusable pieces: `ui/Icon` (single SVG icon set), `ui/BrandLogo`, `navigation/SiteHeader`,
+`layout/SiteFooter`, `marketing/ProductPreviewTabs`, `WorkflowPipeline`,
+`ArchitectureDiagram`, `HQDashboardPreview`, `FaqAccordion`, `LeakageCalculator`,
+`conversion/EnterpriseLeadForm`.
 
-The product application, trial signup, login, and sandbox all live **outside**
-this repository and were not verified during this build. Every CTA imports
-its destination from `src/lib/urls.ts` rather than hardcoding a URL:
+## Configuration
 
-| Variable | Used for | Fallback until configured |
+Copy `.env.example` to `.env`. Nothing is required to build.
+
+| Variable | Used for | Fallback until set |
 |---|---|---|
-| `PUBLIC_VYFOO_SIGNUP_URL` | "Start Free Trial" | `/pricing#start-trial` |
-| `PUBLIC_VYFOO_LOGIN_URL` | Existing customer login | `/contact` |
+| `PUBLIC_VYFOO_SIGNUP_URL` | "Start Free Trial" CTAs | `/pricing#start-trial` |
+| `PUBLIC_VYFOO_LOGIN_URL` | Customer login | `/contact` |
 | `PUBLIC_VYFOO_SANDBOX_URL` | Product sandbox | `/pricing#start-trial` |
-| `PUBLIC_VYFOO_APP_URL` | Base app URL (reserved) | — |
+| `PUBLIC_VYFOO_APP_URL` | Base app URL (reserved) | none |
+| `PUBLIC_VYFOO_LEADS_ENDPOINT` | Enterprise lead form POST target | form reports it is not connected |
 
-"Book Enterprise Demo" and "Talk to Enterprise Sales" always point at the
-on-site forms (`/contact/demo`, `/contact/enterprise`), since those are
-real, working pages in this repo.
+All CTA destinations are centralised in `src/lib/urls.ts`. `PUBLIC_` values are inlined
+into the browser bundle, so never put secrets in them.
 
-## Enterprise lead form (`src/components/conversion/EnterpriseLeadForm.astro`)
+### Enterprise lead form
 
-No CRM or lead-management endpoint is connected. Submitting the form:
+`src/components/conversion/EnterpriseLeadForm.astro` validates per field (accessible
+errors, focus moves to the first invalid field). On submit:
 
-- **If `PUBLIC_VYFOO_LEADS_ENDPOINT` is set** — POSTs the lead as JSON to that
-  endpoint and shows a success/error state based on the response.
-- **If it isn't set** — the form clearly tells the visitor it isn't connected
-  yet and gives them `contact@vyfoo.com` to email directly. It never claims
-  success, and it never silently discards the submission.
-
-Wire up a real endpoint (serverless function, CRM webhook, etc.) and set
-`PUBLIC_VYFOO_LEADS_ENDPOINT` to turn this into a live integration. Do not
-put secrets in a `PUBLIC_` variable — if the endpoint needs auth, put the
-secret server-side (e.g. in the function itself) and keep the public value
-limited to the endpoint URL.
-
-## Content and claims
-
-Per the build directive, this site avoids:
-
-- Invented certifications (SOC 2, PCI DSS, GDPR) for Vyfoo as a whole
-- Invented native integrations — `/integrations` distinguishes what's
-  available today (export) from what requires scoping
-- Fabricated customer counts, testimonials, logos, or case studies —
-  `/case-studies` is an honest placeholder
-- Absolute "zero downtime" / "100% offline" claims — the offline architecture
-  copy is deliberately scoped and points to configuration-dependent caveats
-- Fabricated competitor pricing or missing-feature claims on `/compare/*`
-  pages — each page marks vendor-specific facts as "confirm directly"
-  rather than asserting them
-
-**Still needs verification before launch:** every claim flagged with
-"where supported," "where configured," or a `caveat-note` in the UI reflects
-an actual product capability that should be confirmed against the real
-Vyfoo product before this copy is treated as final. The author/attribution
-on blog posts ("Vyfoo Team") and the legal pages (`/privacy`, `/terms`,
-`/cookies`) are placeholder structures, not counsel-reviewed text.
+- **No endpoint configured:** it says plainly that it is not connected and links
+  `contact@vyfoo.com`. It never claims success and never sends anything.
+- **Endpoint returns 2xx:** success message, form resets.
+- **Endpoint fails:** error message plus the mailto fallback, so the lead is not lost.
 
 ## Deployment notes
 
-- Static output (`output: "static"` is Astro's default) — deploy `dist/` to
-  any static host (Vercel, Netlify, Cloudflare Pages, S3+CDN, etc.).
-- **Confirm your host returns an actual HTTP 404** for unknown paths using
-  `dist/404.html`, rather than silently serving `index.html` with a 200 —
-  this varies by hosting platform's configuration.
-- `astro.config.mjs` sets `site: "https://vyfoo.com"` — update this if the
-  production domain differs, since it feeds canonical URLs, the sitemap, and
-  structured data.
-- No analytics are loaded by default (`src/lib` has no analytics adapter yet).
-  Add one deliberately and respect applicable consent requirements before
-  loading any third-party script.
+- Output is static (`dist/`). Any static host works.
+- **404:** confirm the host serves `dist/404.html` with HTTP status **404** for unknown
+  paths rather than returning the homepage with a 200.
+- **`/contact/sales`** is a meta-refresh redirect stub to `/contact/enterprise`
+  (`noindex`, excluded from the sitemap). Configure a real **301** at the host if possible.
+- `site` in `astro.config.mjs` is `https://vyfoo.com`; it drives canonicals, the sitemap,
+  and structured data.
+- No analytics are loaded. Add a provider deliberately and respect consent rules first.
 
-## What was NOT built in this pass
+## Claims that still need product-side verification
 
-- Full competitor-specific pricing/feature research for `/compare/*` pages
-  (each page is structured correctly but marks vendor facts as
-  "confirm directly" — see `src/data/comparisons.ts`)
-- Additional blog articles beyond the two starter posts
-- A production OG share image (`/images/og-default.png` is referenced in
-  `src/lib/seo.ts` but not yet created — add a real 1200×630 image there)
-- Real brand logo/wordmark asset (currently a text wordmark by design, per
-  the build directive, pending official brand assets)
+The copy avoids invented certifications, integrations, customers, and metrics. These
+statements describe intended product behaviour and should be confirmed against the real
+product before launch:
+
+- "Hybrid Local-Network Offline Mode", the **Local node** in the architecture diagram,
+  and `LOCAL NODE READY` in the preview chrome. The page already states that exact
+  offline scope depends on hardware and network setup.
+- Workflow tags such as `AUTO-DEDUCT` (recipe-level stock deduction) and `STATION ROUTED`.
+- Governance capabilities (role-based permissions, audit trail, discount limits, cash
+  reconciliation).
+- "$99/mo All-Inclusive Starter" next to the plan's "where supported" items (e.g. WhatsApp).
+
+All figures inside the product previews are labelled illustrative sample data.
+Legal pages (`/privacy`, `/terms`, `/cookies`) are placeholders pending counsel review.
+Competitor pages mark vendor-specific facts as "confirm directly" rather than asserting them.
+
+## Not yet done
+
+- Competitor-specific researched detail on `/compare/*`.
+- More blog articles (two starter posts exist).
+- Self-hosting the fonts (currently Google Fonts, as specified).

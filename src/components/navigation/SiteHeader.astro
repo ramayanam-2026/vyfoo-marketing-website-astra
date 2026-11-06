@@ -1,13 +1,11 @@
 ---
 import { primaryNav } from "../../data/navigation";
 import { urls } from "../../lib/urls";
+import BrandLogo from "../ui/BrandLogo.astro";
 ---
 <header class="site-header">
   <div class="container site-header__bar">
-    <a href="/" class="wordmark" aria-label="Vyfoo home">
-      <span class="wordmark__mark" aria-hidden="true">V</span>
-      Vyfoo
-    </a>
+    <a href="/" class="site-header__brand" aria-label="Vyfoo home"><BrandLogo /></a>
 
     <nav class="primary-nav" aria-label="Primary">
       <ul class="primary-nav__list">
@@ -19,7 +17,7 @@ import { urls } from "../../lib/urls";
               <>
                 <button class="primary-nav__trigger" aria-expanded="false" aria-haspopup="true">
                   {group.label}
-                  <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+                  <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div class="mega-menu">
                   <div class="mega-menu__grid">
@@ -48,14 +46,14 @@ import { urls } from "../../lib/urls";
     </div>
 
     <button class="mobile-trigger" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
-      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true"><path d="M0 1h22M0 8h22M0 15h22" stroke="currentColor" stroke-width="2"/></svg>
+      <span></span><span></span><span></span>
     </button>
   </div>
 
   <div id="mobile-nav" class="mobile-nav" hidden>
-    <div class="mobile-nav__actions">
-      <a class="btn btn--primary btn--block" href={urls.bookDemo}>Book Enterprise Demo</a>
-      <a class="btn btn--ghost btn--block" href={urls.startTrial}>Start Free Trial</a>
+    <div class="mobile-nav__actions cta-group">
+      <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
+      <a class="btn btn--ghost" href={urls.startTrial}>Start Free Trial</a>
     </div>
     {primaryNav.map((group) => (
       <details class="mobile-nav__group">
@@ -77,73 +75,89 @@ import { urls } from "../../lib/urls";
 
 <style>
   .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(252, 250, 248, 0.92);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--color-border);
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255, 255, 255, 0.88);
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+    border-bottom: 1px solid #e2e8f0;
   }
-  .site-header__bar {
-    display: flex;
-    align-items: center;
-    gap: var(--space-8);
-    height: var(--nav-height);
-  }
-  .wordmark {
-    display: inline-flex; align-items: center; gap: var(--space-2);
-    font-family: var(--font-display); font-weight: 600; font-size: 1.3rem;
-    color: var(--color-text-primary); text-decoration: none; margin-right: auto;
-  }
-  .wordmark__mark {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 30px; height: 30px; border-radius: 9px; background: var(--color-brand);
-    color: #fff; font-size: 1rem; font-weight: 700;
-  }
+  .site-header__bar { display: flex; align-items: center; gap: 2rem; height: var(--nav-height); }
+  .site-header__brand { text-decoration: none; margin-right: auto; display: inline-flex; }
+
   .primary-nav { display: none; }
-  .primary-nav__list { display: flex; list-style: none; margin: 0; padding: 0; gap: var(--space-6); height: 100%; align-items: center; }
+  .primary-nav__list { display: flex; list-style: none; margin: 0; padding: 0; gap: 1.75rem; height: 100%; align-items: center; }
   .primary-nav__item { position: relative; height: 100%; display: flex; align-items: center; }
   .primary-nav__item > a, .primary-nav__trigger {
-    display: flex; align-items: center; gap: var(--space-1);
-    background: none; border: none; font: inherit; font-size: 0.92rem; font-weight: 500;
-    color: var(--color-text-primary); text-decoration: none; cursor: pointer; padding: var(--space-2) 0;
+    display: flex; align-items: center; gap: 6px; padding: 8px 0;
+    background: none; border: none; cursor: pointer; text-decoration: none;
+    font-family: var(--font-body); font-size: 0.93rem; font-weight: 500; color: var(--color-text-primary);
+    transition: color 0.15s ease;
   }
-  .primary-nav__trigger svg { transition: transform 0.15s ease; color: var(--color-text-secondary); }
+  .primary-nav__item > a:hover, .primary-nav__trigger:hover { color: var(--color-brand); }
+  .primary-nav__trigger svg { color: var(--color-text-tertiary); transition: transform 0.18s ease; }
   .primary-nav__item:hover .primary-nav__trigger svg,
   .primary-nav__trigger[aria-expanded="true"] svg { transform: rotate(180deg); }
 
   .mega-menu {
-    display: none;
-    position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-    background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md);
-    box-shadow: var(--shadow-lg); padding: var(--space-6); min-width: 440px; margin-top: var(--space-3);
+    display: none; position: absolute; top: 100%; left: -1.5rem;
+    min-width: 460px; padding: var(--space-6);
+    background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
   }
+  /* invisible bridge so the menu doesn't close while the pointer crosses the gap */
+  .mega-menu::before { content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }
   .primary-nav__item:hover .mega-menu,
   .primary-nav__item:focus-within .mega-menu,
-  .mega-menu.is-open { display: block; }
+  .mega-menu.is-open { display: block; margin-top: 6px; }
   .mega-menu__grid { display: flex; gap: var(--space-8); }
   .mega-menu__heading {
-    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--color-text-secondary); margin-bottom: var(--space-2);
+    margin: 0 0 var(--space-3); max-width: none;
+    font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--color-text-tertiary);
   }
-  .mega-menu__col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); white-space: nowrap; }
-  .mega-menu__col a { text-decoration: none; color: var(--color-text-primary); font-size: 0.9rem; }
-  .mega-menu__col a:hover { color: var(--color-brand); }
+  .mega-menu__col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; white-space: nowrap; }
+  .mega-menu__col a { display: block; padding: 7px 10px; margin-inline: -10px; border-radius: 8px; text-decoration: none; font-size: 0.92rem; color: var(--color-text-primary); transition: background-color 0.15s ease, color 0.15s ease; }
+  .mega-menu__col a:hover { background: #f1f5f9; color: var(--color-brand); }
 
-  .site-header__actions { display: none; gap: var(--space-3); align-items: center; }
+  .site-header__actions { display: none; gap: 0.75rem; align-items: center; }
 
   .mobile-trigger {
-    background: none; border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm);
-    padding: var(--space-2) var(--space-3); color: var(--color-text-primary); cursor: pointer;
+    position: relative; width: 42px; height: 42px; padding: 0; flex-shrink: 0;
+    border: 1px solid #e2e8f0; border-radius: 10px; background: #fff; cursor: pointer;
   }
+  .mobile-trigger span {
+    position: absolute; left: 11px; right: 11px; height: 2px; border-radius: 2px; background: var(--color-obsidian);
+    transition: transform 0.22s ease, opacity 0.18s ease, top 0.22s ease;
+  }
+  .mobile-trigger span:nth-child(1) { top: 14px; }
+  .mobile-trigger span:nth-child(2) { top: 20px; }
+  .mobile-trigger span:nth-child(3) { top: 26px; }
+  .mobile-trigger[aria-expanded="true"] span:nth-child(1) { top: 20px; transform: rotate(45deg); }
+  .mobile-trigger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .mobile-trigger[aria-expanded="true"] span:nth-child(3) { top: 20px; transform: rotate(-45deg); }
 
-  .mobile-nav { border-top: 1px solid var(--color-border); padding: var(--space-4) var(--space-6) var(--space-8); background: var(--color-surface); max-height: calc(100dvh - var(--nav-height)); overflow-y: auto; }
-  .mobile-nav__actions { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-4); }
-  .mobile-nav__group summary { padding: var(--space-3) 0; font-weight: 600; cursor: pointer; }
-  .mobile-nav__group ul { list-style: none; padding: 0 0 var(--space-3); margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
-  .mobile-nav__group a { text-decoration: none; color: var(--color-text-secondary); display: block; padding-block: var(--space-1); }
+  .mobile-nav {
+    position: absolute; left: 0; right: 0; top: 100%;
+    max-height: calc(100dvh - var(--nav-height)); overflow-y: auto;
+    padding: var(--space-5) var(--gutter) var(--space-8);
+    background: #fff; border-bottom: 1px solid var(--color-border); box-shadow: var(--shadow-lg);
+  }
+  .mobile-nav__actions { margin-bottom: var(--space-4); }
+  .mobile-nav__group { border-top: 1px solid var(--color-border); }
+  .mobile-nav__group summary {
+    padding: var(--space-4) 0; cursor: pointer; list-style: none;
+    font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; color: var(--color-text-primary);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .mobile-nav__group summary::-webkit-details-marker { display: none; }
+  .mobile-nav__group summary::after {
+    content: ""; width: 10px; height: 10px; border-right: 2px solid var(--color-text-tertiary); border-bottom: 2px solid var(--color-text-tertiary);
+    transform: rotate(45deg) translateY(-2px); transition: transform 0.18s ease;
+  }
+  .mobile-nav__group[open] summary::after { transform: rotate(225deg); }
+  .mobile-nav__group ul { list-style: none; padding: 0 0 var(--space-4); margin: 0; display: flex; flex-direction: column; }
+  .mobile-nav__group a { display: block; padding: 11px 0; text-decoration: none; color: var(--color-text-secondary); }
 
-  @media (min-width: 960px) {
+  @media (min-width: 1200px) {
     .primary-nav { display: block; }
     .site-header__actions { display: flex; }
     .mobile-trigger { display: none; }
@@ -152,45 +166,48 @@ import { urls } from "../../lib/urls";
 </style>
 
 <script>
-  const mobileTrigger = document.querySelector<HTMLButtonElement>(".mobile-trigger");
-  const mobileNav = document.getElementById("mobile-nav");
-  mobileTrigger?.addEventListener("click", () => {
-    const expanded = mobileTrigger.getAttribute("aria-expanded") === "true";
-    mobileTrigger.setAttribute("aria-expanded", String(!expanded));
-    if (mobileNav) mobileNav.hidden = expanded;
-  });
+  const menuBtn = document.querySelector<HTMLButtonElement>(".mobile-trigger");
+  const menuPanel = document.getElementById("mobile-nav");
 
-  // Click-to-toggle dropdowns, so the mega menu works on touch devices too
-  // (not hover-only), while still supporting hover and keyboard via CSS.
+  function setMenu(open: boolean) {
+    if (!menuBtn || !menuPanel) return;
+    menuBtn.setAttribute("aria-expanded", String(open));
+    menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    menuPanel.hidden = !open;
+    document.body.classList.toggle("nav-open", open);
+  }
+  menuBtn?.addEventListener("click", () => setMenu(menuBtn.getAttribute("aria-expanded") !== "true"));
+  menuPanel?.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).closest("a")) setMenu(false);
+  });
+  document.addEventListener("click", (e) => {
+    if (e.target === document.body && document.body.classList.contains("nav-open")) setMenu(false);
+  });
+  window.matchMedia("(min-width: 1200px)").addEventListener("change", (e) => { if (e.matches) setMenu(false); });
+
+  // Desktop dropdowns: click toggles (touch-safe); hover/focus handled in CSS.
   const triggers = document.querySelectorAll<HTMLButtonElement>(".primary-nav__trigger");
+  function closeMenus() {
+    triggers.forEach((t) => {
+      t.setAttribute("aria-expanded", "false");
+      t.nextElementSibling?.classList.remove("is-open");
+    });
+  }
   triggers.forEach((trigger) => {
     const menu = trigger.nextElementSibling as HTMLElement | null;
     trigger.addEventListener("click", () => {
-      const isOpen = menu?.classList.contains("is-open");
-      triggers.forEach((t) => {
-        t.setAttribute("aria-expanded", "false");
-        t.nextElementSibling?.classList.remove("is-open");
-      });
-      if (!isOpen) {
+      const wasOpen = menu?.classList.contains("is-open");
+      closeMenus();
+      if (!wasOpen) {
         trigger.setAttribute("aria-expanded", "true");
         menu?.classList.add("is-open");
       }
     });
   });
   document.addEventListener("click", (e) => {
-    if (!(e.target as HTMLElement).closest(".primary-nav__item")) {
-      triggers.forEach((t) => {
-        t.setAttribute("aria-expanded", "false");
-        t.nextElementSibling?.classList.remove("is-open");
-      });
-    }
+    if (!(e.target as HTMLElement).closest(".primary-nav__item")) closeMenus();
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      triggers.forEach((t) => {
-        t.setAttribute("aria-expanded", "false");
-        t.nextElementSibling?.classList.remove("is-open");
-      });
-    }
+    if (e.key === "Escape") { closeMenus(); setMenu(false); }
   });
 </script>

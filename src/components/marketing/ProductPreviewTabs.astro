@@ -1,138 +1,274 @@
 ---
-interface PreviewRow { name: string; meta: string; status?: string; }
-interface PreviewTab { id: string; label: string; title: string; rows: PreviewRow[]; footer: string; }
+import Icon from "../ui/Icon.astro";
 
-const tabs: PreviewTab[] = [
-  {
-    id: "pos",
-    label: "POS",
-    title: "Counter order entry",
-    rows: [
-      { name: "Table 4 — Margherita Pizza x2", meta: "Dine-in" },
-      { name: "Table 4 — Iced Tea x2", meta: "Dine-in" },
-      { name: "Takeaway #118 — Chicken Wrap", meta: "Pickup" },
-    ],
-    footer: "Subtotal calculated · Tax configured · Send to kitchen",
-  },
-  {
-    id: "kds",
-    label: "Kitchen Display",
-    title: "Live kitchen queue",
-    rows: [
-      { name: "Order #118 — Chicken Wrap", meta: "New", status: "new" },
-      { name: "Table 4 — Margherita Pizza x2", meta: "Preparing", status: "preparing" },
-      { name: "Table 2 — Pasta Alfredo", meta: "Ready", status: "ready" },
-    ],
-    footer: "3 active tickets · Updated in real time",
-  },
-  {
-    id: "status",
-    label: "Customer Order Status",
-    title: "Pickup counter display",
-    rows: [
-      { name: "#116", meta: "Ready", status: "ready" },
-      { name: "#117", meta: "Preparing", status: "preparing" },
-      { name: "#118", meta: "New", status: "new" },
-    ],
-    footer: "Browser-based display · No app required",
-  },
-  {
-    id: "hq",
-    label: "Headquarters Reporting",
-    title: "Multi-outlet overview",
-    rows: [
-      { name: "Outlet — Indiranagar", meta: "Sales trend, order volume" },
-      { name: "Outlet — Koramangala", meta: "Sales trend, order volume" },
-      { name: "Outlet — Whitefield", meta: "Sales trend, order volume" },
-    ],
-    footer: "Illustrative preview · Figures are not live customer data",
-  },
+/**
+ * Interactive product preview in an enterprise "terminal" chrome.
+ * Everything inside is an ILLUSTRATIVE interface built in HTML/CSS —
+ * sample data only, never presented as a real customer deployment.
+ */
+const tabs = [
+  { id: "pos", label: "Counter POS", icon: "pos" },
+  { id: "kds", label: "Kitchen KDS", icon: "kds" },
+  { id: "osds", label: "Pickup OSDS", icon: "osds" },
+  { id: "hq", label: "HQ Analytics", icon: "chart" },
 ];
+
+const tables = [
+  { id: "T01", state: "Free", tone: "free" },
+  { id: "T02", state: "Seated", tone: "seated" },
+  { id: "T03", state: "Prep", tone: "prep" },
+  { id: "T04", state: "Active", tone: "active" },
+  { id: "T05", state: "Bill", tone: "bill" },
+  { id: "T06", state: "Free", tone: "free" },
+  { id: "T07", state: "Seated", tone: "seated" },
+  { id: "T08", state: "Hold", tone: "hold" },
+];
+
+const tickets = [
+  { station: "Grill", tone: "amber", no: "#118", kind: "Takeaway", timer: 194, qty: 1, item: "Chicken Wrap", mod: "No onion", modTone: "rose", state: "Preparing", stateTone: "amber" },
+  { station: "Pizza", tone: "rose", no: "#117", kind: "Table 04", timer: 362, qty: 2, item: "Margherita Pizza", mod: "Extra cheese", modTone: "amber", state: "Preparing", stateTone: "amber" },
+  { station: "Bar", tone: "sky", no: "#115", kind: "Table 04", timer: 48, qty: 2, item: "Iced Tea", mod: "Less ice", modTone: "slate", state: "Ready", stateTone: "emerald" },
+];
+
+const outlets = [
+  { name: "Downtown", orders: "482", level: 88, badge: "Synced", tone: "emerald" },
+  { name: "Airport", orders: "391", level: 70, badge: "Synced", tone: "emerald" },
+  { name: "Riverside", orders: "263", level: 48, badge: "Local mode", tone: "sky" },
+];
+
+const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
 ---
-<div class="preview-tabs" data-preview-tabs>
-  <div role="tablist" aria-label="Product preview" class="preview-tabs__list">
+<div class="window preview" data-preview-tabs>
+  <div class="window__chrome">
+    <div class="window__dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <p class="window__status">
+      <span class="pulse-dot"></span>
+      <span>Online</span><span class="sep">•</span>
+      <span>Local node ready</span><span class="sep hide-sm">•</span>
+      <span class="hide-sm">4 stations active</span>
+    </p>
+  </div>
+
+  <div role="tablist" aria-label="Product preview" class="tabs">
     {tabs.map((tab, i) => (
       <button
-        role="tab"
-        id={`tab-${tab.id}`}
-        aria-controls={`panel-${tab.id}`}
-        aria-selected={i === 0 ? "true" : "false"}
-        tabindex={i === 0 ? 0 : -1}
-        class="preview-tabs__tab"
-        data-tab={tab.id}
+        type="button" role="tab" id={`tab-${tab.id}`} aria-controls={`panel-${tab.id}`}
+        aria-selected={i === 0 ? "true" : "false"} tabindex={i === 0 ? 0 : -1}
+        class="tabs__tab" data-tab={tab.id}
       >
-        {tab.label}
+        <Icon name={tab.icon} size={15} stroke={2} />
+        <span>{tab.label}</span>
       </button>
     ))}
   </div>
 
-  {tabs.map((tab, i) => (
-    <div
-      role="tabpanel"
-      id={`panel-${tab.id}`}
-      aria-labelledby={`tab-${tab.id}`}
-      class="preview-tabs__panel"
-      hidden={i !== 0}
-      data-panel={tab.id}
-    >
-      <div class="mockup-panel">
-        <p class="mockup-panel__title">{tab.title}</p>
-        <ul class="mockup-panel__rows">
-          {tab.rows.map((row) => (
-            <li class="mockup-panel__row">
-              <span class="mockup-panel__row-name">{row.name}</span>
-              {row.status ? (
-                <span class={`status-pill status-pill--${row.status}`}>{row.meta}</span>
-              ) : (
-                <span class="mockup-panel__meta">{row.meta}</span>
-              )}
+  <div class="window__body">
+    <!-- COUNTER POS -->
+    <div role="tabpanel" id="panel-pos" aria-labelledby="tab-pos" class="panel" data-panel="pos">
+      <div class="pos">
+        <div class="ticket">
+          <div class="ticket__head"><span class="mock-label">Table 04 · Dine-in</span><span class="mock-label">Order #118</span></div>
+          <ul class="lines">
+            <li><span class="q">2×</span><span class="n">Margherita Pizza <em class="badge badge--amber">Extra cheese</em></span><span class="p">28.00</span></li>
+            <li><span class="q">1×</span><span class="n">Chicken Wrap <em class="badge badge--rose">No onion</em></span><span class="p">9.50</span></li>
+            <li><span class="q">2×</span><span class="n">Iced Tea <em class="badge badge--slate">Less ice</em></span><span class="p">8.00</span></li>
+          </ul>
+          <div class="total"><span>Total</span><strong>45.50</strong></div>
+          <div class="actions"><span class="mock-btn">Split check</span><span class="mock-btn mock-btn--solid">Send to kitchen</span></div>
+        </div>
+        <div class="tables">
+          <p class="mock-label">Floor · 8 tables</p>
+          <div class="tables__grid">
+            {tables.map((t) => (<span class={`tbl tbl--${t.tone}`}><b>{t.id}</b>{t.state}</span>))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KITCHEN KDS -->
+    <div role="tabpanel" id="panel-kds" aria-labelledby="tab-kds" class="panel" data-panel="kds" hidden>
+      <div class="kds">
+        {tickets.map((t) => (
+          <div class="kt">
+            <div class={`kt__head kt__head--${t.tone}`}><span>{t.station}</span><span class="kt__timer" data-timer={t.timer}>{fmt(t.timer)}</span></div>
+            <div class="kt__body">
+              <p class="kt__no">{t.no} · {t.kind}</p>
+              <p class="kt__item"><span>{t.qty}×</span> {t.item}</p>
+              <em class={`badge badge--${t.modTone}`}>{t.mod}</em>
+            </div>
+            <div class="kt__foot"><span class={`badge badge--${t.stateTone}`}>{t.state}</span></div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- PICKUP OSDS -->
+    <div role="tabpanel" id="panel-osds" aria-labelledby="tab-osds" class="panel" data-panel="osds" hidden>
+      <div class="osds">
+        <div class="osds__col">
+          <p class="osds__head osds__head--amber">Preparing</p>
+          <div class="osds__nums"><span>117</span><span>118</span><span>119</span></div>
+        </div>
+        <div class="osds__col osds__col--ready">
+          <p class="osds__head osds__head--emerald">Ready for pickup</p>
+          <div class="osds__nums"><span>114</span><span>115</span><span>116</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HQ ANALYTICS -->
+    <div role="tabpanel" id="panel-hq" aria-labelledby="tab-hq" class="panel" data-panel="hq" hidden>
+      <div class="hq">
+        <div class="kpis">
+          <div><span class="mock-label">Orders today</span><strong>1,136</strong></div>
+          <div><span class="mock-label">Avg ticket time</span><strong>06:40</strong></div>
+          <div><span class="mock-label">Outlets live</span><strong>3 / 3</strong></div>
+        </div>
+        <ul class="outlets">
+          {outlets.map((o) => (
+            <li>
+              <div class="outlets__row"><span class="outlets__name">{o.name}</span><span class="outlets__orders">{o.orders} orders</span><span class={`badge badge--${o.tone}`}>{o.badge}</span></div>
+              <div class="outlets__bar"><i style={`width:${o.level}%`}></i></div>
             </li>
           ))}
         </ul>
-        <p class="mockup-panel__footer">{tab.footer}</p>
       </div>
     </div>
-  ))}
+  </div>
+  <p class="window__note">Illustrative interface preview · sample data, not a live deployment</p>
 </div>
 
 <style>
-  .preview-tabs__list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-5); }
-  .preview-tabs__tab {
-    background: var(--color-surface); color: var(--color-text-secondary); border: 1px solid var(--color-border-strong);
-    border-radius: var(--radius-pill); padding: var(--space-2) var(--space-4); font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer;
-    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  .preview { container-type: inline-size; container-name: win; width: 100%; max-width: 640px; min-width: 0; }
+  .hide-sm { display: none; }
+  @container win (min-width: 430px) { .hide-sm { display: inline; } }
+
+  /* ---- segmented control ---- */
+  .tabs {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin: 14px 16px 0; padding: 4px;
+    background: rgba(255, 255, 255, 0.04); border: 1px solid var(--color-border-dark); border-radius: 12px;
   }
-  .preview-tabs__tab:hover { border-color: var(--color-brand); color: var(--color-brand-hover); }
-  .preview-tabs__tab[aria-selected="true"] { background: var(--color-brand); color: #fff; border-color: var(--color-brand); }
-  .preview-tabs__panel .mockup-panel { max-width: 460px; }
+  @container win (min-width: 500px) { .tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .tabs__tab {
+    display: flex; align-items: center; justify-content: center; gap: 6px; min-width: 0; height: 38px; padding: 0 8px;
+    border: none; border-radius: 9px; background: transparent; cursor: pointer; white-space: nowrap;
+    font-family: var(--font-body); font-size: 0.75rem; font-weight: 600; color: var(--color-text-on-dark-muted);
+    transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .tabs__tab:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+  .tabs__tab[aria-selected="true"] { background: var(--color-brand); color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 6px 14px -4px rgba(225, 29, 72, 0.55); }
+  .tabs__tab :global(svg) { flex-shrink: 0; }
+  .tabs__tab:focus-visible { box-shadow: 0 0 0 2px var(--color-obsidian), 0 0 0 4px #fb7185; }
+
+  .panel { animation: panel-in 0.28s ease both; min-height: 252px; }
+  @keyframes panel-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ---- POS ---- */
+  .pos { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .ticket, .tables { background: var(--color-obsidian-elevated); border: 1px solid var(--color-border-dark); border-radius: 12px; padding: 14px; }
+  .ticket__head { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+  .lines { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .lines li { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: start; font-size: 0.82rem; color: #e2e8f0; }
+  .lines .q { font-family: var(--font-mono); color: var(--color-text-on-dark-muted); font-size: 0.75rem; padding-top: 1px; }
+  .lines .n { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; font-weight: 500; }
+  .lines .p { font-family: var(--font-mono); font-size: 0.78rem; color: #fff; }
+  .lines em { font-style: normal; }
+  .total { display: flex; justify-content: space-between; align-items: baseline; margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(255, 255, 255, 0.14); font-size: 0.82rem; color: var(--color-text-on-dark-muted); }
+  .total strong { font-family: var(--font-display); font-size: 1.25rem; color: #fff; letter-spacing: -0.02em; }
+  .actions { display: grid; grid-template-columns: 1fr 1.3fr; gap: 8px; margin-top: 12px; }
+  .mock-btn { display: flex; align-items: center; justify-content: center; height: 34px; padding: 0 8px; border-radius: 9px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; color: #e2e8f0; border: 1px solid rgba(255, 255, 255, 0.16); }
+  .mock-btn--solid { background: #f8fafc; color: var(--color-obsidian); border-color: transparent; }
+  .tables__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; }
+  .tbl { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px; border-radius: 8px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; background: rgba(148, 163, 184, 0.1); color: #94a3b8; border: 1px solid transparent; }
+  .tbl b { font-family: var(--font-mono); font-size: 0.74rem; color: #e2e8f0; }
+  .tbl--seated { background: rgba(56, 189, 248, 0.12); color: #7dd3fc; }
+  .tbl--prep { background: rgba(245, 158, 11, 0.14); color: #fbbf24; }
+  .tbl--active { background: rgba(225, 29, 72, 0.16); color: #fb7185; border-color: rgba(225, 29, 72, 0.55); }
+  .tbl--bill { background: rgba(16, 185, 129, 0.13); color: #34d399; }
+  .tbl--hold { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+
+  /* ---- KDS ---- */
+  .kds { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+  .kt { display: flex; flex-direction: column; background: var(--color-obsidian-elevated); border: 1px solid var(--color-border-dark); border-radius: 12px; overflow: hidden; }
+  .kt__head { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .kt__head--amber { background: rgba(245, 158, 11, 0.16); color: #fbbf24; }
+  .kt__head--rose { background: rgba(225, 29, 72, 0.18); color: #fb7185; }
+  .kt__head--sky { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; }
+  .kt__timer { font-size: 0.78rem; color: #fff; }
+  .kt__body { padding: 12px; flex: 1; }
+  .kt__no { margin: 0 0 8px; max-width: none; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.04em; color: var(--color-text-on-dark-muted); text-transform: uppercase; }
+  .kt__item { margin: 0 0 8px; max-width: none; font-size: 0.86rem; font-weight: 600; color: #fff; line-height: 1.35; }
+  .kt__item span { font-family: var(--font-mono); color: var(--color-text-on-dark-muted); font-weight: 500; }
+  .kt__body em { font-style: normal; }
+  .kt__foot { padding: 10px 12px; border-top: 1px solid var(--color-border-dark); }
+
+  /* ---- OSDS ---- */
+  .osds { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .osds__col { background: var(--color-obsidian-elevated); border: 1px solid var(--color-border-dark); border-radius: 12px; padding: 14px; }
+  .osds__col--ready { border-color: rgba(16, 185, 129, 0.35); box-shadow: 0 0 40px -14px rgba(16, 185, 129, 0.45); }
+  .osds__head { margin: 0 0 12px; max-width: none; font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .osds__head--amber { color: #fbbf24; }
+  .osds__head--emerald { color: #34d399; }
+  .osds__nums { display: flex; flex-direction: column; gap: 8px; }
+  .osds__nums span { font-family: var(--font-mono); font-size: 1.7rem; font-weight: 600; letter-spacing: 0.02em; color: #fff; line-height: 1.1; padding: 8px 12px; background: rgba(255, 255, 255, 0.04); border-radius: 8px; }
+
+  /* ---- HQ ---- */
+  .hq { display: flex; flex-direction: column; gap: 12px; }
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .kpis div { display: flex; flex-direction: column; gap: 6px; padding: 12px; background: var(--color-obsidian-elevated); border: 1px solid var(--color-border-dark); border-radius: 12px; }
+  .kpis .mock-label { font-size: 0.6rem; }
+  .kpis strong { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; color: #fff; line-height: 1; }
+  .outlets { list-style: none; margin: 0; padding: 14px; display: flex; flex-direction: column; gap: 14px; background: var(--color-obsidian-elevated); border: 1px solid var(--color-border-dark); border-radius: 12px; }
+  .outlets__row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.84rem; }
+  .outlets__name { font-weight: 600; color: #fff; }
+  .outlets__orders { margin-right: auto; font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-on-dark-muted); }
+  .outlets__bar { height: 6px; border-radius: 9999px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
+  .outlets__bar i { display: block; height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #be123c, #fb7185); }
+
+  @media (max-width: 420px) {
+    .kpis strong { font-size: 1.1rem; }
+    .outlets__orders { display: none; }
+    .outlets__name { margin-right: auto; }
+  }
 </style>
 
 <script>
-  const roots = document.querySelectorAll<HTMLElement>("[data-preview-tabs]");
-  roots.forEach((root) => {
+  document.querySelectorAll<HTMLElement>("[data-preview-tabs]").forEach((root) => {
     const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
     const panels = Array.from(root.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
 
-    function activate(tab: HTMLButtonElement) {
+    function activate(tab: HTMLButtonElement, focus = true) {
       tabs.forEach((t) => {
         const selected = t === tab;
         t.setAttribute("aria-selected", String(selected));
         t.tabIndex = selected ? 0 : -1;
       });
-      panels.forEach((p) => {
-        p.hidden = p.dataset.panel !== tab.dataset.tab;
-      });
-      tab.focus();
+      panels.forEach((p) => { p.hidden = p.dataset.panel !== tab.dataset.tab; });
+      if (focus) tab.focus();
     }
 
     tabs.forEach((tab, i) => {
-      tab.addEventListener("click", () => activate(tab));
+      tab.addEventListener("click", () => activate(tab, false));
       tab.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowRight") activate(tabs[(i + 1) % tabs.length]);
-        if (e.key === "ArrowLeft") activate(tabs[(i - 1 + tabs.length) % tabs.length]);
-        if (e.key === "Home") activate(tabs[0]);
-        if (e.key === "End") activate(tabs[tabs.length - 1]);
+        let next: number | null = null;
+        if (e.key === "ArrowRight") next = (i + 1) % tabs.length;
+        if (e.key === "ArrowLeft") next = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === "Home") next = 0;
+        if (e.key === "End") next = tabs.length - 1;
+        if (next !== null) { e.preventDefault(); activate(tabs[next]); }
       });
     });
   });
+
+  // Live kitchen timers (illustrative). Skipped entirely for reduced-motion users.
+  const timers = Array.from(document.querySelectorAll<HTMLElement>("[data-timer]"));
+  if (timers.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const started = Date.now();
+    const base = timers.map((el) => Number(el.dataset.timer) || 0);
+    const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+    setInterval(() => {
+      const elapsed = Math.floor((Date.now() - started) / 1000);
+      timers.forEach((el, i) => { el.textContent = fmt(base[i] + elapsed); });
+    }, 1000);
+  }
 </script>

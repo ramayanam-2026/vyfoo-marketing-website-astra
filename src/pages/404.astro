@@ -12,7 +12,7 @@ import { urls } from "../lib/urls";
     <div class="container prose">
       <h1>Page not found</h1>
       <p>The page you're looking for doesn't exist or may have moved.</p>
-      <div class="hero__ctas">
+      <div class="cta-group">
         <a class="btn btn--primary" href="/">Go to homepage</a>
         <a class="btn btn--ghost" href={urls.contact}>Contact us</a>
       </div>
@@ -20,6 +20,7 @@ import { urls } from "../lib/urls";
   </section>
 </MarketingLayout>
 <style>
-  .not-found { padding-block: var(--space-32) var(--space-24); text-align: center; }
-  .hero__ctas { display: flex; justify-content: center; gap: var(--space-4); margin-top: var(--space-6); }
+  .not-found { padding-block: var(--space-24); text-align: center; }
+  .not-found h1, .not-found p { margin-inline: auto; }
+  .not-found .cta-group { justify-content: center; margin-inline: auto; }
 </style>

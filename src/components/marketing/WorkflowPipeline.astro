@@ -1,0 +1,119 @@
+---
+import Icon from "../ui/Icon.astro";
+
+/** The connected order lifecycle, rendered as an engineered 3×2 pipeline. */
+const steps = [
+  { icon: "qr", tone: "rose", title: "Order captured", tag: "Instant sync", module: "POS + QR",
+    text: "Counter POS, QR table ordering, and takeaway orders land in one shared order stream." },
+  { icon: "kds", tone: "amber", title: "Kitchen receives it", tag: "Station routed", module: "KDS Station",
+    text: "Tickets appear on the right kitchen screen the moment an order is fired — no paper, no shouting across the pass." },
+  { icon: "check-circle", tone: "sky", title: "Staff update status", tag: "Live status", module: "KDS Pass",
+    text: "Cooks bump tickets from new to preparing to ready, and the front of house sees every change." },
+  { icon: "bell", tone: "emerald", title: "Customer fulfillment", tag: "Ready alert", module: "OSDS TV",
+    text: "Order numbers move from Preparing to Ready on the pickup screen so guests know when to collect." },
+  { icon: "cube", tone: "slate", title: "Billing & stock update", tag: "Auto-deduct", module: "Recipe BOM",
+    text: "Payment and tax post as the order closes, and recipe-level ingredient stock deducts with it." },
+  { icon: "chart", tone: "ink", title: "Management reporting", tag: "HQ rollup", module: "HQ Ledger",
+    text: "Sales, order volume, and outlet comparisons roll up to headquarters from the same transaction data." },
+];
+// steps that get a right-hand connector arrow on desktop (end of each row has none)
+const connects = new Set([0, 1, 3, 4]);
+---
+<ol class="pipeline">
+  {steps.map((s, i) => (
+    <>
+      <li class={`step step--${s.tone}`} data-connect={connects.has(i) ? "true" : undefined}>
+        <div class="step__top">
+          <span class="step__icon"><Icon name={s.icon} size={22} /></span>
+          <div class="step__meta">
+            <span class="step__num">STEP {String(i + 1).padStart(2, "0")}</span>
+            <span class="step__tag">{s.tag}</span>
+          </div>
+        </div>
+        <h3 class="step__title">{s.title}</h3>
+        <p class="step__text">{s.text}</p>
+        <div class="step__rail">
+          <span class="rail" aria-hidden="true">
+            {steps.map((_, j) => (<i class={j < i ? "done" : j === i ? "active" : ""}></i>))}
+          </span>
+          <span class="step__module">{s.module}</span>
+        </div>
+      </li>
+      {i === 2 && (
+        <li class="pipeline__return" aria-hidden="true"><span class="v v--a"></span><span class="v v--b"></span></li>
+      )}
+    </>
+  ))}
+</ol>
+
+<style>
+  .pipeline { --gap: 1.5rem; list-style: none; margin: 0; padding: 0; display: grid; gap: var(--gap); position: relative; }
+
+  /* mobile + tablet: vertical timeline spine */
+  .pipeline::before { content: ""; position: absolute; left: 11px; top: 36px; bottom: 36px; width: 2px; border-radius: 2px; background: var(--color-border-strong); }
+  .pipeline__return { display: none; }
+
+  .step {
+    position: relative; margin-left: 2.5rem; padding: 1.25rem;
+    display: flex; flex-direction: column; gap: 0.9rem;
+    background: #fff; border: 1px solid var(--color-border); border-radius: 18px; box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .step:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--color-border-strong); }
+  .step::before {
+    content: ""; position: absolute; left: calc(-2.5rem + 5px); top: 30px; width: 14px; height: 14px; box-sizing: border-box;
+    border-radius: 50%; background: #fff; border: 3px solid var(--color-brand);
+  }
+
+  .step__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
+  .step__icon { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 14px; background: var(--icon-bg); color: var(--icon-fg); }
+  .step__meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .step__num, .step__tag { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1; padding: 5px 8px; border-radius: 8px; white-space: nowrap; }
+  .step__num { color: #475569; background: #f1f5f9; border: 1px solid var(--color-border); }
+  .step__tag { color: var(--tag-fg); background: var(--tag-bg); }
+
+  .step__title { margin: 0; font-size: 1.15rem; letter-spacing: -0.02em; color: var(--color-text-primary); }
+  .step__text { margin: 0; font-size: 0.95rem; max-width: none; }
+
+  .step__rail { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 10px 12px; border-radius: 12px; background: var(--color-obsidian); }
+  .rail { display: flex; gap: 4px; }
+  .rail i { width: 16px; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, 0.14); }
+  .rail i.done { background: rgba(255, 255, 255, 0.5); }
+  .rail i.active { background: var(--color-brand); box-shadow: 0 0 10px rgba(225, 29, 72, 0.7); }
+  .step__module { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; color: #e2e8f0; white-space: nowrap; }
+
+  .step--rose { --icon-bg: rgba(225, 29, 72, 0.1); --icon-fg: #e11d48; --tag-bg: rgba(225, 29, 72, 0.08); --tag-fg: #be123c; }
+  .step--amber { --icon-bg: rgba(245, 158, 11, 0.14); --icon-fg: #d97706; --tag-bg: rgba(245, 158, 11, 0.12); --tag-fg: #b45309; }
+  .step--sky { --icon-bg: rgba(56, 189, 248, 0.16); --icon-fg: #0284c7; --tag-bg: rgba(56, 189, 248, 0.14); --tag-fg: #0369a1; }
+  .step--emerald { --icon-bg: rgba(16, 185, 129, 0.14); --icon-fg: #059669; --tag-bg: rgba(16, 185, 129, 0.12); --tag-fg: #047857; }
+  .step--slate { --icon-bg: #f1f5f9; --icon-fg: #475569; --tag-bg: #f1f5f9; --tag-fg: #334155; }
+  .step--ink { --icon-bg: var(--color-obsidian); --icon-fg: #fff; --tag-bg: #e2e8f0; --tag-fg: #0f172a; }
+
+  /* desktop: 3×2 bento with connectors and a return rail between rows */
+  @media (min-width: 960px) {
+    .pipeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pipeline::before { display: none; }
+    .step { margin-left: 0; padding: 1.5rem; }
+    .step::before { display: none; }
+
+    .step[data-connect="true"]::after {
+      content: ""; position: absolute; z-index: 2; top: 50%; right: -26px; width: 28px; height: 28px; margin-top: -14px;
+      border-radius: 50%; background: #fff var(--icon-arrow-slate) center / 14px no-repeat;
+      border: 1px solid var(--color-border-strong); box-shadow: var(--shadow-sm);
+    }
+
+    .pipeline__return { display: block; grid-column: 1 / -1; position: relative; height: 28px; }
+    .pipeline__return::before {
+      content: ""; position: absolute; top: 50%; height: 2px; margin-top: -1px; background: var(--color-border-strong);
+      left: calc(16.667% - 0.5rem); right: calc(16.667% - 0.5rem);
+    }
+    .pipeline__return .v { position: absolute; width: 2px; background: var(--color-border-strong); }
+    .pipeline__return .v--a { left: calc(83.333% + 0.5rem); top: calc(-1 * var(--gap)); height: calc(50% + var(--gap) + 1px); }
+    .pipeline__return .v--b { left: calc(16.667% - 0.5rem); bottom: calc(-1 * var(--gap)); height: calc(50% + var(--gap) + 1px); }
+    .pipeline__return .v--b::after {
+      content: ""; position: absolute; left: 50%; bottom: 0; width: 10px; height: 10px;
+      border-right: 2px solid var(--color-border-strong); border-bottom: 2px solid var(--color-border-strong);
+      transform: translate(-50%, 0) rotate(45deg); transform-origin: center;
+    }
+  }
+</style>

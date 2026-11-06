@@ -21,12 +21,12 @@ import { urls } from "../../lib/urls";
       <div class="pricing-grid">
         {pricingTiers.map((tier) => (
           <div class={`pricing-card card ${tier.featured ? "pricing-card--featured" : ""}`}>
-            {tier.featured && <span class="pricing-card__ribbon">Most asked about</span>}
+            {tier.featured && <span class="pricing-card__ribbon">For growing groups</span>}
             <h2>{tier.name}</h2>
             <p class="pricing-card__buyer">{tier.buyer}</p>
             <p class="pricing-card__price">
               {tier.price}
-              {tier.priceNote && <span class="pricing-card__price-note">{" "}{tier.priceNote}</span>}
+              <span class="pricing-card__price-note">{tier.priceNote ?? " "}</span>
             </p>
             <p class="pricing-card__positioning">{tier.positioning}</p>
             <a class={`btn btn--block ${tier.featured ? "btn--primary" : "btn--ghost"}`} href={tier.ctaHref}>{tier.ctaLabel}</a>
@@ -55,12 +55,12 @@ import { urls } from "../../lib/urls";
         <table class="compare-table">
           <thead><tr><th>Capability</th><th>Starter</th><th>Growth</th><th>Enterprise</th></tr></thead>
           <tbody>
-            <tr><td>POS, KDS, QR ordering, OSDS</td><td>✓</td><td>✓</td><td>✓</td></tr>
-            <tr><td>Inventory, CRM, Reporting</td><td>✓</td><td>✓</td><td>✓</td></tr>
+            <tr><td>POS, KDS, QR ordering, OSDS</td><td><span class="tick" role="img" aria-label="Included"></span></td><td><span class="tick" role="img" aria-label="Included"></span></td><td><span class="tick" role="img" aria-label="Included"></span></td></tr>
+            <tr><td>Inventory, CRM, Reporting</td><td><span class="tick" role="img" aria-label="Included"></span></td><td><span class="tick" role="img" aria-label="Included"></span></td><td><span class="tick" role="img" aria-label="Included"></span></td></tr>
             <tr><td>Outlets</td><td>1</td><td>Multiple</td><td>Multiple / franchise</td></tr>
-            <tr><td>Cross-outlet reporting</td><td>—</td><td>✓</td><td>✓</td></tr>
-            <tr><td>Rollout & migration planning</td><td>—</td><td>Available</td><td>✓</td></tr>
-            <tr><td>Integration scoping</td><td>—</td><td>Available</td><td>✓</td></tr>
+            <tr><td>Cross-outlet reporting</td><td><span aria-label="Not included">—</span></td><td><span class="tick" role="img" aria-label="Included"></span></td><td><span class="tick" role="img" aria-label="Included"></span></td></tr>
+            <tr><td>Rollout & migration planning</td><td><span aria-label="Not included">—</span></td><td>Available</td><td><span class="tick" role="img" aria-label="Included"></span></td></tr>
+            <tr><td>Integration scoping</td><td><span aria-label="Not included">—</span></td><td>Available</td><td><span class="tick" role="img" aria-label="Included"></span></td></tr>
             <tr><td>Commercial terms</td><td>Published</td><td>Custom</td><td>Custom</td></tr>
           </tbody>
         </table>
@@ -94,24 +94,33 @@ import { urls } from "../../lib/urls";
   .pricing-grid { display: grid; gap: var(--space-6); grid-template-columns: 1fr; align-items: stretch; }
   @media (min-width: 860px) { .pricing-grid { grid-template-columns: repeat(3, 1fr); } }
 
-  .pricing-card { display: flex; flex-direction: column; position: relative; padding-top: var(--space-8); }
+  .pricing-card { position: relative; display: flex; flex-direction: column; padding: var(--space-8); }
+  .pricing-card h2 { font-size: 1.25rem; letter-spacing: -0.02em; margin-bottom: var(--space-2); }
+  .pricing-card--featured { border-color: var(--color-text-primary); box-shadow: var(--shadow-lg); }
   .pricing-card__ribbon {
-    position: absolute; top: calc(-1 * var(--space-3)); left: var(--space-6);
-    background: var(--color-brand); color: #fff; font-size: 0.68rem; font-weight: 700;
-    letter-spacing: 0.04em; text-transform: uppercase; padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill);
+    position: absolute; top: -13px; left: var(--space-8);
+    background: var(--color-brand); color: #fff; box-shadow: var(--brand-glow);
+    font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: var(--radius-pill);
   }
-  .pricing-card__buyer { font-size: 0.82rem; font-weight: 600; color: var(--color-brand-hover); margin-bottom: var(--space-2); }
-  .pricing-card__price { font-family: var(--font-display); font-size: 2.1rem; color: var(--color-text-primary); margin-bottom: var(--space-2); }
-  .pricing-card__price-note { font-size: 0.85rem; color: var(--color-text-secondary); font-family: var(--font-body); font-weight: 400; }
-  .pricing-card__positioning { font-size: 0.92rem; margin-bottom: var(--space-5); min-height: 3.5em; }
-  .pricing-card--featured { border-color: var(--color-brand); box-shadow: var(--shadow-lg); }
-  .pricing-card__divider { height: 1px; background: var(--color-border); margin-block: var(--space-6) var(--space-4); }
-  .pricing-card__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); font-size: 0.88rem; color: var(--color-text-secondary); }
-  .pricing-card__list li { padding-left: 1.4em; position: relative; }
-  .pricing-card__list li::before { content: "\2713"; position: absolute; left: 0; color: var(--color-brand); font-weight: 700; }
+  .pricing-card__buyer { margin: 0 0 var(--space-5); max-width: none; font-size: 0.85rem; font-weight: 600; color: var(--color-text-tertiary); }
+  .pricing-card__price { margin: 0 0 var(--space-3); max-width: none; font-family: var(--font-display); font-weight: 800; font-size: 2.75rem; line-height: 1.05; letter-spacing: -0.035em; color: var(--color-text-primary); }
+  .pricing-card__price-note { display: block; min-height: 2.9em; margin-top: 6px; line-height: 1.45; font-family: var(--font-body); font-weight: 500; font-size: 0.85rem; letter-spacing: 0; color: var(--color-text-tertiary); }
+  .pricing-card__positioning { font-size: 0.95rem; margin-bottom: var(--space-6); }
+  .pricing-card__divider { height: 1px; background: var(--color-border); margin-block: var(--space-6) var(--space-5); }
+  .pricing-card__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-3); font-size: 0.92rem; color: var(--color-text-secondary); }
+  .pricing-card__list li { position: relative; padding-left: 1.7rem; }
+  .pricing-card__list li::before { content: ""; position: absolute; left: 0; top: 0.2em; width: 18px; height: 18px; border-radius: 50%; background: var(--color-emerald-bg); }
+  .pricing-card__list li::after { content: ""; position: absolute; left: 4px; top: calc(0.2em + 4px); width: 10px; height: 10px; background: var(--color-emerald-text); -webkit-mask: var(--icon-check) center / contain no-repeat; mask: var(--icon-check) center / contain no-repeat; }
+
+  /* Align every row (name, buyer, price, copy, button, list) across the three cards */
+  @supports (grid-template-rows: subgrid) {
+    @media (min-width: 860px) {
+      .pricing-card { display: grid; grid-row: span 7; grid-template-rows: subgrid; row-gap: 0; }
+    }
+  }
+  @supports not (grid-template-rows: subgrid) { .pricing-card__positioning { min-height: 4.5em; } }
 
   .pricing-faq { display: grid; gap: var(--space-5); grid-template-columns: 1fr; }
   @media (min-width: 720px) { .pricing-faq { grid-template-columns: 1fr 1fr; } }
-
-  .cta-split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-6); }
 </style>

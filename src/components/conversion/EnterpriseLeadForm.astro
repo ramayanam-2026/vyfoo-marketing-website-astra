@@ -1,21 +1,30 @@
 ---
 import { CONTACT_EMAIL } from "../../lib/urls";
+
+// PUBLIC_ variables are inlined at build time and are safe for the browser.
+// Pass them to the client script via data attributes (a bundled module script
+// cannot receive values through define:vars, and classic inline scripts cannot
+// use import.meta).
+const endpoint = import.meta.env.PUBLIC_VYFOO_LEADS_ENDPOINT ?? "";
 ---
-<form class="lead-form" data-lead-form novalidate>
+<form class="lead-form" data-lead-form data-endpoint={endpoint} data-email={CONTACT_EMAIL} novalidate>
   <div class="lead-form__row">
     <div class="lead-form__field">
       <label for="lf-name">Full name <span aria-hidden="true">*</span></label>
-      <input id="lf-name" name="fullName" type="text" required aria-required="true" autocomplete="name" />
+      <input id="lf-name" name="fullName" type="text" required aria-required="true" autocomplete="name" aria-describedby="lf-name-error" />
+      <p class="lead-form__error" id="lf-name-error" hidden></p>
     </div>
     <div class="lead-form__field">
       <label for="lf-email">Work email <span aria-hidden="true">*</span></label>
-      <input id="lf-email" name="workEmail" type="email" required aria-required="true" autocomplete="email" />
+      <input id="lf-email" name="workEmail" type="email" required aria-required="true" autocomplete="email" aria-describedby="lf-email-error" />
+      <p class="lead-form__error" id="lf-email-error" hidden></p>
     </div>
   </div>
   <div class="lead-form__row">
     <div class="lead-form__field">
       <label for="lf-company">Company <span aria-hidden="true">*</span></label>
-      <input id="lf-company" name="company" type="text" required aria-required="true" autocomplete="organization" />
+      <input id="lf-company" name="company" type="text" required aria-required="true" autocomplete="organization" aria-describedby="lf-company-error" />
+      <p class="lead-form__error" id="lf-company-error" hidden></p>
     </div>
     <div class="lead-form__field">
       <label for="lf-role">Role</label>
@@ -49,12 +58,12 @@ import { CONTACT_EMAIL } from "../../lib/urls";
         <option>Cloud kitchen</option>
         <option>Fine dining</option>
         <option>Multi-outlet / franchise group</option>
-        <option>Hotel F&B</option>
+        <option>Hotel F&amp;B</option>
         <option>Other</option>
       </select>
     </div>
     <div class="lead-form__field">
-      <label for="lf-current">Current POS or restaurant management system</label>
+      <label for="lf-current">Current POS or management system</label>
       <input id="lf-current" name="currentSystem" type="text" />
     </div>
   </div>
@@ -72,79 +81,109 @@ import { CONTACT_EMAIL } from "../../lib/urls";
     <a href="/privacy">our privacy policy</a>. We don't sell your information.
   </p>
 
-  <button type="submit" class="btn btn--primary btn--lg btn--block" data-lead-form-submit>Request Enterprise Demo</button>
+  <button type="submit" class="btn btn--primary btn--block" data-lead-form-submit>Request Enterprise Demo</button>
 
   <div class="lead-form__status" role="status" aria-live="polite" data-lead-form-status hidden></div>
 </form>
 
 <style>
-  .lead-form { max-width: 100%; }
   .lead-form__row { display: grid; gap: var(--space-4); grid-template-columns: 1fr; margin-bottom: var(--space-4); }
   @media (min-width: 560px) { .lead-form__row { grid-template-columns: 1fr 1fr; } }
+  .lead-form__field { min-width: 0; }
   .lead-form__field--full { margin-bottom: var(--space-4); }
-  .lead-form__field label { display: block; font-weight: 600; font-size: 0.86rem; margin-bottom: var(--space-2); color: var(--color-text-primary); }
+  .lead-form__field label { display: block; margin-bottom: var(--space-2); font-size: 0.86rem; font-weight: 600; color: var(--color-text-primary); }
   .lead-form__field label span { color: var(--color-brand); }
   .lead-form__field input, .lead-form__field select, .lead-form__field textarea {
-    width: 100%; padding: var(--space-3); border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm);
-    font: inherit; font-size: 0.95rem; background: var(--color-surface); color: var(--color-text-primary);
-    min-height: 46px; transition: border-color 0.15s ease;
+    width: 100%; min-height: 48px; padding: 0 var(--space-4);
+    font: inherit; font-size: 0.95rem; color: var(--color-text-primary);
+    background: #fff; border: 1.5px solid var(--color-border-strong); border-radius: var(--radius-md);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
-  .lead-form__field input:hover, .lead-form__field select:hover, .lead-form__field textarea:hover { border-color: var(--color-text-secondary); }
-  .lead-form__field textarea { min-height: auto; resize: vertical; }
-  .lead-form__privacy { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: var(--space-5); }
-  .lead-form__status { margin-top: var(--space-4); padding: var(--space-4); border-radius: var(--radius-sm); font-size: 0.9rem; }
-  .lead-form__status[data-state="success"] { background: var(--color-success-soft); color: var(--color-success); }
-  .lead-form__status[data-state="error"] { background: var(--color-brand-soft); color: var(--color-brand-hover); }
+  .lead-form__field textarea { min-height: 96px; padding: var(--space-3) var(--space-4); resize: vertical; }
+  .lead-form__field select { appearance: none; padding-right: 2.5rem; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23475569' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 1rem center; }
+  .lead-form__field input:hover, .lead-form__field select:hover, .lead-form__field textarea:hover { border-color: var(--color-text-tertiary); }
+  .lead-form__field input:focus-visible, .lead-form__field select:focus-visible, .lead-form__field textarea:focus-visible { border-color: var(--color-brand); box-shadow: var(--focus-ring); }
+  .lead-form__field [aria-invalid="true"] { border-color: var(--color-brand); }
+  .lead-form__error { margin: var(--space-2) 0 0; max-width: none; font-size: 0.82rem; font-weight: 500; color: var(--color-brand-hover); }
+  .lead-form__privacy { margin-bottom: var(--space-5); font-size: 0.82rem; color: var(--color-text-tertiary); }
+  .lead-form__privacy a { color: var(--color-text-primary); text-decoration: underline; text-underline-offset: 3px; }
+  .lead-form__status { margin-top: var(--space-4); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md); font-size: 0.92rem; max-width: none; }
+  .lead-form__status[data-state="success"] { background: var(--color-emerald-bg); color: var(--color-emerald-text); }
+  .lead-form__status[data-state="error"] { background: var(--color-brand-soft); color: var(--color-brand-hover); border: 1px solid rgba(225, 29, 72, 0.25); }
+  .lead-form__status a { color: inherit; font-weight: 600; text-decoration: underline; }
 </style>
 
-<script define:vars={{ contactEmail: CONTACT_EMAIL }}>
-  const form = document.querySelector("[data-lead-form]");
-  const status = document.querySelector("[data-lead-form-status]");
-  const submitBtn = document.querySelector("[data-lead-form-submit]");
-  const endpoint = import.meta.env.PUBLIC_VYFOO_LEADS_ENDPOINT;
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-lead-form]");
+  const statusEl = document.querySelector<HTMLElement>("[data-lead-form-status]");
+  const submitBtn = document.querySelector<HTMLButtonElement>("[data-lead-form-submit]");
 
-  form?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(form));
+  if (form && statusEl && submitBtn) {
+    const endpoint = form.dataset.endpoint ?? "";
+    const contactEmail = form.dataset.email ?? "";
+    const idleLabel = submitBtn.textContent ?? "Request Enterprise Demo";
 
-    if (!data.fullName || !data.workEmail || !data.company) {
-      status.hidden = false;
-      status.dataset.state = "error";
-      status.textContent = "Please fill in your name, work email, and company.";
-      return;
+    function showStatus(state: "success" | "error", message: string, withMailto = false) {
+      statusEl!.hidden = false;
+      statusEl!.dataset.state = state;
+      statusEl!.textContent = message + (withMailto ? " " : "");
+      if (withMailto && contactEmail) {
+        const a = document.createElement("a");
+        a.href = `mailto:${contactEmail}`;
+        a.textContent = contactEmail;
+        statusEl!.append(a, ".");
+      }
     }
 
-    if (!endpoint) {
-      status.hidden = false;
-      status.dataset.state = "error";
-      status.innerHTML =
-        `This form isn't connected to our CRM yet, so it can't be submitted automatically. ` +
-        `Please email ${contactEmail} with your details instead and our team will follow up directly.`;
-      return;
+    function setError(input: HTMLInputElement, message: string) {
+      const err = form!.querySelector<HTMLElement>(`#${input.id}-error`);
+      input.setAttribute("aria-invalid", "true");
+      if (err) { err.textContent = message; err.hidden = false; }
+    }
+    function clearErrors() {
+      form!.querySelectorAll<HTMLInputElement>("[aria-invalid]").forEach((el) => el.removeAttribute("aria-invalid"));
+      form!.querySelectorAll<HTMLElement>(".lead-form__error").forEach((el) => { el.hidden = true; el.textContent = ""; });
+      statusEl!.hidden = true;
     }
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting…";
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearErrors();
 
-    try {
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, source: "enterprise-demo-form" }),
-      });
-      if (!res.ok) throw new Error("submission failed");
-      status.hidden = false;
-      status.dataset.state = "success";
-      status.textContent = "Thanks — your request was received. Our enterprise team will reach out shortly.";
-      form.reset();
-    } catch {
-      status.hidden = false;
-      status.dataset.state = "error";
-      status.innerHTML =
-        `Something went wrong submitting this form. Please email ${contactEmail} directly so we don't lose your request.`;
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Request Enterprise Demo";
-    }
-  });
+      const name = form.elements.namedItem("fullName") as HTMLInputElement;
+      const email = form.elements.namedItem("workEmail") as HTMLInputElement;
+      const company = form.elements.namedItem("company") as HTMLInputElement;
+      const invalid: HTMLInputElement[] = [];
+      if (!name.value.trim()) { setError(name, "Please enter your full name."); invalid.push(name); }
+      if (!email.value.trim()) { setError(email, "Please enter your work email."); invalid.push(email); }
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { setError(email, "Please enter a valid email address."); invalid.push(email); }
+      if (!company.value.trim()) { setError(company, "Please enter your company name."); invalid.push(company); }
+      if (invalid.length) { invalid[0].focus(); return; }
+
+      // No endpoint configured: never pretend the lead was sent.
+      if (!endpoint) {
+        showStatus("error", "This form isn't connected to our CRM yet, so it can't be submitted automatically. Please email us directly at", true);
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form));
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting…";
+      try {
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...data, source: "enterprise-demo-form" }),
+        });
+        if (!res.ok) throw new Error(`status ${res.status}`);
+        showStatus("success", "Thanks — your request was received. Our team will follow up using the email you provided.");
+        form.reset();
+      } catch {
+        showStatus("error", "Something went wrong submitting this form, so please email us directly so we don't lose your request:", true);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = idleLabel;
+      }
+    });
+  }
 </script>

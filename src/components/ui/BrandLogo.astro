@@ -1,0 +1,32 @@
+---
+/** Vyfoo lockup: gradient squircle with a geometric V, wordmark, and an OS tag. */
+interface Props { tone?: "light" | "dark"; }
+const { tone = "light" } = Astro.props;
+---
+<span class={`brand brand--${tone}`}>
+  <span class="brand__mark" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3.5 5h4.6L12 13.6 15.9 5h4.6l-6.9 15.2h-3.2L3.5 5z" fill="#fff"/></svg>
+  </span>
+  <span class="brand__name">Vyfoo</span>
+  <span class="brand__pill">OS</span>
+</span>
+
+<style>
+  .brand { display: inline-flex; align-items: center; gap: 10px; line-height: 1; }
+  .brand__mark {
+    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 12px -3px rgba(225, 29, 72, 0.5);
+  }
+  .brand__name {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+  }
+  .brand__pill {
+    font-family: var(--font-mono); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.06em;
+    padding: 3px 6px; border-radius: 6px; color: #475569; background: #f1f5f9; border: 1px solid #e2e8f0;
+  }
+  .brand--dark .brand__name { color: #ffffff; }
+  .brand--dark .brand__pill { color: #94a3b8; background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.12); }
+</style>

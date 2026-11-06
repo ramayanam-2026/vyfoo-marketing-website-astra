@@ -1,0 +1,124 @@
+---
+import Icon from "../ui/Icon.astro";
+
+/**
+ * Conceptual hybrid architecture. Deliberately scoped: it shows how the
+ * pieces relate, not guarantees about every workflow. Exact offline scope
+ * depends on hardware and network setup (stated once, in the section copy).
+ */
+const venue = [
+  { icon: "pos", label: "POS terminals" },
+  { icon: "kds", label: "Kitchen display" },
+  { icon: "osds", label: "Pickup screen" },
+  { icon: "printer", label: "Thermal printers" },
+];
+const cloud = [
+  { icon: "cloud", label: "Vyfoo cloud", sub: "Sync and storage" },
+  { icon: "chart", label: "HQ visibility", sub: "Reporting across outlets" },
+];
+const states = [
+  { badge: "Online", tone: "emerald", title: "Everything syncs live", text: "Orders flow to the cloud as they happen, and headquarters sees every outlet." },
+  { badge: "Offline failover", tone: "sky", title: "The internet drops", text: "Terminals keep taking orders over the venue's local network while the connection is down." },
+  { badge: "Resync", tone: "emerald", title: "The connection returns", text: "Queued orders synchronize back to the cloud automatically and reporting catches up." },
+];
+---
+<div class="arch">
+  <div class="arch__panel arch__panel--venue">
+    <p class="mock-label">Venue · local network</p>
+    <ul>
+      {venue.map((n) => (
+        <li><span class="ico"><Icon name={n.icon} size={18} /></span>{n.label}</li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="arch__link arch__link--local"><span>Local network</span></div>
+
+  <div class="arch__core">
+    <span class="arch__core-icon"><Icon name="server" size={26} /></span>
+    <p class="arch__core-title">Local node</p>
+    <p class="arch__core-sub">Keeps order flow running on-site</p>
+    <span class="badge badge--emerald"><span class="pulse-dot"></span>Ready</span>
+  </div>
+
+  <div class="arch__link arch__link--sync"><span>Sync when online</span></div>
+
+  <div class="arch__panel arch__panel--cloud">
+    <p class="mock-label">Cloud · headquarters</p>
+    <ul>
+      {cloud.map((n) => (
+        <li><span class="ico"><Icon name={n.icon} size={18} /></span><span class="txt">{n.label}<small>{n.sub}</small></span></li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<ol class="states">
+  {states.map((s) => (
+    <li class="state">
+      <span class={`badge badge--${s.tone}`}>{s.badge}</span>
+      <h4>{s.title}</h4>
+      <p>{s.text}</p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .arch { display: grid; grid-template-columns: 1fr; align-items: center; justify-items: stretch; }
+
+  .arch__panel {
+    padding: 18px; border-radius: 18px;
+    background: rgba(255, 255, 255, 0.03); border: 1px solid var(--color-border-dark);
+  }
+  .arch__panel ul { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .arch__panel li {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 0.92rem; font-weight: 500; color: #e2e8f0;
+  }
+  .ico { display: grid; place-items: center; width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px; }
+  .arch__panel--venue .ico { color: #34d399; background: rgba(16, 185, 129, 0.12); }
+  .arch__panel--cloud .ico { color: #7dd3fc; background: rgba(56, 189, 248, 0.12); }
+  .arch__panel--cloud li { box-shadow: 0 0 36px -14px rgba(56, 189, 248, 0.55); border-color: rgba(56, 189, 248, 0.2); }
+  .txt { display: flex; flex-direction: column; line-height: 1.25; }
+  .txt small { font-size: 0.75rem; font-weight: 400; color: var(--color-text-on-dark-muted); }
+
+  .arch__core {
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 24px 20px; border-radius: 22px;
+    background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.04) 70%);
+    border: 1px solid rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.06), 0 0 70px -12px rgba(16, 185, 129, 0.55);
+  }
+  .arch__core-icon { display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 8px; border-radius: 16px; color: #34d399; background: rgba(16, 185, 129, 0.14); }
+  .arch__core p { margin: 0; max-width: none; }
+  .arch__core-title { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; color: #fff; }
+  .arch__core-sub { font-size: 0.82rem; color: var(--color-text-on-dark-muted); margin-bottom: 10px !important; }
+
+  /* links: dashed animated lines (vertical on mobile, horizontal on desktop) */
+  .arch__link { --c: #10b981; position: relative; width: 2px; height: 64px; margin: 0 auto; }
+  .arch__link--sync { --c: #38bdf8; }
+  .arch__link::before {
+    content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(180deg, var(--c) 0 6px, transparent 6px 12px);
+    background-size: 100% 12px; animation: flow-y 0.9s linear infinite; opacity: 0.85;
+  }
+  .arch__link span {
+    position: absolute; top: 50%; left: 18px; transform: translateY(-50%); white-space: nowrap;
+    font-family: var(--font-mono); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--c);
+  }
+  @keyframes flow-y { to { background-position: 0 12px; } }
+  @keyframes flow-x { to { background-position: 12px 0; } }
+
+  @media (min-width: 960px) {
+    .arch { grid-template-columns: 1.15fr 110px 0.95fr 120px 1.15fr; }
+    .arch__link { width: auto; height: 2px; margin: 0; }
+    .arch__link::before { background: repeating-linear-gradient(90deg, var(--c) 0 6px, transparent 6px 12px); background-size: 12px 100%; animation-name: flow-x; }
+    .arch__link span { top: -26px; left: 50%; transform: translateX(-50%); }
+  }
+
+  .states { list-style: none; margin: var(--space-12) 0 0; padding: 0; display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+  @media (min-width: 860px) { .states { grid-template-columns: repeat(3, 1fr); } }
+  .state { padding: var(--space-6); border-radius: 18px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--color-border-dark); }
+  .state h4 { margin: var(--space-4) 0 var(--space-2); color: #fff; font-size: 1.1rem; }
+  .state p { margin: 0; font-size: 0.93rem; }
+</style>

@@ -28,7 +28,7 @@ const relatedSolutions = solutions.slice(0, 3);
       <span class="tag">{product.shortName}</span>
       <h1>{product.name}</h1>
       <p>{product.description}</p>
-      <div class="hero__ctas">
+      <div class="cta-group">
         <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
         <a class="btn btn--ghost" href={urls.startTrial}>Start Free Trial</a>
       </div>
@@ -41,7 +41,7 @@ const relatedSolutions = solutions.slice(0, 3);
       <div class="grid-auto grid-auto--2">
         <div class="card">
           <h3>Core capabilities</h3>
-          <ul>{product.capabilities.map((c: string) => <li>{c}</li>)}</ul>
+          <ul class="check-list">{product.capabilities.map((c: string) => <li>{c}</li>)}</ul>
         </div>
         {product.conditionalCapabilities && (
           <div class="card">
@@ -71,5 +71,4 @@ const relatedSolutions = solutions.slice(0, 3);
 </MarketingLayout>
 
 <style>
-  .hero__ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-top: var(--space-6); }
 </style>

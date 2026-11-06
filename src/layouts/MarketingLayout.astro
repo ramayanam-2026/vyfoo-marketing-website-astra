@@ -10,14 +10,14 @@ interface Props extends SeoProps {
   hideFooterConvert?: boolean;
 }
 
-const { ...props } = Astro.props;
+const { hideFooterConvert = false, ...props } = Astro.props;
 ---
 <BaseLayout {...props}>
   <SiteHeader />
   <main id="main">
     <slot />
   </main>
-  <SiteFooter />
+  <SiteFooter showConvert={!hideFooterConvert} />
 </BaseLayout>
 
 <!-- Button system now lives centrally in src/styles/global.css (imported by

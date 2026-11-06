@@ -1,39 +1,55 @@
 ---
+/** Illustrative multi-outlet HQ view. Sample data only. */
 const outlets = [
-  { name: "Indiranagar", trend: "+12% vs last week", level: 82 },
-  { name: "Koramangala", trend: "+4% vs last week", level: 64 },
-  { name: "Whitefield", trend: "-2% vs last week", level: 48 },
+  { name: "Downtown", orders: "482", level: 88, badge: "Synced", tone: "emerald" },
+  { name: "Airport", orders: "391", level: 70, badge: "Synced", tone: "emerald" },
+  { name: "Riverside", orders: "263", level: 48, badge: "Local mode", tone: "sky" },
+  { name: "Harbour", orders: "340", level: 62, badge: "Synced", tone: "emerald" },
 ];
 ---
-<div class="hq-preview mockup-panel" aria-hidden="true">
-  <p class="mockup-panel__title">
-    Headquarters — Outlet performance
-    <span class="hq-preview__badge">Illustrative</span>
-  </p>
-  <div class="hq-preview__rows">
-    {outlets.map((o) => (
-      <div class="hq-preview__row">
-        <div class="hq-preview__row-head">
-          <span class="hq-preview__row-name">{o.name}</span>
-          <span class="hq-preview__row-trend" data-direction={o.trend.startsWith("-") ? "down" : "up"}>{o.trend}</span>
-        </div>
-        <div class="hq-preview__bar">
-          <div class="hq-preview__bar-fill" style={`width: ${o.level}%`}></div>
-        </div>
-      </div>
-    ))}
+<div class="window hq" role="img" aria-label="Illustrative headquarters dashboard comparing four outlets by orders and sync status">
+  <div class="window__chrome">
+    <div class="window__dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <p class="window__status"><span class="pulse-dot"></span><span>HQ ledger</span><span class="sep">•</span><span>4 outlets</span></p>
   </div>
-  <p class="mockup-panel__footer">Illustrative preview only — not real customer data.</p>
+  <div class="window__body">
+    <div class="kpis">
+      <div><span class="mock-label">Orders today</span><strong>1,476</strong></div>
+      <div><span class="mock-label">Avg ticket time</span><strong>06:12</strong></div>
+      <div class="kpis__hide"><span class="mock-label">Outlets live</span><strong>4 / 4</strong></div>
+    </div>
+    <ul class="rows">
+      {outlets.map((o) => (
+        <li>
+          <div class="rows__head">
+            <span class="rows__name">{o.name}</span>
+            <span class="rows__orders">{o.orders} orders</span>
+            <span class={`badge badge--${o.tone}`}>{o.badge}</span>
+          </div>
+          <div class="rows__bar"><i style={`width:${o.level}%`}></i></div>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <p class="window__note">Illustrative preview · sample data, not real customer results</p>
 </div>
 
 <style>
-  .hq-preview { max-width: 440px; }
-  .hq-preview__badge { font-size: 0.65rem; background: var(--color-surface-subtle); padding: var(--space-1) var(--space-2); border-radius: var(--radius-pill); text-transform: none; letter-spacing: 0; color: var(--color-text-tertiary); }
-  .hq-preview__rows { display: flex; flex-direction: column; gap: var(--space-4); margin-bottom: var(--space-4); }
-  .hq-preview__row-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-2); font-size: 0.85rem; }
-  .hq-preview__row-name { font-weight: 600; }
-  .hq-preview__row-trend { font-size: 0.76rem; color: var(--color-success); }
-  .hq-preview__row-trend[data-direction="down"] { color: var(--color-brand-hover); }
-  .hq-preview__bar { height: 8px; border-radius: var(--radius-pill); background: var(--color-surface-subtle); overflow: hidden; }
-  .hq-preview__bar-fill { height: 100%; background: var(--color-brand); border-radius: var(--radius-pill); }
+  .hq { width: 100%; max-width: 560px; min-width: 0; }
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .kpis div { display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 12px; background: var(--color-obsidian-elevated); border: 1px solid var(--color-border-dark); }
+  .kpis .mock-label { font-size: 0.6rem; }
+  .kpis strong { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; color: #fff; }
+  .rows { list-style: none; margin: 0; padding: 14px; display: flex; flex-direction: column; gap: 14px; border-radius: 12px; background: var(--color-obsidian-elevated); border: 1px solid var(--color-border-dark); }
+  .rows__head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.86rem; }
+  .rows__name { font-weight: 600; color: #fff; }
+  .rows__orders { margin-right: auto; font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-on-dark-muted); }
+  .rows__bar { height: 6px; border-radius: 9999px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
+  .rows__bar i { display: block; height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #be123c, #fb7185); }
+  @media (max-width: 420px) {
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .kpis__hide { display: none !important; }
+    .rows__orders { display: none; }
+    .rows__name { margin-right: auto; }
+  }
 </style>

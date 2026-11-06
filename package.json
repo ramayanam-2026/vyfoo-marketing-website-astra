@@ -10,7 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "check:css": "node scripts/check-css-vars.mjs",
+    "prebuild": "npm run check:css"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

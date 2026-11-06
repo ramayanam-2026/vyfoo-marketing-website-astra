@@ -1,49 +1,54 @@
 ---
 import { footerNav } from "../../data/navigation";
 import { urls, CONTACT_EMAIL, CONTACT_PHONE, COMPANY_NAME } from "../../lib/urls";
+import BrandLogo from "../ui/BrandLogo.astro";
 
+interface Props { showConvert?: boolean; }
+const { showConvert = true } = Astro.props;
 const year = new Date().getFullYear();
 ---
-<section class="dual-convert">
-  <div class="container dual-convert__grid">
-    <div class="dual-convert__card">
-      <h2>Ready to run your restaurant on one system?</h2>
-      <p>Explore Vyfoo Complete and get started without an enterprise sales process.</p>
-      <p class="dual-convert__price">$99<span>/month</span></p>
-      <a class="btn btn--primary" href={urls.startTrial}>Start Free Trial</a>
+{showConvert && (
+  <section class="dual-convert">
+    <div class="container dual-convert__grid">
+      <div class="dual-convert__card">
+        <h2>Ready to run your restaurant on one system?</h2>
+        <p>Explore Vyfoo Complete and get started without an enterprise sales process.</p>
+        <p class="dual-convert__price">$99<span>/month · single outlet</span></p>
+        <a class="btn btn--ghost" href={urls.startTrial}>Start Free Trial</a>
+      </div>
+      <div class="dual-convert__card dual-convert__card--dark">
+        <h2>Scaling across locations?</h2>
+        <p>Discuss your operating model, rollout requirements, reporting needs, and deployment architecture with our team.</p>
+        <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
+      </div>
     </div>
-    <div class="dual-convert__card dual-convert__card--dark">
-      <h2>Scaling across locations?</h2>
-      <p>Discuss your operating model, rollout requirements, reporting needs, and deployment architecture with our team.</p>
-      <a class="btn btn--on-ink" href={urls.bookDemo}>Book Enterprise Demo</a>
-    </div>
-  </div>
-</section>
+  </section>
+)}
 
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-col footer-col--brand">
-      <p class="wordmark-footer"><span class="wordmark-footer__mark" aria-hidden="true">V</span>Vyfoo</p>
+      <a href="/" class="footer-brand" aria-label="Vyfoo home"><BrandLogo tone="dark" /></a>
       <p class="footer-text">A hybrid cloud-and-offline restaurant operating system by {COMPANY_NAME}.</p>
       <p class="footer-text"><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p>
       <p class="footer-text"><a href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}>{CONTACT_PHONE}</a></p>
     </div>
-    <div class="footer-col">
+    <nav class="footer-col" aria-label="Product">
       <p class="footer-col__heading">Product</p>
       <ul>{footerNav.product.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
-    </div>
-    <div class="footer-col">
+    </nav>
+    <nav class="footer-col" aria-label="Solutions">
       <p class="footer-col__heading">Solutions</p>
       <ul>{footerNav.solutions.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
-    </div>
-    <div class="footer-col">
+    </nav>
+    <nav class="footer-col" aria-label="Resources">
       <p class="footer-col__heading">Resources</p>
       <ul>{footerNav.resources.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
-    </div>
-    <div class="footer-col">
+    </nav>
+    <nav class="footer-col" aria-label="Company">
       <p class="footer-col__heading">Company</p>
       <ul>{footerNav.company.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
-    </div>
+    </nav>
   </div>
   <div class="container footer-legal">
     <p class="footer-text">&copy; {year} {COMPANY_NAME}. All rights reserved.</p>
@@ -52,51 +57,47 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  .dual-convert { padding-block: var(--space-16); background: var(--color-surface-subtle); }
+  .dual-convert { padding-block: var(--space-16); background: var(--color-surface-subtle); border-top: 1px solid var(--color-border); }
   .dual-convert__grid { display: grid; gap: var(--space-6); grid-template-columns: 1fr; }
   .dual-convert__card {
-    background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+    display: flex; flex-direction: column; align-items: flex-start;
+    background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius-xl);
     padding: var(--space-8); box-shadow: var(--shadow-sm);
   }
-  /* Explicit color overrides below are required: the global `p { color }`
-     rule is more specific than an ancestor's inherited color, so every
-     paragraph inside a dark card must be re-pointed to a light tone or it
-     silently renders in a low-contrast gray meant for light backgrounds. */
-  .dual-convert__card--dark { background: var(--color-dark-surface); color: var(--color-text-on-dark); border-color: var(--color-dark-surface); }
-  .dual-convert__card--dark h2 { color: var(--color-text-on-dark); }
+  .dual-convert__card h2 { font-size: clamp(1.5rem, 2vw + 0.75rem, 2rem); }
+  .dual-convert__card .btn { margin-top: auto; }
+  .dual-convert__card--dark { background: var(--color-obsidian); border-color: var(--color-obsidian); }
+  /* every <p> inside a dark card is re-pointed to a light tone (global p is slate) */
+  .dual-convert__card--dark h2 { color: #fff; }
   .dual-convert__card--dark p { color: var(--color-text-on-dark-muted); }
-  .dual-convert__price { font-family: var(--font-display); font-size: 2rem; color: var(--color-text-primary); margin-bottom: var(--space-5); }
-  .dual-convert__price span { font-size: 1rem; color: var(--color-text-secondary); font-family: var(--font-body); font-weight: 400; }
+  .dual-convert__price { font-family: var(--font-display); font-weight: 800; font-size: 2.25rem; letter-spacing: -0.03em; color: var(--color-text-primary); margin-bottom: var(--space-5); }
+  .dual-convert__price span { font-family: var(--font-body); font-weight: 500; font-size: 0.95rem; letter-spacing: 0; color: var(--color-text-tertiary); }
   @media (min-width: 860px) { .dual-convert__grid { grid-template-columns: 1fr 1fr; } }
 
-  .site-footer { background: var(--color-dark-surface); color: var(--color-text-on-dark-muted); padding-top: var(--space-16); }
-  .footer-grid { display: grid; gap: var(--space-8); grid-template-columns: 1fr; padding-bottom: var(--space-12); }
-  .footer-col__heading { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-on-dark); margin-bottom: var(--space-3); }
-  .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
-  .footer-col a { color: var(--color-text-on-dark-muted); text-decoration: none; font-size: 0.9rem; }
-  .footer-col a:hover { color: var(--color-text-on-dark); }
-  .footer-text { color: var(--color-text-on-dark-muted); font-size: 0.88rem; }
+  .site-footer { background: var(--color-obsidian); color: var(--color-text-on-dark-muted); padding-top: var(--space-16); border-top: 1px solid var(--color-border-dark); }
+  .footer-grid { display: grid; gap: var(--space-10); grid-template-columns: 1fr 1fr; padding-bottom: var(--space-12); }
+  .footer-col--brand { grid-column: 1 / -1; }
+  .footer-brand { display: inline-flex; text-decoration: none; margin-bottom: var(--space-4); }
+  .footer-col__heading { margin: 0 0 var(--space-4); font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; }
+  .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+  .footer-col a { color: var(--color-text-on-dark-muted); text-decoration: none; font-size: 0.92rem; transition: color 0.15s ease; }
+  .footer-col a:hover { color: #fff; }
+  .footer-text { margin: 0 0 var(--space-2); color: var(--color-text-on-dark-muted); font-size: 0.92rem; }
   .footer-text a { text-decoration: none; }
-  .footer-text a:hover { color: var(--color-text-on-dark); }
-  .wordmark-footer {
-    font-family: var(--font-display); font-size: 1.3rem; color: var(--color-text-on-dark);
-    margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);
-  }
-  .wordmark-footer__mark {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 28px; height: 28px; border-radius: 8px; background: var(--color-brand);
-    color: #fff; font-size: 0.95rem; font-weight: 700; font-family: var(--font-body);
-  }
+  .footer-text a:hover { color: #fff; }
+  .footer-col--brand .footer-text:first-of-type { max-width: 34ch; margin-bottom: var(--space-4); }
   .footer-legal {
-    border-top: 1px solid rgba(255,255,255,0.12); padding-block: var(--space-6);
-    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); font-size: 0.82rem;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4);
+    padding-block: var(--space-6); border-top: 1px solid var(--color-border-dark);
   }
-  .footer-legal .footer-text { margin: 0; font-size: 0.82rem; }
-  .footer-legal ul { list-style: none; display: flex; gap: var(--space-4); margin: 0; padding: 0; }
-  .footer-legal a { color: var(--color-text-on-dark-muted); text-decoration: none; }
-  .footer-legal a:hover { color: var(--color-text-on-dark); }
+  .footer-legal .footer-text { margin: 0; font-size: 0.85rem; }
+  .footer-legal ul { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); margin: 0; padding: 0; }
+  .footer-legal a { color: var(--color-text-on-dark-muted); text-decoration: none; font-size: 0.85rem; }
+  .footer-legal a:hover { color: #fff; }
 
-  @media (min-width: 860px) {
-    .footer-grid { grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; }
+  @media (min-width: 640px) { .footer-grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 960px) {
+    .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr; }
+    .footer-col--brand { grid-column: auto; }
   }
 </style>
