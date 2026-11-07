@@ -270,7 +270,7 @@ const auditLog = [
             <p class="plan__name">{tier.name}</p>
             <p class="plan__price">{tier.price}<span>{tier.priceNote ?? " "}</span></p>
             <p class="plan__text">{tier.positioning}</p>
-            <a class={`btn btn--block ${tier.featured ? "btn--primary" : "btn--ghost"}`} href={tier.ctaHref}>{tier.ctaLabel}</a>
+            <a class={`btn btn--block ${tier.featured ? "btn--primary" : "btn--ghost"}`} href={tier.ctaHref} data-plan={tier.id}>{tier.ctaLabel}</a>
           </div>
         ))}
       </div>

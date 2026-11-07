@@ -61,6 +61,8 @@
 </style>
 
 <script>
+  import { track } from "../../lib/analytics";
+
   const root = document.querySelector<HTMLElement>("[data-calculator]");
   if (root) {
     const orders = root.querySelector<HTMLInputElement>("#calc-orders")!;
@@ -91,8 +93,12 @@
       annualOut.textContent = formatter.format(annual);
     }
 
+    let tracked = false;
     [orders, aov, rate, days].forEach((input) => {
-      input.addEventListener("input", recalc);
+      input.addEventListener("input", () => {
+        if (!tracked) { tracked = true; track("calculator_used"); }
+        recalc();
+      });
       input.addEventListener("blur", () => {
         if (parseFloat(input.value) < 0 || Number.isNaN(parseFloat(input.value))) input.value = "0";
         recalc();

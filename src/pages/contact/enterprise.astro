@@ -3,6 +3,7 @@ import MarketingLayout from "../../layouts/MarketingLayout.astro";
 import EnterpriseLeadForm from "../../components/conversion/EnterpriseLeadForm.astro";
 ---
 <MarketingLayout
+  hideFooterConvert
   title="Talk to Enterprise Sales"
   description="Talk to Vyfoo's enterprise sales team about rollout planning, architecture review, and commercial terms for your restaurant group."
   path="/contact/enterprise"
@@ -22,7 +23,7 @@ import EnterpriseLeadForm from "../../components/conversion/EnterpriseLeadForm.a
         </ul>
       </div>
       <div class="demo-page__form-card card">
-        <EnterpriseLeadForm />
+        <EnterpriseLeadForm formType="enterprise" formName="Talk to Enterprise Sales" />
       </div>
     </div>
   </section>

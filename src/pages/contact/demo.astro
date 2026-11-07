@@ -3,6 +3,7 @@ import MarketingLayout from "../../layouts/MarketingLayout.astro";
 import EnterpriseLeadForm from "../../components/conversion/EnterpriseLeadForm.astro";
 ---
 <MarketingLayout
+  hideFooterConvert
   title="Book an Enterprise Demo"
   description="Book an architecture walkthrough and enterprise demo of Vyfoo for your multi-outlet restaurant group, franchise, or chain."
   path="/contact/demo"
@@ -28,7 +29,7 @@ import EnterpriseLeadForm from "../../components/conversion/EnterpriseLeadForm.a
       </div>
 
       <div class="demo-page__form-card card">
-        <EnterpriseLeadForm />
+        <EnterpriseLeadForm formType="demo" formName="Book Enterprise Demo" />
       </div>
     </div>
   </section>

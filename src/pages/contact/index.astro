@@ -1,28 +1,30 @@
 ---
 import MarketingLayout from "../../layouts/MarketingLayout.astro";
+import ContactForm from "../../components/conversion/ContactForm.astro";
 import { urls, CONTACT_EMAIL, CONTACT_PHONE } from "../../lib/urls";
 ---
 <MarketingLayout
+  hideFooterConvert
   title="Contact Vyfoo"
-  description="Get in touch with Vyfoo for enterprise sales, a self-serve trial, or general questions."
+  description="Get in touch with Vyfoo for enterprise sales, a self-serve trial, or general questions. Send a message or reach the team directly."
   path="/contact"
 >
   <section class="page-hero">
     <div class="container">
       <p class="breadcrumbs"><a href="/">Home</a> / Contact</p>
       <h1>Get in touch.</h1>
-      <p>Choose the path that fits your restaurant — or reach us directly below.</p>
+      <p>Choose the path that fits your restaurant, or send us a message below.</p>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section-tight">
     <div class="container grid-auto grid-auto--2">
-      <div class="card">
+      <div class="card paths">
         <h2>Independent restaurant?</h2>
-        <p>Start a free trial — no credit card required, no sales call needed to begin.</p>
-        <a class="btn btn--primary" href={urls.startTrial}>Start Free Trial</a>
+        <p>Start a free trial. No credit card required, and no sales call needed to begin.</p>
+        <a class="btn btn--ghost" href={urls.startTrial}>Start Free Trial</a>
       </div>
-      <div class="card">
+      <div class="card paths">
         <h2>Multi-outlet or enterprise group?</h2>
         <p>Talk to our enterprise team about rollout, architecture, and deployment.</p>
         <a class="btn btn--primary" href={urls.bookDemo}>Book Enterprise Demo</a>
@@ -30,11 +32,43 @@ import { urls, CONTACT_EMAIL, CONTACT_PHONE } from "../../lib/urls";
     </div>
   </section>
 
-  <section class="section section--cream">
-    <div class="container prose">
-      <h2>Reach us directly</h2>
-      <p>Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p>
-      <p>Phone: <a href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}>{CONTACT_PHONE}</a></p>
+  <section class="section section--cream" id="message">
+    <div class="container contact">
+      <div class="contact__intro">
+        <p class="eyebrow">General enquiries</p>
+        <h2>Send us a message.</h2>
+        <p>Questions about the product, pricing, or a deployment? Tell us a little and our team will reply by email.</p>
+        <ul class="contact__details">
+          <li>
+            <span class="contact__label">Email</span>
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+          </li>
+          <li>
+            <span class="contact__label">Phone</span>
+            <a href={`tel:${CONTACT_PHONE.replace(/\s+/g, "")}`}>{CONTACT_PHONE}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="card contact__form">
+        <ContactForm />
+      </div>
     </div>
   </section>
 </MarketingLayout>
+
+<style>
+  .paths { display: flex; flex-direction: column; align-items: flex-start; padding: var(--space-8); }
+  .paths h2 { font-size: clamp(1.4rem, 1.5vw + 0.9rem, 1.75rem); margin-bottom: var(--space-3); }
+  .paths p { flex: 1; }
+  .contact { display: grid; gap: 3rem; grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .contact__details { list-style: none; margin: var(--space-8) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-5); }
+  .contact__details li { display: flex; flex-direction: column; gap: var(--space-1); }
+  .contact__label { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-tertiary); }
+  .contact__details a { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; color: var(--color-text-primary); text-decoration: none; }
+  .contact__details a:hover { color: var(--color-brand); }
+  .contact__form { padding: var(--space-8); box-shadow: var(--shadow-lg); }
+  @media (min-width: 980px) {
+    .contact { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 4rem; }
+    .contact__intro { position: sticky; top: calc(var(--nav-height) + var(--space-8)); }
+  }
+</style>

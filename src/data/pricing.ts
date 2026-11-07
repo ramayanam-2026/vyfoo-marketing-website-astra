@@ -1,3 +1,5 @@
+import { urls } from "../lib/urls";
+
 export interface PricingTier {
   id: "starter" | "growth" | "enterprise";
   name: string;
@@ -33,7 +35,7 @@ export const pricingTiers: PricingTier[] = [
       "Setup and training as outlined at signup",
     ],
     ctaLabel: "Start Free Trial",
-    ctaHref: "#start-trial",
+    ctaHref: urls.startTrial,
   },
   {
     id: "growth",
@@ -51,7 +53,7 @@ export const pricingTiers: PricingTier[] = [
       "Onboarding coordination across locations",
     ],
     ctaLabel: "Book a Demo",
-    ctaHref: "/contact/demo",
+    ctaHref: urls.bookDemo,
     featured: true,
   },
   {
@@ -70,7 +72,7 @@ export const pricingTiers: PricingTier[] = [
       "Commercial and support terms confirmed during scoping",
     ],
     ctaLabel: "Contact Enterprise Sales",
-    ctaHref: "/contact/enterprise",
+    ctaHref: urls.talkToSales,
   },
 ];
 

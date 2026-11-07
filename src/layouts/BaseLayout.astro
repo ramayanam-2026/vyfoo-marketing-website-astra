@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 import { buildSeo, organizationJsonLd, websiteJsonLd, type SeoProps } from "../lib/seo";
+import { GA_MEASUREMENT_ID } from "../lib/analytics";
+import { urls } from "../lib/urls";
 
 interface Props extends SeoProps {
   structuredData?: object[];
@@ -9,6 +11,9 @@ interface Props extends SeoProps {
 const { structuredData = [], ...seoProps } = Astro.props;
 const seo = buildSeo(seoProps);
 const jsonLd = [organizationJsonLd(), websiteJsonLd(), ...structuredData];
+
+// GA4 loads in production builds only, so `astro dev` never sends hits.
+const gaId = import.meta.env.PROD ? GA_MEASUREMENT_ID : "";
 ---
 <!doctype html>
 <html lang="en">
@@ -50,9 +55,59 @@ const jsonLd = [organizationJsonLd(), websiteJsonLd(), ...structuredData];
     {jsonLd.map((data) => (
       <script type="application/ld+json" set:html={JSON.stringify(data)} />
     ))}
+
+    {gaId && (
+      <>
+        <!-- Google Analytics 4 (every page). Consent Mode v2: analytics storage is denied by
+             default for the EEA, UK and Switzerland (no cookies are set there until consent is
+             granted) and allowed elsewhere. Advertising storage is denied everywhere. -->
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script is:inline define:vars={{ gaId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { window.dataLayer.push(arguments); }
+          window.gtag = gtag;
+          gtag("consent", "default", {
+            ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: "denied",
+            region: ["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES","SE","IS","LI","NO","GB","CH"],
+            wait_for_update: 500,
+          });
+          gtag("consent", "default", {
+            ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied", analytics_storage: "granted",
+          });
+          gtag("js", new Date());
+          gtag("config", gaId, { allow_google_signals: false, allow_ad_personalization_signals: false });
+        </script>
+      </>
+    )}
   </head>
-  <body>
+  <body data-trial-url={urls.startTrial}>
     <a href="#main" class="skip-link">Skip to content</a>
     <slot />
+
+    <script>
+      // Conversion events (GA4). Clicks are matched by destination so no per-link markup is needed.
+      // Event names follow the measurement plan; no personal data is ever attached.
+      import { track } from "../lib/analytics";
+
+      const trialUrl = document.body.dataset.trialUrl;
+      const trialHref = trialUrl ? new URL(trialUrl, location.href).href : "";
+
+      document.addEventListener("click", (event) => {
+        const link = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[href]");
+        if (!link) return;
+        let url: URL;
+        try { url = new URL(link.href, location.href); } catch { return; }
+        const params = { link_text: (link.textContent ?? "").trim().slice(0, 60), page_path: location.pathname };
+        const internal = url.origin === location.origin;
+
+        if (link.dataset.plan) track("pricing_plan_selected", { ...params, plan: link.dataset.plan });
+        if (internal && url.pathname === "/contact/demo") track("enterprise_demo_cta_clicked", params);
+        else if (internal && (url.pathname === "/contact/enterprise" || url.pathname === "/contact/sales")) track("contact_sales_clicked", params);
+        if (trialHref && link.href === trialHref) track("trial_cta_clicked", params);
+      });
+
+      const path = location.pathname.replace(/\/$/, "");
+      if (path.startsWith("/compare/")) track("comparison_page_viewed", { competitor: path.split("/")[2] });
+    </script>
   </body>
 </html>

@@ -1,0 +1,51 @@
+---
+import { CONTACT_EMAIL } from "../../lib/urls";
+---
+<form class="lead-form" data-lead-form data-form-type="contact" data-form-name="General Contact" data-email={CONTACT_EMAIL} novalidate>
+  <div class="lead-form__row">
+    <div class="lead-form__field">
+      <label for="cf-name">Full name <span aria-hidden="true">*</span></label>
+      <input id="cf-name" name="fullName" type="text" required aria-required="true" autocomplete="name" aria-describedby="cf-name-error" data-error="Please enter your full name." />
+      <p class="lead-form__error" id="cf-name-error" hidden></p>
+    </div>
+    <div class="lead-form__field">
+      <label for="cf-email">Email <span aria-hidden="true">*</span></label>
+      <input id="cf-email" name="workEmail" type="email" required aria-required="true" autocomplete="email" aria-describedby="cf-email-error" data-error="Please enter your email." />
+      <p class="lead-form__error" id="cf-email-error" hidden></p>
+    </div>
+  </div>
+  <div class="lead-form__row">
+    <div class="lead-form__field">
+      <label for="cf-company">Company</label>
+      <input id="cf-company" name="company" type="text" autocomplete="organization" />
+    </div>
+    <div class="lead-form__field">
+      <label for="cf-phone">Phone</label>
+      <input id="cf-phone" name="phone" type="tel" autocomplete="tel" />
+    </div>
+  </div>
+  <div class="lead-form__field lead-form__field--full">
+    <label for="cf-message">How can we help? <span aria-hidden="true">*</span></label>
+    <textarea id="cf-message" name="message" rows="5" required aria-required="true" aria-describedby="cf-message-error" data-error="Please tell us how we can help."></textarea>
+    <p class="lead-form__error" id="cf-message-error" hidden></p>
+  </div>
+
+  <div class="lead-form__hp" aria-hidden="true">
+    <label for="cf-hp">Leave this field empty</label>
+    <input id="cf-hp" name="hp_field" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <p class="lead-form__privacy">
+    By submitting this form you agree to be contacted about your enquiry, per
+    <a href="/privacy">our privacy policy</a>. We don't sell your information.
+  </p>
+
+  <button type="submit" class="btn btn--primary btn--block" data-lead-form-submit>Send message</button>
+
+  <div class="lead-form__status" role="status" aria-live="polite" data-lead-form-status hidden></div>
+</form>
+
+<script>
+  import { initLeadForm } from "../../lib/forms";
+  document.querySelectorAll<HTMLFormElement>("[data-lead-form]").forEach(initLeadForm);
+</script>

@@ -12,7 +12,8 @@
     "astro": "astro",
     "check": "astro check",
     "check:css": "node scripts/check-css-vars.mjs",
-    "prebuild": "npm run check:css"
+    "prebuild": "npm run check:css && npm run check:env",
+    "check:env": "node scripts/check-env.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

@@ -29,7 +29,7 @@ import { urls } from "../../lib/urls";
               <span class="pricing-card__price-note">{tier.priceNote ?? " "}</span>
             </p>
             <p class="pricing-card__positioning">{tier.positioning}</p>
-            <a class={`btn btn--block ${tier.featured ? "btn--primary" : "btn--ghost"}`} href={tier.ctaHref}>{tier.ctaLabel}</a>
+            <a class={`btn btn--block ${tier.featured ? "btn--primary" : "btn--ghost"}`} href={tier.ctaHref} data-plan={tier.id}>{tier.ctaLabel}</a>
             <div class="pricing-card__divider"></div>
             <ul class="pricing-card__list">{tier.included.map((i) => <li>{i}</li>)}</ul>
           </div>
