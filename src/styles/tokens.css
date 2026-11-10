@@ -130,6 +130,3 @@
     --hero-pad-bottom: 6.5rem;
   }
 }
-@media (min-width: 1200px) {
-  :root { --nav-height: 76px; }
-}

@@ -119,6 +119,7 @@ const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${Str
     <!-- HQ ANALYTICS -->
     <div role="tabpanel" id="panel-hq" aria-labelledby="tab-hq" class="panel" data-panel="hq" hidden>
       <div class="hq">
+        <div class="hq__tag"><span class="badge badge--slate">Sample data</span></div>
         <div class="kpis">
           <div><span class="mock-label">Orders today</span><strong>1,136</strong></div>
           <div><span class="mock-label">Avg ticket time</span><strong>06:40</strong></div>
@@ -135,7 +136,7 @@ const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${Str
       </div>
     </div>
   </div>
-  <p class="window__note">Illustrative interface preview · sample data, not a live deployment</p>
+  <p class="window__note">Interactive preview — click tabs above to switch between Counter POS, Kitchen KDS, Pickup OSDS, and HQ Analytics</p>
 </div>
 
 <style>
@@ -214,6 +215,7 @@ const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${Str
 
   /* ---- HQ ---- */
   .hq { display: flex; flex-direction: column; gap: 12px; }
+  .hq__tag { display: flex; justify-content: flex-end; margin-bottom: -4px; }
   .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .kpis div { display: flex; flex-direction: column; gap: 6px; padding: 12px; background: var(--color-obsidian-elevated); border: 1px solid var(--color-border-dark); border-radius: 12px; }
   .kpis .mock-label { font-size: 0.6rem; }

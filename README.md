@@ -42,9 +42,11 @@ Rules the system enforces:
   architecture, governance, closing CTA bars, and the footer.
 - **Brand crimson `#E11D48`** is reserved for primary CTAs, active indicators, and key
   highlights. No large pastel/pink surfaces.
-- **One button size** everywhere: 52px tall, 28px horizontal padding, 12px radius.
-  Variants (`btn--primary`, `btn--ghost`, `btn--on-ink`, `btn--outline-on-ink`) change colour
-  only. Below 640px every `.btn` is full-width. `.btn--lg` is intentionally a no-op.
+- **One button size** everywhere: 52px tall, 28px horizontal padding, 12px radius. Variants
+  (`btn--primary`, `btn--ghost`, `btn--on-ink`, `btn--outline-on-ink`) change colour only. Below
+  640px every `.btn` is full-width. `.btn--lg` is intentionally a no-op. **One deliberate
+  exception:** the two desktop header CTAs are compact (40px tall, 1.1rem padding, 0.875rem
+  font) to keep the 68px sticky header slim; the mobile menu CTAs use the standard size.
 - **Sans-serif only.** No serif faces anywhere.
 - **Spacing tokens must exist.** An undefined `var(--space-N)` silently invalidates the
   whole CSS declaration (padding collapses to 0). `npm run check:css` runs automatically
@@ -75,7 +77,9 @@ into the browser bundle, so never put secrets in them.
 
 Three forms share one engine (`src/lib/forms.ts`): **Book Enterprise Demo** (`/contact/demo`),
 **Talk to Enterprise Sales** (`/contact/enterprise`) and **General Contact** (`/contact`).
-Each POSTs JSON to the webhook in `PUBLIC_VYFOO_LEADS_ENDPOINT`.
+Each POSTs JSON to the webhook in `PUBLIC_VYFOO_LEADS_ENDPOINT`. The value is read at build time in
+`src/lib/urls.ts` (`leadsEndpoint`), passed by each form component to the browser through a
+`data-endpoint` attribute on the `<form>`, and used by `src/lib/forms.ts`.
 
 > **The webhook URL is deliberately not in this repository.** The repo is public, and a
 > webhook URL works like a write key to your automation. Put it in a local `.env` and in your

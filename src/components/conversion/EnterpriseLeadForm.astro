@@ -1,5 +1,5 @@
 ---
-import { CONTACT_EMAIL } from "../../lib/urls";
+import { CONTACT_EMAIL, leadsEndpoint } from "../../lib/urls";
 
 interface Props {
   /** "demo" (Book Enterprise Demo) or "enterprise" (Talk to Enterprise Sales); sent to the webhook as formType. */
@@ -8,7 +8,7 @@ interface Props {
 }
 const { formType = "demo", formName = "Book Enterprise Demo" } = Astro.props;
 ---
-<form class="lead-form" data-lead-form data-form-type={formType} data-form-name={formName} data-email={CONTACT_EMAIL} novalidate>
+<form class="lead-form" data-lead-form data-form-type={formType} data-form-name={formName} data-email={CONTACT_EMAIL} data-endpoint={leadsEndpoint} novalidate>
   <div class="lead-form__row">
     <div class="lead-form__field">
       <label for="lf-name">Full name <span aria-hidden="true">*</span></label>

@@ -40,6 +40,14 @@ export const urls = {
   contact: "/contact",
 } as const;
 
+/**
+ * Webhook that receives every lead form (Book Demo, Enterprise Sales, Contact).
+ * Read from PUBLIC_VYFOO_LEADS_ENDPOINT at build time (Vercel: Project Settings >
+ * Environment Variables). It is intentionally NOT committed: this repository is public.
+ * Each form receives it through a `data-endpoint` attribute. Empty means "not connected".
+ */
+export const leadsEndpoint: string = (env.PUBLIC_VYFOO_LEADS_ENDPOINT ?? "").trim();
+
 export const CONTACT_EMAIL = "contact@vyfoo.com";
 export const CONTACT_PHONE = "+91 72172 15635";
 export const COMPANY_NAME = "VYQDA Technologies";

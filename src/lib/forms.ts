@@ -2,9 +2,10 @@
  * Shared client-side engine for every lead form on the site
  * (Book Enterprise Demo, Talk to Enterprise Sales, general Contact).
  *
- * Posts JSON to the webhook in PUBLIC_VYFOO_LEADS_ENDPOINT. That value is
- * deliberately NOT committed (the repository is public); set it in `.env`
- * locally and in the hosting provider's environment variables.
+ * Posts JSON to the webhook from PUBLIC_VYFOO_LEADS_ENDPOINT. The value is read at
+ * build time in the form component (via lib/urls.ts) and handed to this script through
+ * the form's `data-endpoint` attribute. It is deliberately NOT committed (the repository
+ * is public); set it in `.env` locally and in the hosting provider's environment variables.
  *
  * Behaviour guarantees:
  *  - Never claims success unless the endpoint answered 2xx.
@@ -15,7 +16,6 @@
  */
 import { track } from "./analytics";
 
-const ENDPOINT: string = (import.meta.env.PUBLIC_VYFOO_LEADS_ENDPOINT as string | undefined)?.trim() ?? "";
 const REQUEST_TIMEOUT_MS = 15000;
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
 
@@ -27,6 +27,7 @@ export function initLeadForm(form: HTMLFormElement): void {
   const formName = form.dataset.formName ?? formType;
   const eventPrefix = formType === "contact" ? "contact" : "enterprise";
   const fallbackEmail = form.dataset.email ?? "";
+  const endpoint = (form.dataset.endpoint ?? "").trim();
   const statusEl = form.querySelector<HTMLElement>("[data-lead-form-status]");
   const submitBtn = form.querySelector<HTMLButtonElement>("[data-lead-form-submit]");
   if (!statusEl || !submitBtn) return;
@@ -116,7 +117,7 @@ export function initLeadForm(form: HTMLFormElement): void {
       return;
     }
 
-    if (!ENDPOINT) {
+    if (!endpoint) {
       showStatus("error", "This form isn't connected yet, so it can't be submitted automatically. Please email us directly at", true);
       return;
     }
@@ -126,7 +127,7 @@ export function initLeadForm(form: HTMLFormElement): void {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     try {
-      const res = await fetch(ENDPOINT, {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(buildPayload()),

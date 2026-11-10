@@ -325,7 +325,7 @@ const auditLog = [
     position: absolute; z-index: -1; pointer-events: none; width: 520px; height: 520px; right: -180px; top: 46%;
     background: radial-gradient(closest-side, rgba(56, 189, 248, 0.16), rgba(99, 102, 241, 0.07) 55%, transparent 75%);
   }
-  .hero__grid { display: grid; gap: 3rem; grid-template-columns: minmax(0, 1fr); align-items: center; }
+  .hero__grid { display: grid; gap: 3rem; grid-template-columns: minmax(0, 1fr); align-items: start; }
   .hero h1 > span { display: block; }
   .hero__muted { color: #64748b; }
   .hero__lede { font-size: 1.125rem; max-width: 34rem; margin-bottom: 2rem; }
@@ -333,10 +333,17 @@ const auditLog = [
   .trust li { display: inline-flex; align-items: center; gap: 0.5rem; }
   .trust .tick { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--color-emerald-bg); color: var(--color-emerald-text); }
   .hero__visual { min-width: 0; display: flex; justify-content: flex-start; }
-  @media (min-width: 1080px) {
-    .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr); gap: 4rem; }
+  /* Laptops and up: a tighter hero so the headline, both CTAs and the trust row sit above the fold.
+     The two columns start on the same line (align-items: start). */
+  @media (min-width: 1024px) {
+    .hero { padding-top: 3rem; padding-bottom: 4rem; }
+    .hero h1 { font-size: clamp(2.35rem, 3.5vw, 3.4rem); }
+    .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3rem; }
     .hero__glow { width: 820px; height: 820px; right: -120px; top: -40px; }
     .hero__visual { justify-content: flex-end; }
+  }
+  @media (min-width: 1280px) {
+    .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr); gap: 4rem; }
   }
 
   /* ---- capability strip ---- */

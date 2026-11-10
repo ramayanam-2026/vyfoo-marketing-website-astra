@@ -13,7 +13,7 @@ const steps = [
     text: "Order numbers move from Preparing to Ready on the pickup screen so guests know when to collect." },
   { icon: "cube", tone: "slate", title: "Billing & stock update", tag: "Auto-deduct", module: "Recipe BOM",
     text: "Payment and tax post as the order closes, and recipe-level ingredient stock deducts with it." },
-  { icon: "chart", tone: "ink", title: "Management reporting", tag: "HQ rollup", module: "HQ Ledger",
+  { icon: "chart", tone: "indigo", title: "Management reporting", tag: "HQ rollup", module: "HQ Ledger",
     text: "Sales, order volume, and outlet comparisons roll up to headquarters from the same transaction data." },
 ];
 // steps that get a right-hand connector arrow on desktop (end of each row has none)
@@ -47,14 +47,14 @@ const connects = new Set([0, 1, 3, 4]);
 </ol>
 
 <style>
-  .pipeline { --gap: 1.5rem; list-style: none; margin: 0; padding: 0; display: grid; gap: var(--gap); position: relative; }
+  .pipeline { --row-gap: 1.5rem; --col-gap: 2.25rem; list-style: none; margin: 0; padding: 0; display: grid; row-gap: var(--row-gap); column-gap: var(--col-gap); position: relative; }
 
   /* mobile + tablet: vertical timeline spine */
   .pipeline::before { content: ""; position: absolute; left: 11px; top: 36px; bottom: 36px; width: 2px; border-radius: 2px; background: var(--color-border-strong); }
   .pipeline__return { display: none; }
 
   .step {
-    position: relative; margin-left: 2.5rem; padding: 1.25rem;
+    position: relative; margin-left: 2.5rem; padding: 1.25rem; height: 100%;
     display: flex; flex-direction: column; gap: 0.9rem;
     background: #fff; border: 1px solid var(--color-border); border-radius: 18px; box-shadow: var(--shadow-sm);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -87,7 +87,7 @@ const connects = new Set([0, 1, 3, 4]);
   .step--sky { --icon-bg: rgba(56, 189, 248, 0.16); --icon-fg: #0284c7; --tag-bg: rgba(56, 189, 248, 0.14); --tag-fg: #0369a1; }
   .step--emerald { --icon-bg: rgba(16, 185, 129, 0.14); --icon-fg: #059669; --tag-bg: rgba(16, 185, 129, 0.12); --tag-fg: #047857; }
   .step--slate { --icon-bg: #f1f5f9; --icon-fg: #475569; --tag-bg: #f1f5f9; --tag-fg: #334155; }
-  .step--ink { --icon-bg: var(--color-obsidian); --icon-fg: #fff; --tag-bg: #e2e8f0; --tag-fg: #0f172a; }
+  .step--indigo { --icon-bg: #eef2ff; --icon-fg: #4f46e5; --tag-bg: #eef2ff; --tag-fg: #4338ca; }
 
   /* desktop: 3×2 bento with connectors and a return rail between rows */
   @media (min-width: 960px) {
@@ -97,7 +97,7 @@ const connects = new Set([0, 1, 3, 4]);
     .step::before { display: none; }
 
     .step[data-connect="true"]::after {
-      content: ""; position: absolute; z-index: 2; top: 50%; right: -26px; width: 28px; height: 28px; margin-top: -14px;
+      content: ""; position: absolute; z-index: 2; top: 50%; right: calc(var(--col-gap) / -2 - 15px); /* 14px = half the badge, 1px = the card border: lands dead-centre in the gap */ width: 28px; height: 28px; margin-top: -14px;
       border-radius: 50%; background: #fff var(--icon-arrow-slate) center / 14px no-repeat;
       border: 1px solid var(--color-border-strong); box-shadow: var(--shadow-sm);
     }
@@ -105,11 +105,11 @@ const connects = new Set([0, 1, 3, 4]);
     .pipeline__return { display: block; grid-column: 1 / -1; position: relative; height: 28px; }
     .pipeline__return::before {
       content: ""; position: absolute; top: 50%; height: 2px; margin-top: -1px; background: var(--color-border-strong);
-      left: calc(16.667% - 0.5rem); right: calc(16.667% - 0.5rem);
+      left: calc(16.667% - var(--col-gap) / 3); right: calc(16.667% - var(--col-gap) / 3);
     }
     .pipeline__return .v { position: absolute; width: 2px; background: var(--color-border-strong); }
-    .pipeline__return .v--a { left: calc(83.333% + 0.5rem); top: calc(-1 * var(--gap)); height: calc(50% + var(--gap) + 1px); }
-    .pipeline__return .v--b { left: calc(16.667% - 0.5rem); bottom: calc(-1 * var(--gap)); height: calc(50% + var(--gap) + 1px); }
+    .pipeline__return .v--a { left: calc(83.333% + var(--col-gap) / 3); top: calc(-1 * var(--row-gap)); height: calc(50% + var(--row-gap) + 1px); }
+    .pipeline__return .v--b { left: calc(16.667% - var(--col-gap) / 3); bottom: calc(-1 * var(--row-gap)); height: calc(50% + var(--row-gap) + 1px); }
     .pipeline__return .v--b::after {
       content: ""; position: absolute; left: 50%; bottom: 0; width: 10px; height: 10px;
       border-right: 2px solid var(--color-border-strong); border-bottom: 2px solid var(--color-border-strong);

@@ -80,7 +80,7 @@ import BrandLogo from "../ui/BrandLogo.astro";
     -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
     border-bottom: 1px solid #e2e8f0;
   }
-  .site-header__bar { display: flex; align-items: center; gap: 2rem; height: var(--nav-height); }
+  .site-header__bar { display: flex; align-items: center; gap: 2rem; height: calc(var(--nav-height) - 1px); } /* -1px: the header's bottom border brings the total to exactly --nav-height */
   .site-header__brand { text-decoration: none; margin-right: auto; display: inline-flex; }
 
   .primary-nav { display: none; }
@@ -119,6 +119,8 @@ import BrandLogo from "../ui/BrandLogo.astro";
   .mega-menu__col a:hover { background: #f1f5f9; color: var(--color-brand); }
 
   .site-header__actions { display: none; gap: 0.75rem; align-items: center; }
+  /* The one deliberate exception to the site-wide 52px button: compact CTAs keep the bar slim. */
+  .site-header__actions .btn { height: 40px; min-height: 40px; padding: 0 1.1rem; font-size: 0.875rem; }
 
   .mobile-trigger {
     position: relative; width: 42px; height: 42px; padding: 0; flex-shrink: 0;

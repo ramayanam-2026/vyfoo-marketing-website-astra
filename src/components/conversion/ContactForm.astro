@@ -1,7 +1,7 @@
 ---
-import { CONTACT_EMAIL } from "../../lib/urls";
+import { CONTACT_EMAIL, leadsEndpoint } from "../../lib/urls";
 ---
-<form class="lead-form" data-lead-form data-form-type="contact" data-form-name="General Contact" data-email={CONTACT_EMAIL} novalidate>
+<form class="lead-form" data-lead-form data-form-type="contact" data-form-name="General Contact" data-email={CONTACT_EMAIL} data-endpoint={leadsEndpoint} novalidate>
   <div class="lead-form__row">
     <div class="lead-form__field">
       <label for="cf-name">Full name <span aria-hidden="true">*</span></label>
